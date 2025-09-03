@@ -53,11 +53,18 @@ The demo app includes a comprehensive settings panel accessible via the settings
 - **Standard** - Default Material 3 spacing (default)
 - **Comfortable** - More spacious layout
 - **Compact** - Tighter, more condensed layout
+- **Relaxed** - Maximum spacing for enhanced accessibility and comfort
 
 ### 🔤 Text Scaling
 - **Slider Control** - Fine-tune text size from 0.5x to 3.0x
 - **Quick Presets** - Common scaling factors (0.8x, 1.0x, 1.2x, 1.5x, 2.0x, etc.)
 - **Real-time Preview** - Changes apply immediately
+
+### 🎨 Custom Typography
+- **B612 Font** - Professional aviation-grade font for all UI text
+- **B612 Mono** - Monospace font for numeric content (keypad keys and display)
+- **Tabular Figures** - Consistent digit width for perfect numeric alignment
+- **High Legibility** - Optimized for critical applications and accessibility
 
 These settings demonstrate how the keypad adapts to different accessibility and design requirements.
 
@@ -102,6 +109,10 @@ The package properly separates:
 cd example
 flutter run
 ```
+
+## Additional Documentation
+
+- **[FONTS.md](FONTS.md)** - Detailed information about custom font configuration and implementation
 
 ## Usage Example
 

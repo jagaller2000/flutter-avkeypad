@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'widgets/widgets.dart';
 import 'models/demo_settings.dart';
+import 'extensions/extensions.dart';
 
 void main() {
   runApp(const MyApp());
@@ -43,6 +44,7 @@ class _MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
         visualDensity: _settings.visualDensity,
+        textTheme: ThemeData.light().textTheme.withCustomFonts,
       ),
       darkTheme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
@@ -51,6 +53,7 @@ class _MyAppState extends State<MyApp> {
         ),
         useMaterial3: true,
         visualDensity: _settings.visualDensity,
+        textTheme: ThemeData.dark().textTheme.withCustomFonts,
       ),
       builder: (context, child) {
         return MediaQuery(

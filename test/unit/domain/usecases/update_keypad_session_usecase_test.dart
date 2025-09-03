@@ -9,10 +9,7 @@ void main() {
 
     setUp(() {
       useCase = const UpdateKeypadSessionUseCase();
-      testSession = KeypadSession(
-        id: 'test-session',
-        config: testConfig,
-      );
+      testSession = KeypadSession(id: 'test-session', config: testConfig);
     });
 
     group('State Update', () {
@@ -73,10 +70,7 @@ void main() {
       });
 
       test('should update decimal flag', () {
-        const decimalState = KeypadState(
-          input: '123.45',
-          hasDecimal: true,
-        );
+        const decimalState = KeypadState(input: '123.45', hasDecimal: true);
 
         final result = useCase(session: testSession, newState: decimalState);
 
@@ -85,10 +79,7 @@ void main() {
       });
 
       test('should update negative flag', () {
-        const negativeState = KeypadState(
-          input: '-123',
-          isNegative: true,
-        );
+        const negativeState = KeypadState(input: '-123', isNegative: true);
 
         final result = useCase(session: testSession, newState: negativeState);
 
@@ -130,11 +121,13 @@ void main() {
 
       test('should clear error state', () {
         // First set an error state
-        testSession.updateState(const KeypadState(
-          input: '123',
-          isValid: false,
-          error: ZeroNotAllowedError(),
-        ));
+        testSession.updateState(
+          const KeypadState(
+            input: '123',
+            isValid: false,
+            error: ZeroNotAllowedError(),
+          ),
+        );
 
         const validState = KeypadState(input: '123', isValid: true);
         final result = useCase(session: testSession, newState: validState);
@@ -145,11 +138,13 @@ void main() {
 
       test('should update to different error type', () {
         // First set one error
-        testSession.updateState(const KeypadState(
-          input: '123',
-          isValid: false,
-          error: MaxDigitsExceededError(2),
-        ));
+        testSession.updateState(
+          const KeypadState(
+            input: '123',
+            isValid: false,
+            error: MaxDigitsExceededError(2),
+          ),
+        );
 
         const newErrorState = KeypadState(
           input: '123.456',
@@ -265,7 +260,7 @@ void main() {
       test('should preserve session ID', () {
         const testId = 'unique-session-id-123';
         final session = KeypadSession(id: testId, config: testConfig);
-        
+
         const newState = KeypadState(input: '456');
         final result = useCase(session: session, newState: newState);
 
@@ -363,7 +358,10 @@ void main() {
           error: null,
         );
 
-        final result = useCase(session: testSession, newState: stateWithoutError);
+        final result = useCase(
+          session: testSession,
+          newState: stateWithoutError,
+        );
 
         expect(result.currentState.error, isNull);
         expect(result.currentState.isValid, isTrue);
@@ -387,11 +385,13 @@ void main() {
       });
 
       test('should transition from invalid to valid state', () {
-        testSession.updateState(const KeypadState(
-          input: '123',
-          isValid: false,
-          error: ZeroNotAllowedError(),
-        ));
+        testSession.updateState(
+          const KeypadState(
+            input: '123',
+            isValid: false,
+            error: ZeroNotAllowedError(),
+          ),
+        );
         expect(testSession.currentState.isValid, isFalse);
 
         const validState = KeypadState(input: '123', isValid: true);

@@ -323,21 +323,36 @@ void main() {
           showCancelKey: false,
           customKeys: [],
         );
-        final resultWithoutActions = useCase.generateStandardLayout(configWithoutActions);
+        final resultWithoutActions = useCase.generateStandardLayout(
+          configWithoutActions,
+        );
 
         const configWithActions = KeypadConfig(showClearKey: true);
-        final resultWithActions = useCase.generateStandardLayout(configWithActions);
+        final resultWithActions = useCase.generateStandardLayout(
+          configWithActions,
+        );
 
         // Layout with actions should have more rows
-        expect(resultWithActions.length, greaterThan(resultWithoutActions.length));
+        expect(
+          resultWithActions.length,
+          greaterThan(resultWithoutActions.length),
+        );
       });
     });
 
     group('Custom Keys Integration', () {
       test('should include custom keys in action row', () {
         final customKeys = [
-          const KeypadKey(value: 'pi', type: KeypadKeyType.custom, displayText: 'π'),
-          const KeypadKey(value: 'euler', type: KeypadKeyType.custom, displayText: 'e'),
+          const KeypadKey(
+            value: 'pi',
+            type: KeypadKeyType.custom,
+            displayText: 'π',
+          ),
+          const KeypadKey(
+            value: 'euler',
+            type: KeypadKeyType.custom,
+            displayText: 'e',
+          ),
         ];
         final config = KeypadConfig(customKeys: customKeys);
         final result = useCase.generateStandardLayout(config);
@@ -450,7 +465,10 @@ void main() {
             if (key.type == KeypadKeyType.digit) {
               expect(key.isEnabled, isTrue);
               expect(key.value, matches(r'^\d$')); // Single digit
-              expect(key.display, equals(key.value)); // Display equals value for digits
+              expect(
+                key.display,
+                equals(key.value),
+              ); // Display equals value for digits
             }
           }
         }
@@ -483,14 +501,21 @@ void main() {
         expect(result[0].length, equals(3)); // First row: 1,2,3
         expect(result[1].length, equals(3)); // Second row: 4,5,6
         expect(result[2].length, equals(3)); // Third row: 7,8,9
-        expect(result[3].isNotEmpty, isTrue); // Bottom row with 0 and other keys
+        expect(
+          result[3].isNotEmpty,
+          isTrue,
+        ); // Bottom row with 0 and other keys
       });
     });
 
     group('Complex Configuration Scenarios', () {
       test('should handle full-featured configuration', () {
         final customKeys = [
-          const KeypadKey(value: 'sqrt', type: KeypadKeyType.custom, displayText: '√'),
+          const KeypadKey(
+            value: 'sqrt',
+            type: KeypadKeyType.custom,
+            displayText: '√',
+          ),
         ];
         final config = KeypadConfig(
           showDecimalKey: true,
@@ -564,10 +589,7 @@ void main() {
       });
 
       test('should not modify input config', () {
-        const originalConfig = KeypadConfig(
-          showDecimalKey: true,
-          maxDigits: 5,
-        );
+        const originalConfig = KeypadConfig(showDecimalKey: true, maxDigits: 5);
 
         useCase.generateStandardLayout(originalConfig);
 
@@ -596,7 +618,7 @@ void main() {
       test('should handle null custom keys gracefully', () {
         // This tests the default empty list in KeypadConfig
         const config = KeypadConfig();
-        
+
         expect(() => useCase.generateStandardLayout(config), returnsNormally);
         final result = useCase.generateStandardLayout(config);
         expect(result, isNotEmpty);
@@ -625,10 +647,7 @@ void main() {
       });
 
       test('should handle empty decimal separator', () {
-        const config = KeypadConfig(
-          showDecimalKey: true,
-          decimalSeparator: '',
-        );
+        const config = KeypadConfig(showDecimalKey: true, decimalSeparator: '');
         final result = useCase.generateStandardLayout(config);
 
         bool emptyDecimalFound = false;

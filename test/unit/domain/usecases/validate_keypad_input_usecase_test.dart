@@ -196,7 +196,10 @@ void main() {
 
         expect(result.isValid, isFalse);
         expect(result.error, isA<MaxDecimalPlacesExceededError>());
-        expect((result.error as MaxDecimalPlacesExceededError).maxDecimalPlaces, equals(2));
+        expect(
+          (result.error as MaxDecimalPlacesExceededError).maxDecimalPlaces,
+          equals(2),
+        );
       });
 
       test('should allow zero decimal places', () {
@@ -211,10 +214,7 @@ void main() {
 
       test('should handle custom decimal separator', () {
         const state = KeypadState(input: '123,45', hasDecimal: true);
-        const config = KeypadConfig(
-          maxDecimalPlaces: 2,
-          decimalSeparator: ',',
-        );
+        const config = KeypadConfig(maxDecimalPlaces: 2, decimalSeparator: ',');
 
         final result = useCase(currentState: state, config: config);
 
@@ -224,10 +224,7 @@ void main() {
 
       test('should reject too many decimal places with custom separator', () {
         const state = KeypadState(input: '123,456', hasDecimal: true);
-        const config = KeypadConfig(
-          maxDecimalPlaces: 2,
-          decimalSeparator: ',',
-        );
+        const config = KeypadConfig(maxDecimalPlaces: 2, decimalSeparator: ',');
 
         final result = useCase(currentState: state, config: config);
 
@@ -259,7 +256,11 @@ void main() {
       });
 
       test('should count only digits for max limit', () {
-        const state = KeypadState(input: '-123.45', isNegative: true, hasDecimal: true);
+        const state = KeypadState(
+          input: '-123.45',
+          isNegative: true,
+          hasDecimal: true,
+        );
         const config = KeypadConfig(maxDigits: 5, allowNegative: true);
 
         final result = useCase(currentState: state, config: config);
@@ -269,7 +270,11 @@ void main() {
       });
 
       test('should reject when digits exceed limit in complex number', () {
-        const state = KeypadState(input: '-123456.78', isNegative: true, hasDecimal: true);
+        const state = KeypadState(
+          input: '-123456.78',
+          isNegative: true,
+          hasDecimal: true,
+        );
         const config = KeypadConfig(maxDigits: 5, allowNegative: true);
 
         final result = useCase(currentState: state, config: config);
@@ -376,10 +381,7 @@ void main() {
 
     group('Combined Validation Rules', () {
       test('should apply all validation rules together', () {
-        const state = KeypadState(
-          input: '123.45',
-          hasDecimal: true,
-        );
+        const state = KeypadState(input: '123.45', hasDecimal: true);
         const config = KeypadConfig(
           allowNegative: false,
           allowZero: true,
@@ -400,10 +402,7 @@ void main() {
           isNegative: true,
           hasDecimal: true,
         );
-        const config = KeypadConfig(
-          allowNegative: false,
-          maxDecimalPlaces: 2,
-        );
+        const config = KeypadConfig(allowNegative: false, maxDecimalPlaces: 2);
 
         final result = useCase(currentState: state, config: config);
 

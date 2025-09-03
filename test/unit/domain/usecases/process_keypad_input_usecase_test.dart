@@ -170,10 +170,7 @@ void main() {
       });
 
       test('should not add decimal if already present', () {
-        const currentState = KeypadState(
-          input: '123.45',
-          hasDecimal: true,
-        );
+        const currentState = KeypadState(input: '123.45', hasDecimal: true);
         const action = KeypadAction(type: KeypadActionType.decimalInput);
         const config = KeypadConfig(showDecimalKey: true);
 
@@ -220,23 +217,26 @@ void main() {
         expect(result.hasDecimal, isTrue);
       });
 
-      test('should add decimal with leading zero for empty input and custom separator', () {
-        const currentState = KeypadState();
-        const action = KeypadAction(type: KeypadActionType.decimalInput);
-        const config = KeypadConfig(
-          showDecimalKey: true,
-          decimalSeparator: ',',
-        );
+      test(
+        'should add decimal with leading zero for empty input and custom separator',
+        () {
+          const currentState = KeypadState();
+          const action = KeypadAction(type: KeypadActionType.decimalInput);
+          const config = KeypadConfig(
+            showDecimalKey: true,
+            decimalSeparator: ',',
+          );
 
-        final result = useCase(
-          currentState: currentState,
-          action: action,
-          config: config,
-        );
+          final result = useCase(
+            currentState: currentState,
+            action: action,
+            config: config,
+          );
 
-        expect(result.input, equals('0,'));
-        expect(result.hasDecimal, isTrue);
-      });
+          expect(result.input, equals('0,'));
+          expect(result.hasDecimal, isTrue);
+        },
+      );
     });
 
     group('Backspace Processing', () {
@@ -272,10 +272,7 @@ void main() {
       });
 
       test('should update decimal flag when removing decimal point', () {
-        const currentState = KeypadState(
-          input: '123.',
-          hasDecimal: true,
-        );
+        const currentState = KeypadState(input: '123.', hasDecimal: true);
         const action = KeypadAction(type: KeypadActionType.backspace);
         const config = KeypadConfig();
 
@@ -290,10 +287,7 @@ void main() {
       });
 
       test('should update negative flag when removing negative sign', () {
-        const currentState = KeypadState(
-          input: '-1',
-          isNegative: true,
-        );
+        const currentState = KeypadState(input: '-1', isNegative: true);
         const action = KeypadAction(type: KeypadActionType.backspace);
         const config = KeypadConfig();
 
@@ -427,10 +421,7 @@ void main() {
       });
 
       test('should remove negative sign from negative number', () {
-        const currentState = KeypadState(
-          input: '-123',
-          isNegative: true,
-        );
+        const currentState = KeypadState(input: '-123', isNegative: true);
         const action = KeypadAction(type: KeypadActionType.toggleSign);
         const config = KeypadConfig(allowNegative: true);
 
@@ -479,10 +470,7 @@ void main() {
       });
 
       test('should toggle sign for decimal numbers', () {
-        const currentState = KeypadState(
-          input: '123.45',
-          hasDecimal: true,
-        );
+        const currentState = KeypadState(input: '123.45', hasDecimal: true);
         const action = KeypadAction(type: KeypadActionType.toggleSign);
         const config = KeypadConfig(allowNegative: true);
 
@@ -710,11 +698,7 @@ void main() {
         );
         const config = KeypadConfig();
 
-        useCase(
-          currentState: originalState,
-          action: action,
-          config: config,
-        );
+        useCase(currentState: originalState, action: action, config: config);
 
         // Original parameters should remain unchanged
         expect(originalState.input, equals('123'));

@@ -5,10 +5,7 @@ void main() {
   group('KeypadKey Value Object Tests', () {
     group('Constructor', () {
       test('should create key with required properties', () {
-        const key = KeypadKey(
-          value: '5',
-          type: KeypadKeyType.digit,
-        );
+        const key = KeypadKey(value: '5', type: KeypadKeyType.digit);
 
         expect(key.value, equals('5'));
         expect(key.type, equals(KeypadKeyType.digit));
@@ -31,10 +28,7 @@ void main() {
       });
 
       test('should default isEnabled to true', () {
-        const key = KeypadKey(
-          value: '0',
-          type: KeypadKeyType.digit,
-        );
+        const key = KeypadKey(value: '0', type: KeypadKeyType.digit);
 
         expect(key.isEnabled, isTrue);
       });
@@ -42,10 +36,7 @@ void main() {
 
     group('Display Property', () {
       test('should return value when displayText is null', () {
-        const key = KeypadKey(
-          value: '7',
-          type: KeypadKeyType.digit,
-        );
+        const key = KeypadKey(value: '7', type: KeypadKeyType.digit);
 
         expect(key.display, equals('7'));
       });
@@ -75,10 +66,7 @@ void main() {
     group('Key Types', () {
       test('should handle digit keys', () {
         for (int i = 0; i <= 9; i++) {
-          final key = KeypadKey(
-            value: i.toString(),
-            type: KeypadKeyType.digit,
-          );
+          final key = KeypadKey(value: i.toString(), type: KeypadKeyType.digit);
 
           expect(key.type, equals(KeypadKeyType.digit));
           expect(key.value, equals(i.toString()));
@@ -179,10 +167,7 @@ void main() {
       });
 
       test('should copy with value change', () {
-        const original = KeypadKey(
-          value: '5',
-          type: KeypadKeyType.digit,
-        );
+        const original = KeypadKey(value: '5', type: KeypadKeyType.digit);
         final copied = original.copyWith(value: '6');
 
         expect(copied.value, equals('6'));
@@ -192,10 +177,7 @@ void main() {
       });
 
       test('should copy with type change', () {
-        const original = KeypadKey(
-          value: 'action',
-          type: KeypadKeyType.custom,
-        );
+        const original = KeypadKey(value: 'action', type: KeypadKeyType.custom);
         final copied = original.copyWith(type: KeypadKeyType.clear);
 
         expect(copied.type, equals(KeypadKeyType.clear));
@@ -203,10 +185,7 @@ void main() {
       });
 
       test('should copy with displayText change', () {
-        const original = KeypadKey(
-          value: 'clear',
-          type: KeypadKeyType.clear,
-        );
+        const original = KeypadKey(value: 'clear', type: KeypadKeyType.clear);
         final copied = original.copyWith(displayText: 'CLEAR');
 
         expect(copied.displayText, equals('CLEAR'));
@@ -226,10 +205,7 @@ void main() {
       });
 
       test('should copy with multiple changes', () {
-        const original = KeypadKey(
-          value: '1',
-          type: KeypadKeyType.digit,
-        );
+        const original = KeypadKey(value: '1', type: KeypadKeyType.digit);
         final copied = original.copyWith(
           value: 'custom',
           type: KeypadKeyType.custom,
@@ -340,10 +316,7 @@ void main() {
       });
 
       test('should include all properties in toString', () {
-        const key = KeypadKey(
-          value: 'clear',
-          type: KeypadKeyType.clear,
-        );
+        const key = KeypadKey(value: 'clear', type: KeypadKeyType.clear);
 
         final result = key.toString();
 
@@ -356,8 +329,9 @@ void main() {
 
     group('Common Key Patterns', () {
       test('should create standard number pad keys', () {
-        final numberKeys = List.generate(10, (i) => 
-          KeypadKey(value: i.toString(), type: KeypadKeyType.digit)
+        final numberKeys = List.generate(
+          10,
+          (i) => KeypadKey(value: i.toString(), type: KeypadKeyType.digit),
         );
 
         expect(numberKeys.length, equals(10));
@@ -404,11 +378,7 @@ void main() {
 
       test('should create custom keys with special functionality', () {
         const customKeys = [
-          KeypadKey(
-            value: 'pi',
-            type: KeypadKeyType.custom,
-            displayText: 'π',
-          ),
+          KeypadKey(value: 'pi', type: KeypadKeyType.custom, displayText: 'π'),
           KeypadKey(
             value: 'euler',
             type: KeypadKeyType.custom,
@@ -438,7 +408,7 @@ void main() {
       test('should handle very long string values', () {
         final longValue = 'a' * 1000;
         final longDisplay = 'b' * 1000;
-        
+
         final key = KeypadKey(
           value: longValue,
           type: KeypadKeyType.custom,
@@ -509,10 +479,7 @@ void main() {
         ];
 
         for (final keyType in allKeyTypes) {
-          final key = KeypadKey(
-            value: 'test',
-            type: keyType,
-          );
+          final key = KeypadKey(value: 'test', type: keyType);
           expect(key.type, equals(keyType));
         }
       });

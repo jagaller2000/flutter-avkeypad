@@ -9,10 +9,7 @@ void main() {
 
     setUp(() {
       useCase = const GetSessionInfoUseCase();
-      testSession = KeypadSession(
-        id: 'test-session-123',
-        config: testConfig,
-      );
+      testSession = KeypadSession(id: 'test-session-123', config: testConfig);
     });
 
     group('Session ID Retrieval', () {
@@ -56,19 +53,17 @@ void main() {
       });
 
       test('should return negative input', () {
-        testSession.updateState(const KeypadState(
-          input: '-789',
-          isNegative: true,
-        ));
+        testSession.updateState(
+          const KeypadState(input: '-789', isNegative: true),
+        );
         final result = useCase.getCurrentInput(testSession);
         expect(result, equals('-789'));
       });
 
       test('should return decimal input', () {
-        testSession.updateState(const KeypadState(
-          input: '123.456',
-          hasDecimal: true,
-        ));
+        testSession.updateState(
+          const KeypadState(input: '123.456', hasDecimal: true),
+        );
         final result = useCase.getCurrentInput(testSession);
         expect(result, equals('123.456'));
       });
@@ -93,20 +88,17 @@ void main() {
       });
 
       test('should return correct numeric value for decimal', () {
-        testSession.updateState(const KeypadState(
-          input: '123.45',
-          isValid: true,
-        ));
+        testSession.updateState(
+          const KeypadState(input: '123.45', isValid: true),
+        );
         final result = useCase.getCurrentNumericValue(testSession);
         expect(result, equals(123.45));
       });
 
       test('should return correct numeric value for negative', () {
-        testSession.updateState(const KeypadState(
-          input: '-789.123',
-          isValid: true,
-          isNegative: true,
-        ));
+        testSession.updateState(
+          const KeypadState(input: '-789.123', isValid: true, isNegative: true),
+        );
         final result = useCase.getCurrentNumericValue(testSession);
         expect(result, equals(-789.123));
       });
@@ -118,37 +110,31 @@ void main() {
       });
 
       test('should return null for invalid input', () {
-        testSession.updateState(const KeypadState(
-          input: '123',
-          isValid: false,
-        ));
+        testSession.updateState(
+          const KeypadState(input: '123', isValid: false),
+        );
         final result = useCase.getCurrentNumericValue(testSession);
         expect(result, isNull);
       });
 
       test('should return null for non-numeric input', () {
-        testSession.updateState(const KeypadState(
-          input: 'abc',
-          isValid: true,
-        ));
+        testSession.updateState(const KeypadState(input: 'abc', isValid: true));
         final result = useCase.getCurrentNumericValue(testSession);
         expect(result, isNull);
       });
 
       test('should handle very large numbers', () {
-        testSession.updateState(const KeypadState(
-          input: '999999999999',
-          isValid: true,
-        ));
+        testSession.updateState(
+          const KeypadState(input: '999999999999', isValid: true),
+        );
         final result = useCase.getCurrentNumericValue(testSession);
         expect(result, equals(999999999999.0));
       });
 
       test('should handle very small numbers', () {
-        testSession.updateState(const KeypadState(
-          input: '0.000001',
-          isValid: true,
-        ));
+        testSession.updateState(
+          const KeypadState(input: '0.000001', isValid: true),
+        );
         final result = useCase.getCurrentNumericValue(testSession);
         expect(result, equals(0.000001));
       });
@@ -161,58 +147,47 @@ void main() {
       });
 
       test('should return true for valid non-empty input', () {
-        testSession.updateState(const KeypadState(
-          input: '123',
-          isValid: true,
-        ));
+        testSession.updateState(const KeypadState(input: '123', isValid: true));
         final result = useCase.isSessionComplete(testSession);
         expect(result, isTrue);
       });
 
       test('should return false for invalid input', () {
-        testSession.updateState(const KeypadState(
-          input: '123',
-          isValid: false,
-          error: MaxDigitsExceededError(2),
-        ));
+        testSession.updateState(
+          const KeypadState(
+            input: '123',
+            isValid: false,
+            error: MaxDigitsExceededError(2),
+          ),
+        );
         final result = useCase.isSessionComplete(testSession);
         expect(result, isFalse);
       });
 
       test('should return false for empty but valid input', () {
-        testSession.updateState(const KeypadState(
-          input: '',
-          isValid: true,
-        ));
+        testSession.updateState(const KeypadState(input: '', isValid: true));
         final result = useCase.isSessionComplete(testSession);
         expect(result, isFalse);
       });
 
       test('should return true for decimal input', () {
-        testSession.updateState(const KeypadState(
-          input: '123.45',
-          isValid: true,
-          hasDecimal: true,
-        ));
+        testSession.updateState(
+          const KeypadState(input: '123.45', isValid: true, hasDecimal: true),
+        );
         final result = useCase.isSessionComplete(testSession);
         expect(result, isTrue);
       });
 
       test('should return true for negative input', () {
-        testSession.updateState(const KeypadState(
-          input: '-123',
-          isValid: true,
-          isNegative: true,
-        ));
+        testSession.updateState(
+          const KeypadState(input: '-123', isValid: true, isNegative: true),
+        );
         final result = useCase.isSessionComplete(testSession);
         expect(result, isTrue);
       });
 
       test('should return true for zero input when valid', () {
-        testSession.updateState(const KeypadState(
-          input: '0',
-          isValid: true,
-        ));
+        testSession.updateState(const KeypadState(input: '0', isValid: true));
         final result = useCase.isSessionComplete(testSession);
         expect(result, isTrue);
       });
@@ -225,39 +200,37 @@ void main() {
       });
 
       test('should return true for valid input', () {
-        testSession.updateState(const KeypadState(
-          input: '123',
-          isValid: true,
-        ));
+        testSession.updateState(const KeypadState(input: '123', isValid: true));
         final result = useCase.hasValidInput(testSession);
         expect(result, isTrue);
       });
 
       test('should return false for invalid input', () {
-        testSession.updateState(const KeypadState(
-          input: '123456',
-          isValid: false,
-          error: MaxDigitsExceededError(5),
-        ));
+        testSession.updateState(
+          const KeypadState(
+            input: '123456',
+            isValid: false,
+            error: MaxDigitsExceededError(5),
+          ),
+        );
         final result = useCase.hasValidInput(testSession);
         expect(result, isFalse);
       });
 
       test('should return true for empty valid input', () {
-        testSession.updateState(const KeypadState(
-          input: '',
-          isValid: true,
-        ));
+        testSession.updateState(const KeypadState(input: '', isValid: true));
         final result = useCase.hasValidInput(testSession);
         expect(result, isTrue);
       });
 
       test('should return false when error present', () {
-        testSession.updateState(const KeypadState(
-          input: '0',
-          isValid: false,
-          error: ZeroNotAllowedError(),
-        ));
+        testSession.updateState(
+          const KeypadState(
+            input: '0',
+            isValid: false,
+            error: ZeroNotAllowedError(),
+          ),
+        );
         final result = useCase.hasValidInput(testSession);
         expect(result, isFalse);
       });
@@ -276,19 +249,17 @@ void main() {
       });
 
       test('should return negative display text', () {
-        testSession.updateState(const KeypadState(
-          input: '-789',
-          isNegative: true,
-        ));
+        testSession.updateState(
+          const KeypadState(input: '-789', isNegative: true),
+        );
         final result = useCase.getDisplayText(testSession);
         expect(result, equals('-789'));
       });
 
       test('should return decimal-only display text', () {
-        testSession.updateState(const KeypadState(
-          input: '.',
-          hasDecimal: true,
-        ));
+        testSession.updateState(
+          const KeypadState(input: '.', hasDecimal: true),
+        );
         final result = useCase.getDisplayText(testSession);
         expect(result, equals('.'));
       });
@@ -326,11 +297,13 @@ void main() {
         expect(useCase.isSessionComplete(testSession), isTrue);
         expect(useCase.hasValidInput(testSession), isTrue);
 
-        testSession.updateState(const KeypadState(
-          input: '123456',
-          isValid: false,
-          error: MaxDigitsExceededError(5),
-        ));
+        testSession.updateState(
+          const KeypadState(
+            input: '123456',
+            isValid: false,
+            error: MaxDigitsExceededError(5),
+          ),
+        );
         expect(useCase.isSessionComplete(testSession), isFalse);
         expect(useCase.hasValidInput(testSession), isFalse);
       });
@@ -354,7 +327,9 @@ void main() {
       });
 
       test('should be deterministic', () {
-        testSession.updateState(const KeypadState(input: '123.45', isValid: true));
+        testSession.updateState(
+          const KeypadState(input: '123.45', isValid: true),
+        );
 
         final id1 = useCase.getSessionId(testSession);
         final id2 = useCase.getSessionId(testSession);
@@ -376,8 +351,11 @@ void main() {
       test('should handle null values gracefully', () {
         // Test with session that has null numeric value
         testSession.updateState(const KeypadState(input: 'invalid'));
-        
-        expect(() => useCase.getCurrentNumericValue(testSession), returnsNormally);
+
+        expect(
+          () => useCase.getCurrentNumericValue(testSession),
+          returnsNormally,
+        );
         expect(useCase.getCurrentNumericValue(testSession), isNull);
       });
     });
@@ -393,17 +371,11 @@ void main() {
       });
 
       test('should handle special numeric formats', () {
-        const testCases = [
-          '0.0',
-          '000',
-          '.5',
-          '0.',
-          '-0',
-        ];
+        const testCases = ['0.0', '000', '.5', '0.', '-0'];
 
         for (final input in testCases) {
           testSession.updateState(KeypadState(input: input, isValid: true));
-          
+
           expect(useCase.getCurrentInput(testSession), equals(input));
           expect(useCase.getDisplayText(testSession), equals(input));
         }
@@ -411,7 +383,7 @@ void main() {
 
       test('should handle Unicode characters in input', () {
         testSession.updateState(const KeypadState(input: '123π'));
-        
+
         expect(useCase.getCurrentInput(testSession), equals('123π'));
         expect(useCase.getDisplayText(testSession), equals('123π'));
         expect(useCase.getCurrentNumericValue(testSession), isNull);
@@ -427,7 +399,10 @@ void main() {
 
         expect(useCase.getCurrentInput(sessionWithInitial), equals('999'));
         expect(useCase.isSessionComplete(sessionWithInitial), isTrue);
-        expect(useCase.getCurrentNumericValue(sessionWithInitial), equals(999.0));
+        expect(
+          useCase.getCurrentNumericValue(sessionWithInitial),
+          equals(999.0),
+        );
       });
     });
 

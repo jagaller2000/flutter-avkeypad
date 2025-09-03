@@ -331,15 +331,7 @@ void main() {
       });
 
       test('should handle special numeric formats', () {
-        const cases = [
-          '0.0',
-          '000',
-          '.0',
-          '0.',
-          '-0',
-          '1e10',
-          '1.23e-4',
-        ];
+        const cases = ['0.0', '000', '.0', '0.', '-0', '1e10', '1.23e-4'];
 
         for (final input in cases) {
           final state = KeypadState(input: input, isValid: true);
@@ -355,7 +347,7 @@ void main() {
 
       test('should maintain immutability', () {
         const state = KeypadState(input: '123');
-        
+
         // All properties are final, so this ensures compile-time immutability
         expect(state.input, equals('123'));
         // Cannot modify: state.input = '456'; // Would cause compile error

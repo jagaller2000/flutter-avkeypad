@@ -16,8 +16,11 @@ class ValidateKeypadInputUseCase {
     }
 
     // Normalize the input for parsing by replacing custom decimal separator with standard '.'
-    final normalizedInput = currentState.input.replaceAll(config.decimalSeparator, '.');
-    
+    final normalizedInput = currentState.input.replaceAll(
+      config.decimalSeparator,
+      '.',
+    );
+
     // Parse the numeric value
     final numericValue = double.tryParse(normalizedInput);
     if (numericValue == null) {
@@ -44,7 +47,8 @@ class ValidateKeypadInputUseCase {
     }
 
     // Check decimal places
-    if (currentState.hasDecimal && currentState.input.contains(config.decimalSeparator)) {
+    if (currentState.hasDecimal &&
+        currentState.input.contains(config.decimalSeparator)) {
       final parts = currentState.input.split(config.decimalSeparator);
       if (parts.length == 2) {
         final decimalPart = parts[1];
@@ -72,7 +76,10 @@ class ValidateKeypadInputUseCase {
     if (config.stepSize != null) {
       final stepSizeError = _validateStepSize(numericValue, config.stepSize!);
       if (stepSizeError != null) {
-        return currentState.copyWith(isValid: false, error: () => stepSizeError);
+        return currentState.copyWith(
+          isValid: false,
+          error: () => stepSizeError,
+        );
       }
     }
 

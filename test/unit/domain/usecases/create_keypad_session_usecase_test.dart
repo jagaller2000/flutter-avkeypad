@@ -13,10 +13,7 @@ void main() {
 
     group('Session Creation', () {
       test('should create session with required parameters', () {
-        final session = useCase(
-          sessionId: testSessionId,
-          config: testConfig,
-        );
+        final session = useCase(sessionId: testSessionId, config: testConfig);
 
         expect(session.id, equals(testSessionId));
         expect(session.config, equals(testConfig));
@@ -25,7 +22,7 @@ void main() {
 
       test('should create session with custom initial state', () {
         const initialState = KeypadState(input: '123', isValid: true);
-        
+
         final session = useCase(
           sessionId: testSessionId,
           config: testConfig,
@@ -38,10 +35,7 @@ void main() {
       });
 
       test('should use default empty state when no initial state provided', () {
-        final session = useCase(
-          sessionId: testSessionId,
-          config: testConfig,
-        );
+        final session = useCase(sessionId: testSessionId, config: testConfig);
 
         expect(session.currentState.input, isEmpty);
         expect(session.currentState.isValid, isTrue);
@@ -53,28 +47,16 @@ void main() {
 
     group('Session Identity', () {
       test('should create sessions with unique identifiers', () {
-        final session1 = useCase(
-          sessionId: 'session-1',
-          config: testConfig,
-        );
-        final session2 = useCase(
-          sessionId: 'session-2',
-          config: testConfig,
-        );
+        final session1 = useCase(sessionId: 'session-1', config: testConfig);
+        final session2 = useCase(sessionId: 'session-2', config: testConfig);
 
         expect(session1.id, isNot(equals(session2.id)));
         expect(session1, isNot(equals(session2)));
       });
 
       test('should create identical sessions with same parameters', () {
-        final session1 = useCase(
-          sessionId: testSessionId,
-          config: testConfig,
-        );
-        final session2 = useCase(
-          sessionId: testSessionId,
-          config: testConfig,
-        );
+        final session1 = useCase(sessionId: testSessionId, config: testConfig);
+        final session2 = useCase(sessionId: testSessionId, config: testConfig);
 
         expect(session1.id, equals(session2.id));
         expect(session1.config, equals(session2.config));
@@ -83,10 +65,7 @@ void main() {
       });
 
       test('should handle empty session IDs', () {
-        final session = useCase(
-          sessionId: '',
-          config: testConfig,
-        );
+        final session = useCase(sessionId: '', config: testConfig);
 
         expect(session.id, isEmpty);
         expect(session.config, equals(testConfig));
@@ -94,10 +73,7 @@ void main() {
 
       test('should handle very long session IDs', () {
         final longId = 'a' * 1000;
-        final session = useCase(
-          sessionId: longId,
-          config: testConfig,
-        );
+        final session = useCase(sessionId: longId, config: testConfig);
 
         expect(session.id, equals(longId));
         expect(session.id.length, equals(1000));
@@ -105,10 +81,7 @@ void main() {
 
       test('should handle special characters in session IDs', () {
         const specialId = 'session_123-abc!@#';
-        final session = useCase(
-          sessionId: specialId,
-          config: testConfig,
-        );
+        final session = useCase(sessionId: specialId, config: testConfig);
 
         expect(session.id, equals(specialId));
       });
@@ -124,10 +97,7 @@ void main() {
           stepSize: 0.5,
         );
 
-        final session = useCase(
-          sessionId: testSessionId,
-          config: customConfig,
-        );
+        final session = useCase(sessionId: testSessionId, config: customConfig);
 
         expect(session.config, equals(customConfig));
         expect(session.config.showDecimalKey, isFalse);
@@ -150,8 +120,16 @@ void main() {
 
       test('should handle complex config with custom keys', () {
         final customKeys = [
-          const KeypadKey(value: 'pi', type: KeypadKeyType.custom, displayText: 'π'),
-          const KeypadKey(value: 'euler', type: KeypadKeyType.custom, displayText: 'e'),
+          const KeypadKey(
+            value: 'pi',
+            type: KeypadKeyType.custom,
+            displayText: 'π',
+          ),
+          const KeypadKey(
+            value: 'euler',
+            type: KeypadKeyType.custom,
+            displayText: 'e',
+          ),
         ];
 
         final complexConfig = KeypadConfig(
@@ -249,14 +227,8 @@ void main() {
     group('Use Case Consistency', () {
       test('should be stateless and pure', () {
         // Multiple calls with same parameters should produce identical results
-        final session1 = useCase(
-          sessionId: testSessionId,
-          config: testConfig,
-        );
-        final session2 = useCase(
-          sessionId: testSessionId,
-          config: testConfig,
-        );
+        final session1 = useCase(sessionId: testSessionId, config: testConfig);
+        final session2 = useCase(sessionId: testSessionId, config: testConfig);
 
         expect(session1, equals(session2));
         expect(session1.id, equals(session2.id));
@@ -277,7 +249,7 @@ void main() {
         // Original objects should remain unchanged
         expect(originalConfig.maxDigits, equals(5));
         expect(originalState.input, equals('123'));
-        
+
         // Session should have copies/references, not the originals
         expect(session.config, equals(originalConfig));
         expect(session.currentState, equals(originalState));
@@ -285,21 +257,18 @@ void main() {
 
       test('should handle rapid consecutive calls', () {
         final sessions = <KeypadSession>[];
-        
+
         for (int i = 0; i < 100; i++) {
-          final session = useCase(
-            sessionId: 'session-$i',
-            config: testConfig,
-          );
+          final session = useCase(sessionId: 'session-$i', config: testConfig);
           sessions.add(session);
         }
 
         expect(sessions.length, equals(100));
-        
+
         // Each session should have unique ID
         final ids = sessions.map((s) => s.id).toSet();
         expect(ids.length, equals(100));
-        
+
         // All should have same config
         for (final session in sessions) {
           expect(session.config, equals(testConfig));
@@ -310,20 +279,14 @@ void main() {
     group('Edge Cases', () {
       test('should handle Unicode session IDs', () {
         const unicodeId = 'session-测试-123-π';
-        final session = useCase(
-          sessionId: unicodeId,
-          config: testConfig,
-        );
+        final session = useCase(sessionId: unicodeId, config: testConfig);
 
         expect(session.id, equals(unicodeId));
       });
 
       test('should handle newlines in session IDs', () {
         const multilineId = 'session\\nwith\\nnewlines';
-        final session = useCase(
-          sessionId: multilineId,
-          config: testConfig,
-        );
+        final session = useCase(sessionId: multilineId, config: testConfig);
 
         expect(session.id, equals(multilineId));
       });
@@ -394,7 +357,7 @@ void main() {
 
       test('should preserve state immutability in created session', () {
         const initialState = KeypadState(input: '123');
-        
+
         final session = useCase(
           sessionId: testSessionId,
           config: testConfig,

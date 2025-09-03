@@ -245,7 +245,7 @@ void main() {
       test('should handle very long string values', () {
         final longValue = 'a' * 1000;
         final longKey = 'b' * 1000;
-        
+
         final action = KeypadAction(
           type: KeypadActionType.custom,
           value: longValue,

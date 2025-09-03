@@ -7,7 +7,7 @@ void main() {
       test('should be abstract and provide common interface', () {
         // Create a concrete implementation for testing
         final error = MaxDigitsExceededError(5);
-        
+
         expect(error, isA<DomainError>());
         expect(error.message, isNotEmpty);
         expect(error.code, isNotNull);
@@ -15,7 +15,7 @@ void main() {
 
       test('should convert to string using message', () {
         final error = MaxDigitsExceededError(3);
-        
+
         expect(error.toString(), equals(error.message));
       });
     });
@@ -42,7 +42,7 @@ void main() {
 
       test('should have consistent properties', () {
         final error = MaxDigitsExceededError(7);
-        
+
         expect(error.maxDigits, equals(7));
         expect(error.code, equals('MAX_DIGITS_EXCEEDED'));
         expect(error.message, contains('7'));
@@ -146,8 +146,10 @@ void main() {
         const value = 1.3;
         final error = StepSizeViolationError(stepSize, value);
 
-        expect(error.message, 
-          equals('Value 1.3 is not a valid multiple of step size 0.5'));
+        expect(
+          error.message,
+          equals('Value 1.3 is not a valid multiple of step size 0.5'),
+        );
         expect(error.code, equals('STEP_SIZE_VIOLATION'));
         expect(error.stepSize, equals(stepSize));
         expect(error.value, equals(value));
@@ -160,17 +162,17 @@ void main() {
 
         expect(error1.message, contains('1.0'));
         expect(error1.message, contains('2.5'));
-        
+
         expect(error2.message, contains('0.1'));
         expect(error2.message, contains('0.33'));
-        
+
         expect(error3.message, contains('2.0'));
         expect(error3.message, contains('7.0'));
       });
 
       test('should maintain precision for small values', () {
         final error = StepSizeViolationError(0.001, 0.0033);
-        
+
         expect(error.stepSize, equals(0.001));
         expect(error.value, equals(0.0033));
         expect(error.message, contains('0.001'));
@@ -193,7 +195,7 @@ void main() {
         ];
 
         final codes = errors.map((e) => e.code).toSet();
-        
+
         expect(codes.length, equals(errors.length));
       });
     });
@@ -243,19 +245,19 @@ void main() {
     group('Error Immutability', () {
       test('should have immutable properties', () {
         final error = MaxDigitsExceededError(5);
-        
+
         // All properties should be final and immutable
         expect(error.maxDigits, equals(5));
         expect(error.message, equals('Maximum 5 digits allowed'));
         expect(error.code, equals('MAX_DIGITS_EXCEEDED'));
-        
+
         // Cannot modify: error.maxDigits = 10; // Would cause compile error
       });
 
       test('should handle const constructors', () {
         const error1 = ZeroNotAllowedError();
         const error2 = ZeroNotAllowedError();
-        
+
         expect(identical(error1, error2), isTrue);
       });
     });

@@ -25,7 +25,11 @@ void main() {
       test('should create config with custom values', () {
         final customKeys = [
           const KeypadKey(value: '7', type: KeypadKeyType.digit),
-          const KeypadKey(value: 'X', type: KeypadKeyType.custom, displayText: 'custom'),
+          const KeypadKey(
+            value: 'X',
+            type: KeypadKeyType.custom,
+            displayText: 'custom',
+          ),
         ];
 
         final config = KeypadConfig(
@@ -93,7 +97,7 @@ void main() {
         expect(copied.maxDigits, equals(10));
         expect(copied.allowNegative, isTrue);
         expect(copied.stepSize, equals(2.0));
-        
+
         // Unchanged properties should remain the same
         expect(copied.showClearKey, equals(original.showClearKey));
         expect(copied.maxDecimalPlaces, equals(original.maxDecimalPlaces));
@@ -112,10 +116,7 @@ void main() {
       });
 
       test('should copy with null values to reset optional properties', () {
-        const original = KeypadConfig(
-          maxDigits: 5,
-          stepSize: 2.0,
-        );
+        const original = KeypadConfig(maxDigits: 5, stepSize: 2.0);
         // Note: copyWith doesn't support setting nullable values to null,
         // this test verifies the current behavior
         final copied = original.copyWith();
@@ -233,10 +234,7 @@ void main() {
 
     group('Validation Logic Support', () {
       test('should support integer-only configuration', () {
-        const config = KeypadConfig(
-          showDecimalKey: false,
-          maxDecimalPlaces: 0,
-        );
+        const config = KeypadConfig(showDecimalKey: false, maxDecimalPlaces: 0);
 
         expect(config.showDecimalKey, isFalse);
         expect(config.maxDecimalPlaces, equals(0));
@@ -298,7 +296,7 @@ void main() {
       test('should handle empty customKeys list', () {
         const config = KeypadConfig(customKeys: []);
         final copied = config.copyWith(showConfirmKey: true);
-        
+
         expect(copied.customKeys, isEmpty);
         expect(copied.showConfirmKey, isTrue);
       });
@@ -306,7 +304,8 @@ void main() {
       test('should handle large custom keys list', () {
         final manyKeys = List.generate(
           100,
-          (i) => KeypadKey(value: (i % 10).toString(), type: KeypadKeyType.digit),
+          (i) =>
+              KeypadKey(value: (i % 10).toString(), type: KeypadKeyType.digit),
         );
         final config = KeypadConfig(customKeys: manyKeys);
 
@@ -369,8 +368,16 @@ void main() {
 
       test('should support scientific calculator configuration', () {
         final customKeys = [
-          const KeypadKey(value: 'π', type: KeypadKeyType.custom, displayText: 'pi'),
-          const KeypadKey(value: 'e', type: KeypadKeyType.custom, displayText: 'euler'),
+          const KeypadKey(
+            value: 'π',
+            type: KeypadKeyType.custom,
+            displayText: 'pi',
+          ),
+          const KeypadKey(
+            value: 'e',
+            type: KeypadKeyType.custom,
+            displayText: 'euler',
+          ),
         ];
 
         final config = KeypadConfig(
@@ -397,14 +404,21 @@ void main() {
       });
 
       test('should have immutable custom keys list', () {
-        final originalKeys = [const KeypadKey(value: '7', type: KeypadKeyType.digit)];
+        final originalKeys = [
+          const KeypadKey(value: '7', type: KeypadKeyType.digit),
+        ];
         final config = KeypadConfig(customKeys: List.from(originalKeys));
 
         // Modifying original list should not affect config
-        originalKeys.add(const KeypadKey(value: '8', type: KeypadKeyType.digit));
-        
+        originalKeys.add(
+          const KeypadKey(value: '8', type: KeypadKeyType.digit),
+        );
+
         expect(config.customKeys.length, equals(1));
-        expect(config.customKeys.first, equals(const KeypadKey(value: '7', type: KeypadKeyType.digit)));
+        expect(
+          config.customKeys.first,
+          equals(const KeypadKey(value: '7', type: KeypadKeyType.digit)),
+        );
       });
     });
   });

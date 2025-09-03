@@ -8,10 +8,7 @@ void main() {
     const testConfig = KeypadConfig();
 
     setUp(() {
-      session = KeypadSession(
-        id: testId,
-        config: testConfig,
-      );
+      session = KeypadSession(id: testId, config: testConfig);
     });
 
     group('Constructor', () {
@@ -70,9 +67,9 @@ void main() {
     group('State Management', () {
       test('should update current state', () {
         const newState = KeypadState(input: '456', isValid: true);
-        
+
         session.updateState(newState);
-        
+
         expect(session.currentState, equals(newState));
       });
 
@@ -93,9 +90,9 @@ void main() {
 
       test('should handle invalid state updates', () {
         const invalidState = KeypadState(input: 'invalid', isValid: false);
-        
+
         session.updateState(invalidState);
-        
+
         expect(session.currentState, equals(invalidState));
         expect(session.currentState.isValid, isFalse);
       });
@@ -109,21 +106,21 @@ void main() {
       test('should be incomplete when state is invalid', () {
         const invalidState = KeypadState(input: '123', isValid: false);
         session.updateState(invalidState);
-        
+
         expect(session.isComplete, isFalse);
       });
 
       test('should be incomplete when state is empty but valid', () {
         const emptyState = KeypadState(input: '', isValid: true);
         session.updateState(emptyState);
-        
+
         expect(session.isComplete, isFalse);
       });
 
       test('should be complete when state is valid and not empty', () {
         const validState = KeypadState(input: '123', isValid: true);
         session.updateState(validState);
-        
+
         expect(session.isComplete, isTrue);
       });
 
@@ -145,9 +142,9 @@ void main() {
       test('should have meaningful toString', () {
         const state = KeypadState(input: '123', isValid: true);
         session.updateState(state);
-        
+
         final result = session.toString();
-        
+
         expect(result, contains('KeypadSession'));
         expect(result, contains(testId));
         expect(result, contains('123'));
@@ -156,9 +153,9 @@ void main() {
       test('should include current state in string representation', () {
         const state = KeypadState(input: '456', isValid: false);
         session.updateState(state);
-        
+
         final result = session.toString();
-        
+
         expect(result, contains('456'));
       });
     });
@@ -182,7 +179,7 @@ void main() {
 
         const newState = KeypadState(input: '123', isValid: true);
         session.updateState(newState);
-        
+
         expect(session.currentState, equals(newState));
         expect(session.currentState, isNot(equals(originalState)));
       });
@@ -192,21 +189,21 @@ void main() {
       test('should handle session with very long ID', () {
         final longId = 'a' * 1000;
         final longIdSession = KeypadSession(id: longId, config: testConfig);
-        
+
         expect(longIdSession.id, equals(longId));
         expect(longIdSession.id.length, equals(1000));
       });
 
       test('should handle session with empty string ID', () {
         final emptyIdSession = KeypadSession(id: '', config: testConfig);
-        
+
         expect(emptyIdSession.id, isEmpty);
       });
 
       test('should handle session with special characters in ID', () {
         const specialId = 'test-id_123!@#\$%^&*()';
         final specialSession = KeypadSession(id: specialId, config: testConfig);
-        
+
         expect(specialSession.id, equals(specialId));
       });
 

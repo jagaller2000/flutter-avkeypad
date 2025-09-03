@@ -17,7 +17,7 @@ class ProcessKeypadInputUseCase {
     required KeypadConfig config,
   }) {
     KeypadState newState;
-    
+
     switch (action.type) {
       case KeypadActionType.digitInput:
         newState = _handleDigitInput(currentState, action.value!, config);
@@ -47,7 +47,7 @@ class ProcessKeypadInputUseCase {
     }
 
     // For digit input that would violate constraints, return error state without changing input
-    if (action.type == KeypadActionType.digitInput && 
+    if (action.type == KeypadActionType.digitInput &&
         identical(newState, currentState)) {
       // Check if this was due to max digits constraint
       if (config.maxDigits != null) {
@@ -99,10 +99,7 @@ class ProcessKeypadInputUseCase {
         ? '0${config.decimalSeparator}'
         : currentState.input + config.decimalSeparator;
 
-    return currentState.copyWith(
-      input: newInput,
-      hasDecimal: true,
-    );
+    return currentState.copyWith(input: newInput, hasDecimal: true);
   }
 
   KeypadState _handleBackspace(KeypadState currentState, KeypadConfig config) {

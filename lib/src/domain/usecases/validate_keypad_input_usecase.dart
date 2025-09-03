@@ -110,19 +110,4 @@ class ValidateKeypadInputUseCase {
 
     return null;
   }
-
-  /// Check if a specific action would be valid without applying it
-  bool isActionValid({
-    required KeypadState currentState,
-    required String actionValue,
-    required KeypadConfig config,
-  }) {
-    // Simulate the action
-    final simulatedInput = currentState.input + actionValue;
-    final simulatedState = currentState.copyWith(input: simulatedInput);
-
-    final validatedState = call(currentState: simulatedState, config: config);
-
-    return validatedState.isValid;
-  }
 }

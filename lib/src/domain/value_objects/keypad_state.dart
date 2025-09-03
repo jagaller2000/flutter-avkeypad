@@ -46,14 +46,14 @@ class KeypadState {
     bool? isValid,
     bool? hasDecimal,
     bool? isNegative,
-    DomainError? error,
+    DomainError? Function()? error,
   }) {
     return KeypadState(
       input: input ?? this.input,
       isValid: isValid ?? this.isValid,
       hasDecimal: hasDecimal ?? this.hasDecimal,
       isNegative: isNegative ?? this.isNegative,
-      error: error ?? this.error,
+      error: error != null ? error() : this.error,
     );
   }
 

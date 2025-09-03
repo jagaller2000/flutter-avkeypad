@@ -2,10 +2,13 @@ import '../errors/domain_errors.dart';
 import '../value_objects/keypad_action.dart';
 import '../value_objects/keypad_config.dart';
 import '../value_objects/keypad_state.dart';
+import 'validate_keypad_input_usecase.dart';
 
 /// Use case for processing keypad input and managing state
 class ProcessKeypadInputUseCase {
   const ProcessKeypadInputUseCase();
+
+  static const _validator = ValidateKeypadInputUseCase();
 
   /// Process a keypad action and return the new state
   KeypadState call({
@@ -13,21 +16,28 @@ class ProcessKeypadInputUseCase {
     required KeypadAction action,
     required KeypadConfig config,
   }) {
+    KeypadState newState;
+    
     switch (action.type) {
       case KeypadActionType.digitInput:
-        return _handleDigitInput(currentState, action.value!, config);
+        newState = _handleDigitInput(currentState, action.value!, config);
+        break;
 
       case KeypadActionType.decimalInput:
-        return _handleDecimalInput(currentState, config);
+        newState = _handleDecimalInput(currentState, config);
+        break;
 
       case KeypadActionType.backspace:
-        return _handleBackspace(currentState);
+        newState = _handleBackspace(currentState, config);
+        break;
 
       case KeypadActionType.clear:
-        return _handleClear();
+        newState = _handleClear();
+        break;
 
       case KeypadActionType.toggleSign:
-        return _handleToggleSign(currentState, config);
+        newState = _handleToggleSign(currentState, config);
+        break;
 
       case KeypadActionType.confirm:
       case KeypadActionType.cancel:
@@ -35,6 +45,9 @@ class ProcessKeypadInputUseCase {
         // These actions don't modify the state, they're handled by the UI layer
         return currentState;
     }
+
+    // Apply validation to the new state
+    return _validator(currentState: newState, config: config);
   }
 
   KeypadState _handleDigitInput(
@@ -48,14 +61,15 @@ class ProcessKeypadInputUseCase {
     if (config.maxDigits != null) {
       final digitsOnly = newInput.replaceAll(RegExp(r'[^\d]'), '');
       if (digitsOnly.length > config.maxDigits!) {
+        // Return current state with error indicating constraint violation
         return currentState.copyWith(
           isValid: false,
-          error: MaxDigitsExceededError(config.maxDigits!),
+          error: () => MaxDigitsExceededError(config.maxDigits!),
         );
       }
     }
 
-    return currentState.copyWith(input: newInput, isValid: true, error: null);
+    return currentState.copyWith(input: newInput);
   }
 
   KeypadState _handleDecimalInput(
@@ -75,12 +89,10 @@ class ProcessKeypadInputUseCase {
     return currentState.copyWith(
       input: newInput,
       hasDecimal: true,
-      isValid: true,
-      error: null,
     );
   }
 
-  KeypadState _handleBackspace(KeypadState currentState) {
+  KeypadState _handleBackspace(KeypadState currentState, KeypadConfig config) {
     if (currentState.input.isEmpty) {
       return currentState;
     }
@@ -89,15 +101,13 @@ class ProcessKeypadInputUseCase {
       0,
       currentState.input.length - 1,
     );
-    final hasDecimal = newInput.contains('.');
+    final hasDecimal = newInput.contains(config.decimalSeparator);
     final isNegative = newInput.startsWith('-');
 
     return currentState.copyWith(
       input: newInput,
       hasDecimal: hasDecimal,
       isNegative: isNegative,
-      isValid: true,
-      error: null,
     );
   }
 
@@ -123,8 +133,6 @@ class ProcessKeypadInputUseCase {
     return currentState.copyWith(
       input: newInput,
       isNegative: !currentState.isNegative,
-      isValid: true,
-      error: null,
     );
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../domain/entities/keypad_session.dart';
 import '../../domain/usecases/generate_keypad_layout_usecase.dart';
 import '../../domain/value_objects/keypad_config.dart';
 import '../../domain/value_objects/keypad_key.dart';
+import '../../domain/value_objects/keypad_state.dart';
 import '../../infrastructure/adapters/default_keypad_adapter.dart';
 import '../constants/design_constants.dart';
 import 'keypad_display_widget.dart';
@@ -12,7 +12,7 @@ import 'keypad_layout_widget.dart';
 class KeypadContainerWidget extends StatelessWidget {
   const KeypadContainerWidget({
     super.key,
-    required this.session,
+    required this.state,
     required this.config,
     required this.onKeyPressed,
     this.padding,
@@ -20,8 +20,8 @@ class KeypadContainerWidget extends StatelessWidget {
     this.displayMargin,
   });
 
-  /// The keypad session managing state
-  final KeypadSession session;
+  /// The current keypad state
+  final KeypadState state;
 
   /// Configuration for the keypad
   final KeypadConfig config;
@@ -79,14 +79,14 @@ class KeypadContainerWidget extends StatelessWidget {
           // Display area
           Container(
             margin: displayMargin ?? defaultDisplayMargin,
-            child: KeypadDisplayWidget(state: session.currentState),
+            child: KeypadDisplayWidget(state: state),
           ),
 
           // Keypad layout
           KeypadLayoutWidget(
             layout: layout,
             onKeyPressed: onKeyPressed,
-            state: session.currentState,
+            state: state,
             config: config,
           ),
         ],

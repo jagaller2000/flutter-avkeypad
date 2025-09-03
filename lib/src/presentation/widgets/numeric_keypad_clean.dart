@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import '../../domain/entities/keypad_session.dart';
+import '../../domain/usecases/create_keypad_session_usecase.dart';
+import '../../domain/usecases/get_session_info_usecase.dart';
 import '../../domain/usecases/process_keypad_input_usecase.dart';
+import '../../domain/usecases/update_keypad_session_usecase.dart';
 import '../../domain/usecases/validate_keypad_input_usecase.dart';
 import '../../domain/value_objects/keypad_action.dart';
 import '../../domain/value_objects/keypad_config.dart';
@@ -36,6 +39,9 @@ class NumericKeypad extends StatefulWidget {
 
 class _NumericKeypadState extends State<NumericKeypad> {
   late final KeypadSession _session;
+  late final CreateKeypadSessionUseCase _createSessionUseCase;
+  late final UpdateKeypadSessionUseCase _updateSessionUseCase;
+  late final GetSessionInfoUseCase _getSessionInfoUseCase;
   late final ProcessKeypadInputUseCase _inputUseCase;
   late final ValidateKeypadInputUseCase _validateUseCase;
 
@@ -44,12 +50,18 @@ class _NumericKeypadState extends State<NumericKeypad> {
     super.initState();
 
     // Initialize use cases
+    _createSessionUseCase = const CreateKeypadSessionUseCase();
+    _updateSessionUseCase = const UpdateKeypadSessionUseCase();
+    _getSessionInfoUseCase = const GetSessionInfoUseCase();
     _inputUseCase = const ProcessKeypadInputUseCase();
     _validateUseCase = const ValidateKeypadInputUseCase();
 
-    // Initialize session with UUID v4
+    // Create session through use case
     const uuid = Uuid();
-    _session = KeypadSession(id: uuid.v4(), config: widget.config);
+    _session = _createSessionUseCase(
+      sessionId: uuid.v4(),
+      config: widget.config,
+    );
   }
 
   void _handleKeyPress(KeypadKey key) {
@@ -88,7 +100,9 @@ class _NumericKeypadState extends State<NumericKeypad> {
 
   void _processAction(KeypadAction action) {
     if (action.type == KeypadActionType.confirm) {
-      widget.onConfirm?.call(_session.currentState.numericValue);
+      widget.onConfirm?.call(
+        _getSessionInfoUseCase.getCurrentNumericValue(_session),
+      );
       return;
     }
 
@@ -110,19 +124,21 @@ class _NumericKeypadState extends State<NumericKeypad> {
       config: widget.config,
     );
 
-    // Update session
+    // Update session through use case
     setState(() {
-      _session.updateState(validatedState);
+      _updateSessionUseCase(session: _session, newState: validatedState);
     });
 
     // Notify parent of value change
-    widget.onValueChanged?.call(_session.currentState.input);
+    widget.onValueChanged?.call(
+      _getSessionInfoUseCase.getCurrentInput(_session),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return KeypadContainerWidget(
-      session: _session,
+      state: _session.currentState,
       config: widget.config,
       onKeyPressed: _handleKeyPress,
     );

@@ -46,6 +46,22 @@ class ProcessKeypadInputUseCase {
         return currentState;
     }
 
+    // For digit input that would violate constraints, return error state without changing input
+    if (action.type == KeypadActionType.digitInput && 
+        identical(newState, currentState)) {
+      // Check if this was due to max digits constraint
+      if (config.maxDigits != null) {
+        final testInput = currentState.input + action.value!;
+        final digitsOnly = testInput.replaceAll(RegExp(r'[^\d]'), '');
+        if (digitsOnly.length > config.maxDigits!) {
+          return currentState.copyWith(
+            isValid: false,
+            error: () => MaxDigitsExceededError(config.maxDigits!),
+          );
+        }
+      }
+    }
+
     // Apply validation to the new state
     return _validator(currentState: newState, config: config);
   }
@@ -57,15 +73,12 @@ class ProcessKeypadInputUseCase {
   ) {
     final newInput = currentState.input + digit;
 
-    // Check max digits constraint
+    // Check max digits constraint - don't allow addition if it would exceed
     if (config.maxDigits != null) {
       final digitsOnly = newInput.replaceAll(RegExp(r'[^\d]'), '');
       if (digitsOnly.length > config.maxDigits!) {
-        // Return current state with error indicating constraint violation
-        return currentState.copyWith(
-          isValid: false,
-          error: () => MaxDigitsExceededError(config.maxDigits!),
-        );
+        // Return unchanged state (will be handled by main call method)
+        return currentState;
       }
     }
 

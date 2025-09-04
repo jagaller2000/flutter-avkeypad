@@ -39,7 +39,10 @@ void main() {
       final layout = adapter.getKeypadLayout(config);
 
       // Assert
-      expect(layout.length, equals(5)); // 3 digit rows + 1 bottom row + 1 action buttons row
+      expect(
+        layout.length,
+        equals(5),
+      ); // 3 digit rows + 1 bottom row + 1 action buttons row
 
       // First row: 1, 2, 3
       expect(layout[0].length, equals(3));
@@ -233,19 +236,22 @@ void main() {
       final layout = adapter.getKeypadLayout(config);
 
       // Assert
-      expect(layout.length, equals(5)); // 3 digit rows + 1 bottom row + 1 action row
-      
+      expect(
+        layout.length,
+        equals(5),
+      ); // 3 digit rows + 1 bottom row + 1 action row
+
       // Last row should contain action buttons
       final actionRow = layout.last;
       expect(actionRow.length, equals(2));
-      
+
       // Should have confirm button
       final confirmButton = actionRow.firstWhere(
         (key) => key.type == KeypadKeyType.confirm,
       );
       expect(confirmButton.value, equals('confirm'));
       expect(confirmButton.displayText, equals('✓'));
-      
+
       // Should have backspace button
       final backspaceButton = actionRow.firstWhere(
         (key) => key.type == KeypadKeyType.backspace,
@@ -254,29 +260,35 @@ void main() {
       expect(backspaceButton.displayText, equals('⌫'));
     });
 
-    test('getKeypadLayout includes only confirm button when backspace disabled', () {
-      // Arrange
-      final config = KeypadConfig(
-        showDecimalKey: true,
-        showConfirmKey: true,
-        showBackspaceKey: false,
-      );
+    test(
+      'getKeypadLayout includes only confirm button when backspace disabled',
+      () {
+        // Arrange
+        final config = KeypadConfig(
+          showDecimalKey: true,
+          showConfirmKey: true,
+          showBackspaceKey: false,
+        );
 
-      // Act
-      final layout = adapter.getKeypadLayout(config);
+        // Act
+        final layout = adapter.getKeypadLayout(config);
 
-      // Assert
-      expect(layout.length, equals(5)); // 3 digit rows + 1 bottom row + 1 action row
-      
-      // Last row should contain only confirm button
-      final actionRow = layout.last;
-      expect(actionRow.length, equals(1));
-      
-      // Should have confirm button
-      final confirmButton = actionRow.first;
-      expect(confirmButton.type, equals(KeypadKeyType.confirm));
-      expect(confirmButton.value, equals('confirm'));
-      expect(confirmButton.displayText, equals('✓'));
-    });
+        // Assert
+        expect(
+          layout.length,
+          equals(5),
+        ); // 3 digit rows + 1 bottom row + 1 action row
+
+        // Last row should contain only confirm button
+        final actionRow = layout.last;
+        expect(actionRow.length, equals(1));
+
+        // Should have confirm button
+        final confirmButton = actionRow.first;
+        expect(confirmButton.type, equals(KeypadKeyType.confirm));
+        expect(confirmButton.value, equals('confirm'));
+        expect(confirmButton.displayText, equals('✓'));
+      },
+    );
   });
 }

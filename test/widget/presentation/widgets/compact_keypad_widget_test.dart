@@ -120,7 +120,10 @@ void main() {
         expect(find.text('7'), findsOneWidget);
         expect(find.text('8'), findsOneWidget);
         expect(find.text('9'), findsOneWidget);
-        expect(find.text('0'), findsNWidgets(2)); // One in display, one as button
+        expect(
+          find.text('0'),
+          findsNWidgets(2),
+        ); // One in display, one as button
       });
     });
 
@@ -436,7 +439,10 @@ void main() {
         expect(find.text('4'), findsOneWidget);
         expect(find.text('5'), findsOneWidget);
         expect(find.text('6'), findsOneWidget);
-        expect(find.text('0'), findsNWidgets(2)); // One in display, one as button
+        expect(
+          find.text('0'),
+          findsNWidgets(2),
+        ); // One in display, one as button
         expect(find.text('.'), findsOneWidget);
         expect(find.text('✓'), findsOneWidget);
         expect(find.text('⌫'), findsOneWidget);
@@ -473,7 +479,10 @@ void main() {
         expect(find.text('1'), findsOneWidget);
         expect(find.text('2'), findsOneWidget);
         expect(find.text('C'), findsOneWidget);
-        expect(find.text('0'), findsNWidgets(2)); // One in display, one as button
+        expect(
+          find.text('0'),
+          findsNWidgets(2),
+        ); // One in display, one as button
         expect(find.text('.'), findsOneWidget);
       });
     });

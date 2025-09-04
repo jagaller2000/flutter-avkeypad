@@ -111,6 +111,36 @@ void main() {
         expect(error.message, equals('Invalid number format'));
         expect(error.code, equals('INVALID_NUMBER_FORMAT'));
       });
+
+      test('should be consistent across instances', () {
+        const error1 = InvalidNumberFormatError();
+        const error2 = InvalidNumberFormatError();
+
+        expect(error1.message, equals(error2.message));
+        expect(error1.code, equals(error2.code));
+      });
+
+      test('should be a DomainError', () {
+        const error = InvalidNumberFormatError();
+
+        expect(error, isA<DomainError>());
+      });
+
+      test('should have non-null properties', () {
+        const error = InvalidNumberFormatError();
+
+        expect(error.message, isNotNull);
+        expect(error.message, isNotEmpty);
+        expect(error.code, isNotNull);
+        expect(error.code, isNotEmpty);
+      });
+
+      test('toString should return message', () {
+        const error = InvalidNumberFormatError();
+
+        expect(error.toString(), equals(error.message));
+        expect(error.toString(), equals('Invalid number format'));
+      });
     });
 
     group('DecimalNotAllowedError', () {
@@ -119,6 +149,36 @@ void main() {
 
         expect(error.message, equals('Decimal point is not allowed'));
         expect(error.code, equals('DECIMAL_NOT_ALLOWED'));
+      });
+
+      test('should be consistent across instances', () {
+        const error1 = DecimalNotAllowedError();
+        const error2 = DecimalNotAllowedError();
+
+        expect(error1.message, equals(error2.message));
+        expect(error1.code, equals(error2.code));
+      });
+
+      test('should be a DomainError', () {
+        const error = DecimalNotAllowedError();
+
+        expect(error, isA<DomainError>());
+      });
+
+      test('should have non-null properties', () {
+        const error = DecimalNotAllowedError();
+
+        expect(error.message, isNotNull);
+        expect(error.message, isNotEmpty);
+        expect(error.code, isNotNull);
+        expect(error.code, isNotEmpty);
+      });
+
+      test('toString should return message', () {
+        const error = DecimalNotAllowedError();
+
+        expect(error.toString(), equals(error.message));
+        expect(error.toString(), equals('Decimal point is not allowed'));
       });
     });
 
@@ -129,6 +189,36 @@ void main() {
         expect(error.message, equals('Sign toggle is not allowed'));
         expect(error.code, equals('SIGN_TOGGLE_NOT_ALLOWED'));
       });
+
+      test('should be consistent across instances', () {
+        const error1 = SignToggleNotAllowedError();
+        const error2 = SignToggleNotAllowedError();
+
+        expect(error1.message, equals(error2.message));
+        expect(error1.code, equals(error2.code));
+      });
+
+      test('should be a DomainError', () {
+        const error = SignToggleNotAllowedError();
+
+        expect(error, isA<DomainError>());
+      });
+
+      test('should have non-null properties', () {
+        const error = SignToggleNotAllowedError();
+
+        expect(error.message, isNotNull);
+        expect(error.message, isNotEmpty);
+        expect(error.code, isNotNull);
+        expect(error.code, isNotEmpty);
+      });
+
+      test('toString should return message', () {
+        const error = SignToggleNotAllowedError();
+
+        expect(error.toString(), equals(error.message));
+        expect(error.toString(), equals('Sign toggle is not allowed'));
+      });
     });
 
     group('DecimalAlreadyExistsError', () {
@@ -137,6 +227,36 @@ void main() {
 
         expect(error.message, equals('Decimal point already exists'));
         expect(error.code, equals('DECIMAL_ALREADY_EXISTS'));
+      });
+
+      test('should be consistent across instances', () {
+        const error1 = DecimalAlreadyExistsError();
+        const error2 = DecimalAlreadyExistsError();
+
+        expect(error1.message, equals(error2.message));
+        expect(error1.code, equals(error2.code));
+      });
+
+      test('should be a DomainError', () {
+        const error = DecimalAlreadyExistsError();
+
+        expect(error, isA<DomainError>());
+      });
+
+      test('should have non-null properties', () {
+        const error = DecimalAlreadyExistsError();
+
+        expect(error.message, isNotNull);
+        expect(error.message, isNotEmpty);
+        expect(error.code, isNotNull);
+        expect(error.code, isNotEmpty);
+      });
+
+      test('toString should return message', () {
+        const error = DecimalAlreadyExistsError();
+
+        expect(error.toString(), equals(error.message));
+        expect(error.toString(), equals('Decimal point already exists'));
       });
     });
 

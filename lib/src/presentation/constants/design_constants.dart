@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 /// This file centralizes all magic numbers used for sizes, paddings, margins,
 /// and other design values throughout the keypad widgets.
 class KeypadDesignConstants {
-  KeypadDesignConstants._(); // Private constructor to prevent instantiation
+  @visibleForTesting
+  KeypadDesignConstants(); // Constructor marked as visible for testing only
 
   // =============================================================================
   // KEY SIZING AND SPACING

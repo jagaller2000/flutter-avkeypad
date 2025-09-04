@@ -15,10 +15,7 @@ void main() {
       expect(session.id, 'test-session-123');
       expect(session.config, config);
       expect(session.currentState.input, '');
-      expect(
-        session.currentState.isValid,
-        true,
-      ); // Default KeypadState is valid
+      expect(session.currentState.isValid, true);
     });
 
     test('Session updates should go through use case', () {
@@ -65,9 +62,6 @@ void main() {
     });
 
     test('Presentation layer should not directly access entity properties', () {
-      // This test verifies our architectural constraint
-      // If someone adds direct entity access, it would show up here
-
       const createSessionUseCase = CreateKeypadSessionUseCase();
       const getSessionInfoUseCase = GetSessionInfoUseCase();
 
@@ -76,22 +70,13 @@ void main() {
         config: const KeypadConfig(),
       );
 
-      // These are the ONLY acceptable ways to access session information
-      // from the presentation layer:
-
-      // ✅ Through use case
       final sessionId = getSessionInfoUseCase.getSessionId(session);
       final currentInput = getSessionInfoUseCase.getCurrentInput(session);
       final isComplete = getSessionInfoUseCase.isSessionComplete(session);
 
       expect(sessionId, 'test-session-789');
       expect(currentInput, '');
-      expect(isComplete, false); // Empty input means incomplete
-
-      // ❌ Direct entity access is forbidden in presentation layer:
-      // session.id (should not be used)
-      // session.currentState.input (should not be used)
-      // session.isComplete (should not be used)
+      expect(isComplete, false);
     });
   });
 }

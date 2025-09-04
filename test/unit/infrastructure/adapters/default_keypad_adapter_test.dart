@@ -29,14 +29,17 @@ void main() {
         expect(config.customKeys, isEmpty);
       });
 
-      test('should return the same default configuration on multiple calls', () {
-        // Act
-        final config1 = adapter.getDefaultConfig();
-        final config2 = adapter.getDefaultConfig();
+      test(
+        'should return the same default configuration on multiple calls',
+        () {
+          // Act
+          final config1 = adapter.getDefaultConfig();
+          final config2 = adapter.getDefaultConfig();
 
-        // Assert
-        expect(config1, equals(config2));
-      });
+          // Assert
+          expect(config1, equals(config2));
+        },
+      );
     });
 
     group('getKeypadLayout', () {
@@ -49,42 +52,80 @@ void main() {
 
         // Assert
         expect(layout.length, greaterThanOrEqualTo(4)); // At least 4 rows
-        
+
         // First row: 1, 2, 3
         expect(layout[0].length, 3);
-        expect(layout[0][0], const KeypadKey(value: '1', type: KeypadKeyType.digit));
-        expect(layout[0][1], const KeypadKey(value: '2', type: KeypadKeyType.digit));
-        expect(layout[0][2], const KeypadKey(value: '3', type: KeypadKeyType.digit));
+        expect(
+          layout[0][0],
+          const KeypadKey(value: '1', type: KeypadKeyType.digit),
+        );
+        expect(
+          layout[0][1],
+          const KeypadKey(value: '2', type: KeypadKeyType.digit),
+        );
+        expect(
+          layout[0][2],
+          const KeypadKey(value: '3', type: KeypadKeyType.digit),
+        );
 
         // Second row: 4, 5, 6
         expect(layout[1].length, 3);
-        expect(layout[1][0], const KeypadKey(value: '4', type: KeypadKeyType.digit));
-        expect(layout[1][1], const KeypadKey(value: '5', type: KeypadKeyType.digit));
-        expect(layout[1][2], const KeypadKey(value: '6', type: KeypadKeyType.digit));
+        expect(
+          layout[1][0],
+          const KeypadKey(value: '4', type: KeypadKeyType.digit),
+        );
+        expect(
+          layout[1][1],
+          const KeypadKey(value: '5', type: KeypadKeyType.digit),
+        );
+        expect(
+          layout[1][2],
+          const KeypadKey(value: '6', type: KeypadKeyType.digit),
+        );
 
         // Third row: 7, 8, 9
         expect(layout[2].length, 3);
-        expect(layout[2][0], const KeypadKey(value: '7', type: KeypadKeyType.digit));
-        expect(layout[2][1], const KeypadKey(value: '8', type: KeypadKeyType.digit));
-        expect(layout[2][2], const KeypadKey(value: '9', type: KeypadKeyType.digit));
+        expect(
+          layout[2][0],
+          const KeypadKey(value: '7', type: KeypadKeyType.digit),
+        );
+        expect(
+          layout[2][1],
+          const KeypadKey(value: '8', type: KeypadKeyType.digit),
+        );
+        expect(
+          layout[2][2],
+          const KeypadKey(value: '9', type: KeypadKeyType.digit),
+        );
       });
 
-      test('should include zero and decimal key in bottom row with default config', () {
-        // Arrange
-        final config = adapter.getDefaultConfig();
+      test(
+        'should include zero and decimal key in bottom row with default config',
+        () {
+          // Arrange
+          final config = adapter.getDefaultConfig();
 
-        // Act
-        final layout = adapter.getKeypadLayout(config);
+          // Act
+          final layout = adapter.getKeypadLayout(config);
 
-        // Assert
-        final bottomRow = layout[3]; // Fourth row (bottom row with digits)
-        expect(bottomRow, contains(const KeypadKey(value: '0', type: KeypadKeyType.digit)));
-        expect(bottomRow, contains(KeypadKey(
-          value: config.decimalSeparator,
-          type: KeypadKeyType.decimal,
-          displayText: config.decimalSeparator,
-        )));
-      });
+          // Assert
+          final bottomRow = layout[3]; // Fourth row (bottom row with digits)
+          expect(
+            bottomRow,
+            contains(const KeypadKey(value: '0', type: KeypadKeyType.digit)),
+          );
+          expect(
+            bottomRow,
+            contains(
+              KeypadKey(
+                value: config.decimalSeparator,
+                type: KeypadKeyType.decimal,
+                displayText: config.decimalSeparator,
+              ),
+            ),
+          );
+        },
+      );
 
       test('should include action keys when enabled in config', () {
         // Arrange
@@ -100,28 +141,48 @@ void main() {
 
         // Assert
         expect(layout.length, 5); // 3 digit rows + 1 bottom row + 1 action row
-        
+
         final actionRow = layout.last;
-        expect(actionRow, contains(const KeypadKey(
-          value: 'backspace',
-          type: KeypadKeyType.backspace,
-          displayText: '⌫',
-        )));
-        expect(actionRow, contains(const KeypadKey(
-          value: 'clear',
-          type: KeypadKeyType.clear,
-          displayText: 'C',
-        )));
-        expect(actionRow, contains(const KeypadKey(
-          value: 'confirm',
-          type: KeypadKeyType.confirm,
-          displayText: '✓',
-        )));
-        expect(actionRow, contains(const KeypadKey(
-          value: 'cancel',
-          type: KeypadKeyType.cancel,
-          displayText: '✕',
-        )));
+        expect(
+          actionRow,
+          contains(
+            const KeypadKey(
+              value: 'backspace',
+              type: KeypadKeyType.backspace,
+              displayText: '⌫',
+            ),
+          ),
+        );
+        expect(
+          actionRow,
+          contains(
+            const KeypadKey(
+              value: 'clear',
+              type: KeypadKeyType.clear,
+              displayText: 'C',
+            ),
+          ),
+        );
+        expect(
+          actionRow,
+          contains(
+            const KeypadKey(
+              value: 'confirm',
+              type: KeypadKeyType.confirm,
+              displayText: '✓',
+            ),
+          ),
+        );
+        expect(
+          actionRow,
+          contains(
+            const KeypadKey(
+              value: 'cancel',
+              type: KeypadKeyType.cancel,
+              displayText: '✕',
+            ),
+          ),
+        );
       });
 
       test('should include sign key when enabled in config', () {
@@ -133,11 +194,16 @@ void main() {
 
         // Assert
         final bottomRow = layout[3];
-        expect(bottomRow, contains(const KeypadKey(
-          value: '±',
-          type: KeypadKeyType.sign,
-          displayText: '±',
-        )));
+        expect(
+          bottomRow,
+          contains(
+            const KeypadKey(
+              value: '±',
+              type: KeypadKeyType.sign,
+              displayText: '±',
+            ),
+          ),
+        );
       });
 
       test('should exclude decimal key when disabled in config', () {
@@ -149,7 +215,10 @@ void main() {
 
         // Assert
         final bottomRow = layout[3];
-        expect(bottomRow.where((key) => key.type == KeypadKeyType.decimal), isEmpty);
+        expect(
+          bottomRow.where((key) => key.type == KeypadKeyType.decimal),
+          isEmpty,
+        );
       });
 
       test('should use custom decimal separator from config', () {
@@ -164,11 +233,16 @@ void main() {
 
         // Assert
         final bottomRow = layout[3];
-        expect(bottomRow, contains(const KeypadKey(
-          value: ',',
-          type: KeypadKeyType.decimal,
-          displayText: ',',
-        )));
+        expect(
+          bottomRow,
+          contains(
+            const KeypadKey(
+              value: ',',
+              type: KeypadKeyType.decimal,
+              displayText: ',',
+            ),
+          ),
+        );
       });
 
       test('should include custom keys in action row', () {
@@ -183,9 +257,7 @@ void main() {
           type: KeypadKeyType.custom,
           displayText: 'C2',
         );
-        final config = KeypadConfig(
-          customKeys: [customKey1, customKey2],
-        );
+        final config = KeypadConfig(customKeys: [customKey1, customKey2]);
 
         // Act
         final layout = adapter.getKeypadLayout(config);
@@ -213,70 +285,100 @@ void main() {
         expect(layout.length, 4); // Only digit rows + bottom row
       });
 
-      test('should handle configuration with only some action keys enabled', () {
-        // Arrange
-        final config = const KeypadConfig(
-          showBackspaceKey: true,
-          showClearKey: false,
-          showConfirmKey: true,
-          showCancelKey: false,
-        );
+      test(
+        'should handle configuration with only some action keys enabled',
+        () {
+          // Arrange
+          final config = const KeypadConfig(
+            showBackspaceKey: true,
+            showClearKey: false,
+            showConfirmKey: true,
+            showCancelKey: false,
+          );
 
-        // Act
-        final layout = adapter.getKeypadLayout(config);
-
-        // Assert
-        expect(layout.length, 5); // 3 digit rows + 1 bottom row + 1 action row
-        
-        final actionRow = layout.last;
-        expect(actionRow, contains(const KeypadKey(
-          value: 'backspace',
-          type: KeypadKeyType.backspace,
-          displayText: '⌫',
-        )));
-        expect(actionRow, contains(const KeypadKey(
-          value: 'confirm',
-          type: KeypadKeyType.confirm,
-          displayText: '✓',
-        )));
-        expect(actionRow.where((key) => key.type == KeypadKeyType.clear), isEmpty);
-        expect(actionRow.where((key) => key.type == KeypadKeyType.cancel), isEmpty);
-      });
-
-      test('should maintain consistent digit layout regardless of configuration', () {
-        // Arrange
-        final configs = [
-          const KeypadConfig(),
-          const KeypadConfig(showDecimalKey: false, showSignKey: true),
-          const KeypadConfig(showBackspaceKey: false, showClearKey: false),
-          KeypadConfig(customKeys: [
-            const KeypadKey(value: 'test', type: KeypadKeyType.custom),
-          ]),
-        ];
-
-        for (final config in configs) {
           // Act
           final layout = adapter.getKeypadLayout(config);
 
           // Assert
-          expect(layout.length, greaterThanOrEqualTo(4));
-          
-          // Verify first three rows are always the same
-          expect(layout[0][0].value, '1');
-          expect(layout[0][1].value, '2');
-          expect(layout[0][2].value, '3');
-          expect(layout[1][0].value, '4');
-          expect(layout[1][1].value, '5');
-          expect(layout[1][2].value, '6');
-          expect(layout[2][0].value, '7');
-          expect(layout[2][1].value, '8');
-          expect(layout[2][2].value, '9');
-          
-          // Verify zero is always in bottom row
-          final bottomRow = layout[3];
-          expect(bottomRow, contains(const KeypadKey(value: '0', type: KeypadKeyType.digit)));
-        }
-      });
+          expect(
+            layout.length,
+            5,
+          ); // 3 digit rows + 1 bottom row + 1 action row
+
+          final actionRow = layout.last;
+          expect(
+            actionRow,
+            contains(
+              const KeypadKey(
+                value: 'backspace',
+                type: KeypadKeyType.backspace,
+                displayText: '⌫',
+              ),
+            ),
+          );
+          expect(
+            actionRow,
+            contains(
+              const KeypadKey(
+                value: 'confirm',
+                type: KeypadKeyType.confirm,
+                displayText: '✓',
+              ),
+            ),
+          );
+          expect(
+            actionRow.where((key) => key.type == KeypadKeyType.clear),
+            isEmpty,
+          );
+          expect(
+            actionRow.where((key) => key.type == KeypadKeyType.cancel),
+            isEmpty,
+          );
+        },
+      );
+
+      test(
+        'should maintain consistent digit layout regardless of configuration',
+        () {
+          // Arrange
+          final configs = [
+            const KeypadConfig(),
+            const KeypadConfig(showDecimalKey: false, showSignKey: true),
+            const KeypadConfig(showBackspaceKey: false, showClearKey: false),
+            KeypadConfig(
+              customKeys: [
+                const KeypadKey(value: 'test', type: KeypadKeyType.custom),
+              ],
+            ),
+          ];
+
+          for (final config in configs) {
+            // Act
+            final layout = adapter.getKeypadLayout(config);
+
+            // Assert
+            expect(layout.length, greaterThanOrEqualTo(4));
+
+            // Verify first three rows are always the same
+            expect(layout[0][0].value, '1');
+            expect(layout[0][1].value, '2');
+            expect(layout[0][2].value, '3');
+            expect(layout[1][0].value, '4');
+            expect(layout[1][1].value, '5');
+            expect(layout[1][2].value, '6');
+            expect(layout[2][0].value, '7');
+            expect(layout[2][1].value, '8');
+            expect(layout[2][2].value, '9');
+
+            // Verify zero is always in bottom row
+            final bottomRow = layout[3];
+            expect(
+              bottomRow,
+              contains(const KeypadKey(value: '0', type: KeypadKeyType.digit)),
+            );
+          }
+        },
+      );
     });
 
     group('saveConfig', () {
@@ -298,7 +400,10 @@ void main() {
         stopwatch.stop();
 
         // Assert
-        expect(stopwatch.elapsedMilliseconds, greaterThanOrEqualTo(90)); // Allow some margin
+        expect(
+          stopwatch.elapsedMilliseconds,
+          greaterThanOrEqualTo(90),
+        ); // Allow some margin
       });
 
       test('should accept any valid KeypadConfig', () async {
@@ -307,9 +412,11 @@ void main() {
           const KeypadConfig(),
           const KeypadConfig(showDecimalKey: false),
           const KeypadConfig(showSignKey: true, decimalSeparator: ','),
-          KeypadConfig(customKeys: [
-            const KeypadKey(value: 'test', type: KeypadKeyType.custom),
-          ]),
+          KeypadConfig(
+            customKeys: [
+              const KeypadKey(value: 'test', type: KeypadKeyType.custom),
+            ],
+          ),
         ];
 
         // Act & Assert
@@ -338,7 +445,10 @@ void main() {
         stopwatch.stop();
 
         // Assert
-        expect(stopwatch.elapsedMilliseconds, greaterThanOrEqualTo(90)); // Allow some margin
+        expect(
+          stopwatch.elapsedMilliseconds,
+          greaterThanOrEqualTo(90),
+        ); // Allow some margin
       });
 
       test('should return consistent config on multiple calls', () async {
@@ -446,10 +556,16 @@ void main() {
       test('should provide all required KeypadPort methods', () {
         // Assert
         expect(adapter.getDefaultConfig, isA<KeypadConfig Function()>());
-        expect(adapter.getKeypadLayout, isA<List<List<KeypadKey>> Function(KeypadConfig)>());
+        expect(
+          adapter.getKeypadLayout,
+          isA<List<List<KeypadKey>> Function(KeypadConfig)>(),
+        );
         expect(adapter.saveConfig, isA<Future<void> Function(KeypadConfig)>());
         expect(adapter.loadConfig, isA<Future<KeypadConfig> Function()>());
-        expect(adapter.getLocalizedKeyText, isA<String Function(KeypadKeyType)>());
+        expect(
+          adapter.getLocalizedKeyText,
+          isA<String Function(KeypadKeyType)>(),
+        );
       });
     });
 
@@ -482,18 +598,36 @@ void main() {
         final layout = adapter.getKeypadLayout(config);
 
         // Assert
-        expect(layout.length, 4); // 3 digit rows + 1 bottom row (with just zero)
+        expect(
+          layout.length,
+          4,
+        ); // 3 digit rows + 1 bottom row (with just zero)
         final bottomRow = layout[3];
         expect(bottomRow.length, 1); // Only zero
-        expect(bottomRow[0], const KeypadKey(value: '0', type: KeypadKeyType.digit));
+        expect(
+          bottomRow[0],
+          const KeypadKey(value: '0', type: KeypadKeyType.digit),
+        );
       });
 
       test('should handle multiple custom keys of different types', () {
         // Arrange
         const customKeys = [
-          KeypadKey(value: 'custom1', type: KeypadKeyType.custom, displayText: 'C1'),
-          KeypadKey(value: 'custom2', type: KeypadKeyType.custom, displayText: 'C2'),
-          KeypadKey(value: 'custom3', type: KeypadKeyType.custom, displayText: 'C3'),
+          KeypadKey(
+            value: 'custom1',
+            type: KeypadKeyType.custom,
+            displayText: 'C1',
+          ),
+          KeypadKey(
+            value: 'custom2',
+            type: KeypadKeyType.custom,
+            displayText: 'C2',
+          ),
+          KeypadKey(
+            value: 'custom3',
+            type: KeypadKeyType.custom,
+            displayText: 'C3',
+          ),
         ];
         final config = KeypadConfig(
           showBackspaceKey: true,
@@ -508,11 +642,16 @@ void main() {
         expect(actionRow, contains(customKeys[0]));
         expect(actionRow, contains(customKeys[1]));
         expect(actionRow, contains(customKeys[2]));
-        expect(actionRow, contains(const KeypadKey(
-          value: 'backspace',
-          type: KeypadKeyType.backspace,
-          displayText: '⌫',
-        )));
+        expect(
+          actionRow,
+          contains(
+            const KeypadKey(
+              value: 'backspace',
+              type: KeypadKeyType.backspace,
+              displayText: '⌫',
+            ),
+          ),
+        );
       });
     });
 
@@ -527,11 +666,14 @@ void main() {
           showCancelKey: true,
           showSignKey: true,
           decimalSeparator: ',',
-          customKeys: List.generate(5, (index) => KeypadKey(
-            value: 'custom$index',
-            type: KeypadKeyType.custom,
-            displayText: 'C$index',
-          )),
+          customKeys: List.generate(
+            5,
+            (index) => KeypadKey(
+              value: 'custom$index',
+              type: KeypadKeyType.custom,
+              displayText: 'C$index',
+            ),
+          ),
         );
         final stopwatch = Stopwatch()..start();
 
@@ -540,7 +682,10 @@ void main() {
         stopwatch.stop();
 
         // Assert
-        expect(stopwatch.elapsedMilliseconds, lessThan(100)); // Should be very fast
+        expect(
+          stopwatch.elapsedMilliseconds,
+          lessThan(100),
+        ); // Should be very fast
         expect(layout, isNotEmpty);
         expect(layout.length, 5); // All rows present
       });

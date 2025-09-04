@@ -143,123 +143,6 @@ void main() {
       });
     });
 
-    group('DecimalNotAllowedError', () {
-      test('should create error with correct message and code', () {
-        const error = DecimalNotAllowedError();
-
-        expect(error.message, equals('Decimal point is not allowed'));
-        expect(error.code, equals('DECIMAL_NOT_ALLOWED'));
-      });
-
-      test('should be consistent across instances', () {
-        const error1 = DecimalNotAllowedError();
-        const error2 = DecimalNotAllowedError();
-
-        expect(error1.message, equals(error2.message));
-        expect(error1.code, equals(error2.code));
-      });
-
-      test('should be a DomainError', () {
-        const error = DecimalNotAllowedError();
-
-        expect(error, isA<DomainError>());
-      });
-
-      test('should have non-null properties', () {
-        const error = DecimalNotAllowedError();
-
-        expect(error.message, isNotNull);
-        expect(error.message, isNotEmpty);
-        expect(error.code, isNotNull);
-        expect(error.code, isNotEmpty);
-      });
-
-      test('toString should return message', () {
-        const error = DecimalNotAllowedError();
-
-        expect(error.toString(), equals(error.message));
-        expect(error.toString(), equals('Decimal point is not allowed'));
-      });
-    });
-
-    group('SignToggleNotAllowedError', () {
-      test('should create error with correct message and code', () {
-        const error = SignToggleNotAllowedError();
-
-        expect(error.message, equals('Sign toggle is not allowed'));
-        expect(error.code, equals('SIGN_TOGGLE_NOT_ALLOWED'));
-      });
-
-      test('should be consistent across instances', () {
-        const error1 = SignToggleNotAllowedError();
-        const error2 = SignToggleNotAllowedError();
-
-        expect(error1.message, equals(error2.message));
-        expect(error1.code, equals(error2.code));
-      });
-
-      test('should be a DomainError', () {
-        const error = SignToggleNotAllowedError();
-
-        expect(error, isA<DomainError>());
-      });
-
-      test('should have non-null properties', () {
-        const error = SignToggleNotAllowedError();
-
-        expect(error.message, isNotNull);
-        expect(error.message, isNotEmpty);
-        expect(error.code, isNotNull);
-        expect(error.code, isNotEmpty);
-      });
-
-      test('toString should return message', () {
-        const error = SignToggleNotAllowedError();
-
-        expect(error.toString(), equals(error.message));
-        expect(error.toString(), equals('Sign toggle is not allowed'));
-      });
-    });
-
-    group('DecimalAlreadyExistsError', () {
-      test('should create error with correct message and code', () {
-        const error = DecimalAlreadyExistsError();
-
-        expect(error.message, equals('Decimal point already exists'));
-        expect(error.code, equals('DECIMAL_ALREADY_EXISTS'));
-      });
-
-      test('should be consistent across instances', () {
-        const error1 = DecimalAlreadyExistsError();
-        const error2 = DecimalAlreadyExistsError();
-
-        expect(error1.message, equals(error2.message));
-        expect(error1.code, equals(error2.code));
-      });
-
-      test('should be a DomainError', () {
-        const error = DecimalAlreadyExistsError();
-
-        expect(error, isA<DomainError>());
-      });
-
-      test('should have non-null properties', () {
-        const error = DecimalAlreadyExistsError();
-
-        expect(error.message, isNotNull);
-        expect(error.message, isNotEmpty);
-        expect(error.code, isNotNull);
-        expect(error.code, isNotEmpty);
-      });
-
-      test('toString should return message', () {
-        const error = DecimalAlreadyExistsError();
-
-        expect(error.toString(), equals(error.message));
-        expect(error.toString(), equals('Decimal point already exists'));
-      });
-    });
-
     group('StepSizeViolationError', () {
       test('should create error with correct message and code', () {
         const stepSize = 0.5;
@@ -308,9 +191,6 @@ void main() {
           const ZeroNotAllowedError(),
           const NegativeNotAllowedError(),
           const InvalidNumberFormatError(),
-          const DecimalNotAllowedError(),
-          const SignToggleNotAllowedError(),
-          const DecimalAlreadyExistsError(),
           StepSizeViolationError(1.0, 2.0),
         ];
 
@@ -328,9 +208,6 @@ void main() {
           const ZeroNotAllowedError(),
           const NegativeNotAllowedError(),
           const InvalidNumberFormatError(),
-          const DecimalNotAllowedError(),
-          const SignToggleNotAllowedError(),
-          const DecimalAlreadyExistsError(),
           StepSizeViolationError(1.0, 2.0),
         ];
 
@@ -350,9 +227,6 @@ void main() {
           const ZeroNotAllowedError(),
           const NegativeNotAllowedError(),
           const InvalidNumberFormatError(),
-          const DecimalNotAllowedError(),
-          const SignToggleNotAllowedError(),
-          const DecimalAlreadyExistsError(),
           StepSizeViolationError(1.0, 2.0),
         ];
 

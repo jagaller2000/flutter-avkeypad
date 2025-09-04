@@ -55,33 +55,6 @@ class InvalidNumberFormatError extends DomainError {
     : super(message: 'Invalid number format', code: 'INVALID_NUMBER_FORMAT');
 }
 
-/// Error when decimal point is not allowed in current context
-class DecimalNotAllowedError extends DomainError {
-  const DecimalNotAllowedError()
-    : super(
-        message: 'Decimal point is not allowed',
-        code: 'DECIMAL_NOT_ALLOWED',
-      );
-}
-
-/// Error when sign toggle is not allowed in current context
-class SignToggleNotAllowedError extends DomainError {
-  const SignToggleNotAllowedError()
-    : super(
-        message: 'Sign toggle is not allowed',
-        code: 'SIGN_TOGGLE_NOT_ALLOWED',
-      );
-}
-
-/// Error when trying to add decimal but one already exists
-class DecimalAlreadyExistsError extends DomainError {
-  const DecimalAlreadyExistsError()
-    : super(
-        message: 'Decimal point already exists',
-        code: 'DECIMAL_ALREADY_EXISTS',
-      );
-}
-
 /// Error when input value doesn't conform to the required step size
 class StepSizeViolationError extends DomainError {
   const StepSizeViolationError(this.stepSize, this.value)

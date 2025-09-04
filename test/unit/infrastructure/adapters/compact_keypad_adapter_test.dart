@@ -220,5 +220,63 @@ void main() {
         equals('Custom'),
       );
     });
+
+    test('getKeypadLayout includes action buttons when enabled', () {
+      // Arrange
+      final config = KeypadConfig(
+        showDecimalKey: true,
+        showConfirmKey: true,
+        showBackspaceKey: true,
+      );
+
+      // Act
+      final layout = adapter.getKeypadLayout(config);
+
+      // Assert
+      expect(layout.length, equals(5)); // 3 digit rows + 1 bottom row + 1 action row
+      
+      // Last row should contain action buttons
+      final actionRow = layout.last;
+      expect(actionRow.length, equals(2));
+      
+      // Should have confirm button
+      final confirmButton = actionRow.firstWhere(
+        (key) => key.type == KeypadKeyType.confirm,
+      );
+      expect(confirmButton.value, equals('confirm'));
+      expect(confirmButton.displayText, equals('✓'));
+      
+      // Should have backspace button
+      final backspaceButton = actionRow.firstWhere(
+        (key) => key.type == KeypadKeyType.backspace,
+      );
+      expect(backspaceButton.value, equals('backspace'));
+      expect(backspaceButton.displayText, equals('⌫'));
+    });
+
+    test('getKeypadLayout includes only confirm button when backspace disabled', () {
+      // Arrange
+      final config = KeypadConfig(
+        showDecimalKey: true,
+        showConfirmKey: true,
+        showBackspaceKey: false,
+      );
+
+      // Act
+      final layout = adapter.getKeypadLayout(config);
+
+      // Assert
+      expect(layout.length, equals(5)); // 3 digit rows + 1 bottom row + 1 action row
+      
+      // Last row should contain only confirm button
+      final actionRow = layout.last;
+      expect(actionRow.length, equals(1));
+      
+      // Should have confirm button
+      final confirmButton = actionRow.first;
+      expect(confirmButton.type, equals(KeypadKeyType.confirm));
+      expect(confirmButton.value, equals('confirm'));
+      expect(confirmButton.displayText, equals('✓'));
+    });
   });
 }

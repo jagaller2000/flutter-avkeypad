@@ -270,12 +270,6 @@ class _LayoutComparisonDemoState extends State<LayoutComparisonDemo> {
                     _compactMessage = 'Current: $_compactValue';
                   });
                 },
-                onCancel: () {
-                  setState(() {
-                    _compactValue = '';
-                    _compactMessage = 'Cancelled';
-                  });
-                },
               ),
             ),
           ),

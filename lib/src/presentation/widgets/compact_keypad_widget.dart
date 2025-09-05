@@ -79,7 +79,8 @@ class _CompactKeypadWidgetState extends State<CompactKeypadWidget> {
     );
   }
 
-  KeypadAction _createActionFromKey(KeypadKey key) {
+  @visibleForTesting
+  KeypadAction createActionFromKey(KeypadKey key) {
     switch (key.type) {
       case KeypadKeyType.digit:
         return KeypadAction(
@@ -121,10 +122,11 @@ class _CompactKeypadWidgetState extends State<CompactKeypadWidget> {
     }
   }
 
-  void _handleKeyPress(KeypadKey key) {
+  @visibleForTesting
+  void handleKeyPress(KeypadKey key) {
     widget.onKeyPressed?.call(key);
 
-    final action = _createActionFromKey(key);
+    final action = createActionFromKey(key);
     final newState = _processInputUseCase(
       currentState: _currentState,
       action: action,
@@ -154,11 +156,8 @@ class _CompactKeypadWidgetState extends State<CompactKeypadWidget> {
       width: 32,
       height: 32,
       child:
-          widget.keyBuilder?.call(key, () => _handleKeyPress(key)) ??
-          KeypadKeyWidget(
-            keypadKey: key,
-            onPressed: () => _handleKeyPress(key),
-          ),
+          widget.keyBuilder?.call(key, () => handleKeyPress(key)) ??
+          KeypadKeyWidget(keypadKey: key, onPressed: () => handleKeyPress(key)),
     );
   }
 
@@ -205,10 +204,10 @@ class _CompactKeypadWidgetState extends State<CompactKeypadWidget> {
                 width: 60,
                 height: 50,
                 child:
-                    widget.keyBuilder?.call(key, () => _handleKeyPress(key)) ??
+                    widget.keyBuilder?.call(key, () => handleKeyPress(key)) ??
                     KeypadKeyWidget(
                       keypadKey: key,
-                      onPressed: () => _handleKeyPress(key),
+                      onPressed: () => handleKeyPress(key),
                     ),
               );
             }).toList(),

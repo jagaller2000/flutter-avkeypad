@@ -79,32 +79,6 @@ class CompactKeypadAdapter implements KeypadPort {
 
     layout.add(bottomRow);
 
-    // Add action buttons as a separate row for the widget to extract
-    final actionRow = <KeypadKey>[];
-    if (config.showConfirmKey) {
-      actionRow.add(
-        const KeypadKey(
-          value: 'confirm',
-          type: KeypadKeyType.confirm,
-          displayText: '✓',
-        ),
-      );
-    }
-    if (config.showBackspaceKey) {
-      actionRow.add(
-        const KeypadKey(
-          value: 'backspace',
-          type: KeypadKeyType.backspace,
-          displayText: '⌫',
-        ),
-      );
-    }
-
-    // Only add action row if it has buttons
-    if (actionRow.isNotEmpty) {
-      layout.add(actionRow);
-    }
-
     return layout;
   }
 

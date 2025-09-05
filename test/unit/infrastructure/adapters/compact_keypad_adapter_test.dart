@@ -41,8 +41,8 @@ void main() {
       // Assert
       expect(
         layout.length,
-        equals(5),
-      ); // 3 digit rows + 1 bottom row + 1 action buttons row
+        equals(4),
+      ); // 3 digit rows + 1 bottom row (action buttons now in getDisplayActionKeys)
 
       // First row: 1, 2, 3
       expect(layout[0].length, equals(3));
@@ -224,7 +224,7 @@ void main() {
       );
     });
 
-    test('getKeypadLayout includes action buttons when enabled', () {
+    test('getKeypadLayout excludes action buttons from grid layout', () {
       // Arrange
       final config = KeypadConfig(
         showDecimalKey: true,
@@ -238,22 +238,44 @@ void main() {
       // Assert
       expect(
         layout.length,
-        equals(5),
-      ); // 3 digit rows + 1 bottom row + 1 action row
+        equals(4),
+      ); // 3 digit rows + 1 bottom row (action buttons now separate)
 
-      // Last row should contain action buttons
-      final actionRow = layout.last;
-      expect(actionRow.length, equals(2));
+      // Action buttons should NOT be in the layout grid
+      final allKeys = layout.expand((row) => row).toList();
+      expect(
+        allKeys.any((key) => key.type == KeypadKeyType.confirm),
+        isFalse,
+      );
+      expect(
+        allKeys.any((key) => key.type == KeypadKeyType.backspace),
+        isFalse,
+      );
+    });
+
+    test('getDisplayActionKeys returns action buttons when enabled', () {
+      // Arrange
+      final config = KeypadConfig(
+        showDecimalKey: true,
+        showConfirmKey: true,
+        showBackspaceKey: true,
+      );
+
+      // Act
+      final actionKeys = adapter.getDisplayActionKeys(config);
+
+      // Assert
+      expect(actionKeys.length, equals(2));
 
       // Should have confirm button
-      final confirmButton = actionRow.firstWhere(
+      final confirmButton = actionKeys.firstWhere(
         (key) => key.type == KeypadKeyType.confirm,
       );
       expect(confirmButton.value, equals('confirm'));
       expect(confirmButton.displayText, equals('✓'));
 
       // Should have backspace button
-      final backspaceButton = actionRow.firstWhere(
+      final backspaceButton = actionKeys.firstWhere(
         (key) => key.type == KeypadKeyType.backspace,
       );
       expect(backspaceButton.value, equals('backspace'));
@@ -261,7 +283,7 @@ void main() {
     });
 
     test(
-      'getKeypadLayout includes only confirm button when backspace disabled',
+      'getDisplayActionKeys includes only confirm button when backspace disabled',
       () {
         // Arrange
         final config = KeypadConfig(
@@ -271,20 +293,13 @@ void main() {
         );
 
         // Act
-        final layout = adapter.getKeypadLayout(config);
+        final actionKeys = adapter.getDisplayActionKeys(config);
 
         // Assert
-        expect(
-          layout.length,
-          equals(5),
-        ); // 3 digit rows + 1 bottom row + 1 action row
+        expect(actionKeys.length, equals(1));
 
-        // Last row should contain only confirm button
-        final actionRow = layout.last;
-        expect(actionRow.length, equals(1));
-
-        // Should have confirm button
-        final confirmButton = actionRow.first;
+        // Should have only confirm button
+        final confirmButton = actionKeys.first;
         expect(confirmButton.type, equals(KeypadKeyType.confirm));
         expect(confirmButton.value, equals('confirm'));
         expect(confirmButton.displayText, equals('✓'));

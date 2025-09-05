@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import '../../domain/domain.dart';
 import '../../infrastructure/adapters/traditional_keypad_adapter.dart';
 import 'keypad_key_widget.dart';
@@ -50,15 +51,13 @@ class _TraditionalKeypadWidgetState extends State<TraditionalKeypadWidget> {
   late List<List<KeypadKey>> _layout;
 
   static const _processInputUseCase = ProcessKeypadInputUseCase();
+  static const _uuid = Uuid();
 
   @override
   void initState() {
     super.initState();
     _adapter = TraditionalKeypadAdapter();
-    _session = KeypadSession(
-      id: 'traditional_${DateTime.now().millisecondsSinceEpoch}',
-      config: widget.config,
-    );
+    _session = KeypadSession(id: _uuid.v4(), config: widget.config);
     _currentState = _session.currentState;
     _updateLayout();
   }
@@ -67,10 +66,7 @@ class _TraditionalKeypadWidgetState extends State<TraditionalKeypadWidget> {
   void didUpdateWidget(TraditionalKeypadWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.config != widget.config) {
-      _session = KeypadSession(
-        id: 'traditional_${DateTime.now().millisecondsSinceEpoch}',
-        config: widget.config,
-      );
+      _session = KeypadSession(id: _uuid.v4(), config: widget.config);
       _currentState = _session.currentState;
       _updateLayout();
     }

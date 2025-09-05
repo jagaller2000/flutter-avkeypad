@@ -1,181 +1,237 @@
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import '../../domain/domain.dart';
-import '../constants/design_constants.dart';
+import '../../infrastructure/adapters/compact_keypad_adapter.dart';
 import 'keypad_key_widget.dart';
+import 'keypad_display_widget.dart';
 
-/// A compact keypad widget that integrates action buttons around the display area
-class CompactKeypadWidget extends StatelessWidget {
+/// A compact keypad widget with action buttons integrated around the display
+class CompactKeypadWidget extends StatefulWidget {
   const CompactKeypadWidget({
     super.key,
-    required this.keypadPort,
     required this.config,
-    required this.currentValue,
     this.onKeyPressed,
     this.onValueChanged,
+    this.onConfirm,
+    this.onCancel,
+    this.displayWidget,
+    this.keyBuilder,
   });
 
-  final KeypadPort keypadPort;
+  /// Configuration for the keypad
   final KeypadConfig config;
-  final String currentValue;
+
+  /// Callback when a key is pressed
   final void Function(KeypadKey)? onKeyPressed;
+
+  /// Callback when the value changes
   final void Function(String)? onValueChanged;
+
+  /// Callback when confirm is pressed
+  final void Function(String)? onConfirm;
+
+  /// Callback when cancel is pressed
+  final VoidCallback? onCancel;
+
+  /// Custom display widget (optional)
+  final Widget? displayWidget;
+
+  /// Custom key builder (optional)
+  final Widget Function(KeypadKey, VoidCallback)? keyBuilder;
+
+  @override
+  State<CompactKeypadWidget> createState() => _CompactKeypadWidgetState();
+}
+
+class _CompactKeypadWidgetState extends State<CompactKeypadWidget> {
+  late KeypadSession _session;
+  late KeypadPort _adapter;
+  late KeypadState _currentState;
+  late List<List<KeypadKey>> _layout;
+  late List<KeypadKey> _actionKeys;
+
+  static const _processInputUseCase = ProcessKeypadInputUseCase();
+  static const _uuid = Uuid();
+
+  @override
+  void initState() {
+    super.initState();
+    _adapter = CompactKeypadAdapter();
+    _session = KeypadSession(id: _uuid.v4(), config: widget.config);
+    _currentState = _session.currentState;
+    _updateLayout();
+  }
+
+  @override
+  void didUpdateWidget(CompactKeypadWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.config != widget.config) {
+      _session = KeypadSession(id: _uuid.v4(), config: widget.config);
+      _currentState = _session.currentState;
+      _updateLayout();
+    }
+  }
+
+  void _updateLayout() {
+    _layout = _adapter.getKeypadLayout(widget.config);
+    _actionKeys = (_adapter as CompactKeypadAdapter).getDisplayActionKeys(
+      widget.config,
+    );
+  }
+
+  KeypadAction _createActionFromKey(KeypadKey key) {
+    switch (key.type) {
+      case KeypadKeyType.digit:
+        return KeypadAction(
+          type: KeypadActionType.digitInput,
+          value: key.value,
+          key: key.value,
+        );
+      case KeypadKeyType.decimal:
+        return KeypadAction(
+          type: KeypadActionType.decimalInput,
+          value: key.value,
+          key: key.value,
+        );
+      case KeypadKeyType.backspace:
+        return const KeypadAction(
+          type: KeypadActionType.backspace,
+          key: 'backspace',
+        );
+      case KeypadKeyType.clear:
+        return const KeypadAction(type: KeypadActionType.clear, key: 'clear');
+      case KeypadKeyType.sign:
+        return const KeypadAction(
+          type: KeypadActionType.toggleSign,
+          key: 'sign',
+        );
+      case KeypadKeyType.confirm:
+        return const KeypadAction(
+          type: KeypadActionType.confirm,
+          key: 'confirm',
+        );
+      case KeypadKeyType.cancel:
+        return const KeypadAction(type: KeypadActionType.cancel, key: 'cancel');
+      case KeypadKeyType.custom:
+        return KeypadAction(
+          type: KeypadActionType.custom,
+          value: key.value,
+          key: key.value,
+        );
+    }
+  }
+
+  void _handleKeyPress(KeypadKey key) {
+    widget.onKeyPressed?.call(key);
+
+    final action = _createActionFromKey(key);
+    final newState = _processInputUseCase(
+      currentState: _currentState,
+      action: action,
+      config: widget.config,
+    );
+
+    setState(() {
+      _currentState = newState;
+      _session.updateState(newState);
+    });
+
+    widget.onValueChanged?.call(_currentState.input);
+
+    // Handle confirm action
+    if (key.type == KeypadKeyType.confirm) {
+      widget.onConfirm?.call(_currentState.input);
+    }
+
+    // Handle cancel action
+    if (key.type == KeypadKeyType.cancel) {
+      widget.onCancel?.call();
+    }
+  }
+
+  Widget _buildActionButton(KeypadKey key) {
+    return SizedBox(
+      width: 32,
+      height: 32,
+      child:
+          widget.keyBuilder?.call(key, () => _handleKeyPress(key)) ??
+          KeypadKeyWidget(
+            keypadKey: key,
+            onPressed: () => _handleKeyPress(key),
+          ),
+    );
+  }
+
+  Widget _buildDisplayArea() {
+    return Row(
+      children: [
+        // Confirm button on the left
+        if (_actionKeys.any((k) => k.type == KeypadKeyType.confirm))
+          _buildActionButton(
+            _actionKeys.firstWhere((k) => k.type == KeypadKeyType.confirm),
+          ),
+
+        if (_actionKeys.any((k) => k.type == KeypadKeyType.confirm))
+          const SizedBox(width: 8),
+
+        // Display widget in the center
+        Expanded(
+          child:
+              widget.displayWidget ?? KeypadDisplayWidget(state: _currentState),
+        ),
+
+        // Backspace button on the right
+        if (_actionKeys.any((k) => k.type == KeypadKeyType.backspace))
+          const SizedBox(width: 8),
+
+        if (_actionKeys.any((k) => k.type == KeypadKeyType.backspace))
+          _buildActionButton(
+            _actionKeys.firstWhere((k) => k.type == KeypadKeyType.backspace),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildKeypadGrid() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: _layout.map((row) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: row.map((key) {
+              return SizedBox(
+                width: 60,
+                height: 50,
+                child:
+                    widget.keyBuilder?.call(key, () => _handleKeyPress(key)) ??
+                    KeypadKeyWidget(
+                      keypadKey: key,
+                      onPressed: () => _handleKeyPress(key),
+                    ),
+              );
+            }).toList(),
+          ),
+        );
+      }).toList(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final layout = keypadPort.getKeypadLayout(config);
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
-    // Extract action buttons from the layout
-    final actionButtons = _extractActionButtons(layout);
-
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Display row with action buttons on sides
-        _buildDisplayRow(context, actionButtons, colorScheme),
-        const SizedBox(height: KeypadDesignConstants.spacing),
-        // Digit grid
-        _buildDigitGrid(context, layout, colorScheme),
-      ],
-    );
-  }
-
-  /// Extract action buttons (confirm and backspace) from the layout
-  Map<String, KeypadKey?> _extractActionButtons(List<List<KeypadKey>> layout) {
-    KeypadKey? confirmButton;
-    KeypadKey? backspaceButton;
-
-    // Look through all rows to find action buttons
-    for (final row in layout) {
-      for (final key in row) {
-        if (key.type == KeypadKeyType.confirm) {
-          confirmButton = key;
-        } else if (key.type == KeypadKeyType.backspace) {
-          backspaceButton = key;
-        }
-      }
-    }
-
-    return {'confirm': confirmButton, 'backspace': backspaceButton};
-  }
-
-  Widget _buildDisplayRow(
-    BuildContext context,
-    Map<String, KeypadKey?> actionButtons,
-    ColorScheme colorScheme,
-  ) {
-    return Row(
-      children: [
-        // Confirm button (left side)
-        if (actionButtons['confirm'] != null)
-          _buildActionButton(context, actionButtons['confirm']!, colorScheme)
-        else
-          const SizedBox(width: KeypadDesignConstants.actionButtonSize),
-
-        const SizedBox(width: KeypadDesignConstants.spacing),
-
-        // Display area
-        Expanded(child: _buildDisplayArea(context, colorScheme)),
-
-        const SizedBox(width: KeypadDesignConstants.spacing),
-
-        // Backspace button (right side)
-        if (actionButtons['backspace'] != null)
-          _buildActionButton(context, actionButtons['backspace']!, colorScheme)
-        else
-          const SizedBox(width: KeypadDesignConstants.actionButtonSize),
-      ],
-    );
-  }
-
-  Widget _buildDisplayArea(BuildContext context, ColorScheme colorScheme) {
-    return Container(
-      height: KeypadDesignConstants.displayHeight,
-      padding: const EdgeInsets.symmetric(
-        horizontal: KeypadDesignConstants.spacing,
-        vertical: KeypadDesignConstants.spacing / 2,
-      ),
-      decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(KeypadDesignConstants.borderRadius),
-        border: Border.all(
-          color: colorScheme.outline.withValues(alpha: 0.3),
-          width: 1,
+        // Display area with integrated action buttons
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: _buildDisplayArea(),
         ),
-      ),
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: Text(
-          currentValue.isEmpty ? '0' : currentValue,
-          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-            color: colorScheme.onSurface,
-            fontWeight: FontWeight.w500,
-            fontFeatures: const [FontFeature.tabularFigures()],
-          ),
-          textAlign: TextAlign.right,
-          overflow: TextOverflow.ellipsis,
-        ),
-      ),
-    );
-  }
 
-  Widget _buildActionButton(
-    BuildContext context,
-    KeypadKey key,
-    ColorScheme colorScheme,
-  ) {
-    return SizedBox(
-      width: KeypadDesignConstants.actionButtonSize,
-      height: KeypadDesignConstants.actionButtonSize,
-      child: KeypadKeyWidget(
-        key: ValueKey('compact_action_${key.value}'),
-        keypadKey: key,
-        onPressed: () => onKeyPressed?.call(key),
-        isCompact: true,
-      ),
-    );
-  }
-
-  Widget _buildDigitGrid(
-    BuildContext context,
-    List<List<KeypadKey>> layout,
-    ColorScheme colorScheme,
-  ) {
-    // Filter out action keys (keep only digit rows)
-    final digitRows = layout
-        .where(
-          (row) => row.any(
-            (key) =>
-                key.type == KeypadKeyType.digit ||
-                key.type == KeypadKeyType.decimal ||
-                key.type == KeypadKeyType.clear ||
-                key.type == KeypadKeyType.sign,
-          ),
-        )
-        .toList();
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: digitRows.map((row) => _buildDigitRow(context, row)).toList(),
-    );
-  }
-
-  Widget _buildDigitRow(BuildContext context, List<KeypadKey> row) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: KeypadDesignConstants.spacing / 2),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: row.map((key) => _buildDigitKey(context, key)).toList(),
-      ),
-    );
-  }
-
-  Widget _buildDigitKey(BuildContext context, KeypadKey key) {
-    return KeypadKeyWidget(
-      key: ValueKey('compact_digit_${key.value}'),
-      keypadKey: key,
-      onPressed: () => onKeyPressed?.call(key),
+        // Keypad grid
+        _buildKeypadGrid(),
+      ],
     );
   }
 }

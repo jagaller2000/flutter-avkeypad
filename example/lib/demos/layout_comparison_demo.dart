@@ -13,8 +13,6 @@ class LayoutComparisonDemo extends StatefulWidget {
 class _LayoutComparisonDemoState extends State<LayoutComparisonDemo> {
   String _traditionalValue = '';
   String _compactValue = '';
-  double? _traditionalConfirmed;
-  double? _compactConfirmed;
   String _traditionalMessage = 'Ready for input';
   String _compactMessage = 'Ready for input';
 
@@ -167,16 +165,6 @@ class _LayoutComparisonDemoState extends State<LayoutComparisonDemo> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Status: $_traditionalMessage'),
-                if (_traditionalConfirmed != null) ...[
-                  SizedBox(height: effectiveSmallSpacing / 2),
-                  Text(
-                    'Confirmed: $_traditionalConfirmed',
-                    style: TextStyle(
-                      color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
               ],
             ),
           ),
@@ -195,7 +183,7 @@ class _LayoutComparisonDemoState extends State<LayoutComparisonDemo> {
                   showSignKey: true,
                   showClearKey: true,
                   showBackspaceKey: true,
-                  showConfirmKey: true,
+                  
                   showCancelKey: true,
                 ),
                 onValueChanged: (value) {
@@ -204,18 +192,9 @@ class _LayoutComparisonDemoState extends State<LayoutComparisonDemo> {
                     _traditionalMessage = 'Current: $_traditionalValue';
                   });
                 },
-                onConfirm: (value) {
-                  final numValue = double.tryParse(value);
-                  setState(() {
-                    _traditionalConfirmed = numValue;
-                    _traditionalMessage =
-                        'Confirmed: ${numValue?.toString() ?? 'Invalid'}';
-                  });
-                },
                 onCancel: () {
                   setState(() {
                     _traditionalValue = '';
-                    _traditionalConfirmed = null;
                     _traditionalMessage = 'Cancelled - Ready for input';
                   });
                 },
@@ -268,16 +247,6 @@ class _LayoutComparisonDemoState extends State<LayoutComparisonDemo> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Status: $_compactMessage'),
-                if (_compactConfirmed != null) ...[
-                  SizedBox(height: effectiveSmallSpacing / 2),
-                  Text(
-                    'Confirmed: $_compactConfirmed',
-                    style: TextStyle(
-                      color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
               ],
             ),
           ),
@@ -296,18 +265,13 @@ class _LayoutComparisonDemoState extends State<LayoutComparisonDemo> {
                   showSignKey: true,
                   showClearKey: true,
                   showBackspaceKey: true,
-                  showConfirmKey: true,
+                  
                   showCancelKey: true,
                 ),
                 onValueChanged: (value) {
                   setState(() {
                     _compactValue = value;
                     _compactMessage = 'Current: $_compactValue';
-                  });
-                },
-                onConfirm: (value) {
-                  setState(() {
-                    _compactMessage = 'Confirmed: $value';
                   });
                 },
                 onCancel: () {

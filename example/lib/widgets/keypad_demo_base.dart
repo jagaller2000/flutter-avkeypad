@@ -10,7 +10,6 @@ abstract class KeypadDemoPage extends StatefulWidget {
 /// Base state class for keypad demo pages with common functionality
 abstract class KeypadDemoPageState<T extends KeypadDemoPage> extends State<T> {
   String _currentValue = '';
-  double? _confirmedValue;
   String _message = 'Ready for input';
 
   void onValueChanged(String value) {
@@ -20,17 +19,9 @@ abstract class KeypadDemoPageState<T extends KeypadDemoPage> extends State<T> {
     });
   }
 
-  void onConfirm(double? value) {
-    setState(() {
-      _confirmedValue = value;
-      _message = 'Confirmed: ${value?.toString() ?? 'Invalid'}';
-    });
-  }
-
   void onCancel() {
     setState(() {
       _currentValue = '';
-      _confirmedValue = null;
       _message = 'Cancelled - Ready for input';
     });
   }
@@ -104,16 +95,6 @@ abstract class KeypadDemoPageState<T extends KeypadDemoPage> extends State<T> {
                     ),
                     SizedBox(height: effectiveSmallSpacing),
                     Text(_message),
-                    if (_confirmedValue != null) ...[
-                      SizedBox(height: effectiveSmallSpacing / 2),
-                      Text(
-                        'Last confirmed: $_confirmedValue',
-                        style: TextStyle(
-                          color: theme.colorScheme.primary,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
                   ],
                 ),
               ),
@@ -131,7 +112,6 @@ abstract class KeypadDemoPageState<T extends KeypadDemoPage> extends State<T> {
                 child: NumericKeypad(
                   config: config,
                   onValueChanged: onValueChanged,
-                  onConfirm: onConfirm,
                   onCancel: onCancel,
                 ),
               ),

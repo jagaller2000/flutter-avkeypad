@@ -31,7 +31,7 @@ class _StepSizeDecimalKeypadDemoState
         showSignKey: true,
         showBackspaceKey: true,
         showClearKey: true,
-        showConfirmKey: true,
+        
         showCancelKey: true,
       ),
     );

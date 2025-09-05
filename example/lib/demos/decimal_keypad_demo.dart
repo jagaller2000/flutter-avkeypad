@@ -18,12 +18,10 @@ class _DecimalKeypadDemoState extends KeypadDemoPageState<DecimalKeypadDemo> {
       title: 'Decimal Support',
       description:
           'Numeric keypad with decimal point support. '
-          'Allows entering decimal numbers with up to 2 decimal places. '
-          'Includes confirm and cancel buttons for better user interaction.',
+          'Allows entering decimal numbers with up to 2 decimal places.',
       config: const KeypadConfig(
         showDecimalKey: true,
         maxDecimalPlaces: 2,
-        showConfirmKey: true,
         showCancelKey: true,
       ),
     );

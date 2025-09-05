@@ -27,7 +27,7 @@ class _LimitedKeypadDemoState extends KeypadDemoPageState<LimitedKeypadDemo> {
         allowZero: false,
         showBackspaceKey: true,
         showClearKey: true,
-        showConfirmKey: true,
+        
         showCancelKey: true,
       ),
     );

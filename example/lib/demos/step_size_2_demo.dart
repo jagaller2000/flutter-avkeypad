@@ -20,7 +20,7 @@ class _StepSize2KeypadDemoState
       description:
           'Only even numbers are allowed (step size = 2). '
           'Try entering numbers like 2, 4, 6, 8, 10, etc. '
-          'Odd numbers will be marked as invalid and cannot be confirmed. '
+          'Odd numbers will be marked as invalid. '
           'Negative even numbers are also supported.',
       config: const KeypadConfig(
         stepSize: 2.0,
@@ -29,7 +29,7 @@ class _StepSize2KeypadDemoState
         showSignKey: true,
         showBackspaceKey: true,
         showClearKey: true,
-        showConfirmKey: true,
+        
         showCancelKey: true,
       ),
     );

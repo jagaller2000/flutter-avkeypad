@@ -22,7 +22,6 @@ class _BasicKeypadDemoState extends KeypadDemoPageState<BasicKeypadDemo> {
       config: const KeypadConfig(
         showDecimalKey: false,
         showSignKey: false,
-        showConfirmKey: false,
         showCancelKey: false,
       ),
     );

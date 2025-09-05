@@ -28,7 +28,7 @@ class _AdvancedKeypadDemoState extends KeypadDemoPageState<AdvancedKeypadDemo> {
         maxDecimalPlaces: 3,
         showBackspaceKey: true,
         showClearKey: true,
-        showConfirmKey: true,
+        
         showCancelKey: true,
       ),
     );

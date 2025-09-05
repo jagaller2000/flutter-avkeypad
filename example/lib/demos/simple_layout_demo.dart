@@ -181,18 +181,13 @@ class _SimpleLayoutDemoState extends State<SimpleLayoutDemo> {
                   showSignKey: true,
                   showClearKey: true,
                   showBackspaceKey: true,
-                  showConfirmKey: true,
+                  
                   showCancelKey: true,
                 ),
                 onValueChanged: (value) {
                   setState(() {
                     _traditionalValue = value;
                     _traditionalMessage = 'Current: $_traditionalValue';
-                  });
-                },
-                onConfirm: (value) {
-                  setState(() {
-                    _traditionalMessage = 'Confirmed: $value';
                   });
                 },
                 onCancel: () {
@@ -266,18 +261,13 @@ class _SimpleLayoutDemoState extends State<SimpleLayoutDemo> {
                   showSignKey: true,
                   showClearKey: true,
                   showBackspaceKey: true,
-                  showConfirmKey: true,
+                  
                   showCancelKey: true,
                 ),
                 onValueChanged: (value) {
                   setState(() {
                     _compactValue = value;
                     _compactMessage = 'Current: $_compactValue';
-                  });
-                },
-                onConfirm: (value) {
-                  setState(() {
-                    _compactMessage = 'Confirmed: $value';
                   });
                 },
                 onCancel: () {

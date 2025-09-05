@@ -24,7 +24,7 @@ class _SignedKeypadDemoState extends KeypadDemoPageState<SignedKeypadDemo> {
         showSignKey: true,
         allowNegative: true,
         showDecimalKey: true,
-        showConfirmKey: true,
+        
         showCancelKey: true,
       ),
     );

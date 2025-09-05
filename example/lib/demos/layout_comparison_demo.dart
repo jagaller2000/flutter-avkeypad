@@ -18,9 +18,6 @@ class _LayoutComparisonDemoState extends State<LayoutComparisonDemo> {
   String _traditionalMessage = 'Ready for input';
   String _compactMessage = 'Ready for input';
 
-  // Create adapter for compact keypad
-  final _compactAdapter = CompactKeypadAdapter();
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -294,8 +291,6 @@ class _LayoutComparisonDemoState extends State<LayoutComparisonDemo> {
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 300),
               child: CompactKeypadWidget(
-                keypadPort: _compactAdapter,
-                currentValue: _compactValue,
                 config: const KeypadConfig(
                   showDecimalKey: true,
                   showSignKey: true,
@@ -304,76 +299,21 @@ class _LayoutComparisonDemoState extends State<LayoutComparisonDemo> {
                   showConfirmKey: true,
                   showCancelKey: true,
                 ),
-                onKeyPressed: (key) {
-                  // Handle different key types
-                  switch (key.type) {
-                    case KeypadKeyType.digit:
-                      setState(() {
-                        _compactValue += key.value;
-                        _compactMessage = 'Current: $_compactValue';
-                      });
-                      break;
-                    case KeypadKeyType.decimal:
-                      if (!_compactValue.contains('.')) {
-                        setState(() {
-                          _compactValue += key.value;
-                          _compactMessage = 'Current: $_compactValue';
-                        });
-                      }
-                      break;
-                    case KeypadKeyType.backspace:
-                      if (_compactValue.isNotEmpty) {
-                        setState(() {
-                          _compactValue = _compactValue.substring(
-                            0,
-                            _compactValue.length - 1,
-                          );
-                          _compactMessage = 'Current: $_compactValue';
-                        });
-                      }
-                      break;
-                    case KeypadKeyType.clear:
-                      setState(() {
-                        _compactValue = '';
-                        _compactMessage = 'Cleared - Ready for input';
-                      });
-                      break;
-                    case KeypadKeyType.sign:
-                      if (_compactValue.isNotEmpty) {
-                        setState(() {
-                          if (_compactValue.startsWith('-')) {
-                            _compactValue = _compactValue.substring(1);
-                          } else {
-                            _compactValue = '-$_compactValue';
-                          }
-                          _compactMessage = 'Current: $_compactValue';
-                        });
-                      }
-                      break;
-                    case KeypadKeyType.confirm:
-                      final numValue = double.tryParse(_compactValue);
-                      setState(() {
-                        _compactConfirmed = numValue;
-                        _compactMessage =
-                            'Confirmed: ${numValue?.toString() ?? 'Invalid'}';
-                      });
-                      break;
-                    case KeypadKeyType.cancel:
-                      setState(() {
-                        _compactValue = '';
-                        _compactConfirmed = null;
-                        _compactMessage = 'Cancelled - Ready for input';
-                      });
-                      break;
-                    case KeypadKeyType.custom:
-                      // Handle custom keys if needed
-                      break;
-                  }
-                },
                 onValueChanged: (value) {
                   setState(() {
                     _compactValue = value;
                     _compactMessage = 'Current: $_compactValue';
+                  });
+                },
+                onConfirm: (value) {
+                  setState(() {
+                    _compactMessage = 'Confirmed: $value';
+                  });
+                },
+                onCancel: () {
+                  setState(() {
+                    _compactValue = '';
+                    _compactMessage = 'Cancelled';
                   });
                 },
               ),

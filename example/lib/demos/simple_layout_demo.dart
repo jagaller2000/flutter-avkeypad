@@ -16,9 +16,6 @@ class _SimpleLayoutDemoState extends State<SimpleLayoutDemo> {
   String _traditionalMessage = 'Ready for input';
   String _compactMessage = 'Ready for input';
 
-  // Create adapter for compact keypad
-  final _compactAdapter = CompactKeypadAdapter();
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -264,8 +261,6 @@ class _SimpleLayoutDemoState extends State<SimpleLayoutDemo> {
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 300),
               child: CompactKeypadWidget(
-                keypadPort: _compactAdapter,
-                currentValue: _compactValue,
                 config: const KeypadConfig(
                   showDecimalKey: true,
                   showSignKey: true,
@@ -274,59 +269,21 @@ class _SimpleLayoutDemoState extends State<SimpleLayoutDemo> {
                   showConfirmKey: true,
                   showCancelKey: true,
                 ),
-                onKeyPressed: (key) {
-                  // Simple key handling for demo
-                  switch (key.type) {
-                    case KeypadKeyType.digit:
-                      setState(() {
-                        _compactValue += key.value;
-                        _compactMessage = 'Current: $_compactValue';
-                      });
-                      break;
-                    case KeypadKeyType.decimal:
-                      if (!_compactValue.contains('.')) {
-                        setState(() {
-                          _compactValue += key.value;
-                          _compactMessage = 'Current: $_compactValue';
-                        });
-                      }
-                      break;
-                    case KeypadKeyType.backspace:
-                      if (_compactValue.isNotEmpty) {
-                        setState(() {
-                          _compactValue = _compactValue.substring(
-                            0,
-                            _compactValue.length - 1,
-                          );
-                          _compactMessage = 'Current: $_compactValue';
-                        });
-                      }
-                      break;
-                    case KeypadKeyType.clear:
-                      setState(() {
-                        _compactValue = '';
-                        _compactMessage = 'Cleared - Ready for input';
-                      });
-                      break;
-                    case KeypadKeyType.confirm:
-                      setState(() {
-                        _compactMessage = 'Confirmed: $_compactValue';
-                      });
-                      break;
-                    case KeypadKeyType.cancel:
-                      setState(() {
-                        _compactValue = '';
-                        _compactMessage = 'Cancelled - Ready for input';
-                      });
-                      break;
-                    default:
-                      break;
-                  }
-                },
                 onValueChanged: (value) {
                   setState(() {
                     _compactValue = value;
                     _compactMessage = 'Current: $_compactValue';
+                  });
+                },
+                onConfirm: (value) {
+                  setState(() {
+                    _compactMessage = 'Confirmed: $value';
+                  });
+                },
+                onCancel: () {
+                  setState(() {
+                    _compactValue = '';
+                    _compactMessage = 'Cancelled';
                   });
                 },
               ),

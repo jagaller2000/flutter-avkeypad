@@ -57,6 +57,9 @@ class KeypadDesignConstants {
   /// Border radius for display and buttons
   static const double borderRadius = keyBorderRadius;
 
+  /// Scaling factor for compact mode padding (reduces padding to 75% of base)
+  static const double compactPaddingFactor = 0.75;
+
   // =============================================================================
   // CONTAINER STYLING
   // =============================================================================

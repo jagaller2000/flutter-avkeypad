@@ -39,7 +39,8 @@ class KeypadKeyWidget extends StatelessWidget {
         : KeypadDesignConstants.getEffectiveKeySize(densityAdjustment.dx);
 
     final effectivePadding = isCompact
-        ? KeypadDesignConstants.keyBasePadding * 0.75
+        ? KeypadDesignConstants.keyBasePadding *
+              KeypadDesignConstants.compactPaddingFactor
         : KeypadDesignConstants.getEffectiveKeyPadding(densityAdjustment.dx);
 
     return FilledButton(

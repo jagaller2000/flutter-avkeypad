@@ -12,7 +12,6 @@ class CompactKeypadWidget extends StatefulWidget {
     required this.config,
     this.onKeyPressed,
     this.onValueChanged,
-    this.onConfirm,
     this.onCancel,
     this.displayWidget,
     this.keyBuilder,
@@ -26,9 +25,6 @@ class CompactKeypadWidget extends StatefulWidget {
 
   /// Callback when the value changes
   final void Function(String)? onValueChanged;
-
-  /// Callback when confirm is pressed
-  final void Function(String)? onConfirm;
 
   /// Callback when cancel is pressed
   final VoidCallback? onCancel;
@@ -106,11 +102,6 @@ class _CompactKeypadWidgetState extends State<CompactKeypadWidget> {
           type: KeypadActionType.toggleSign,
           key: 'sign',
         );
-      case KeypadKeyType.confirm:
-        return const KeypadAction(
-          type: KeypadActionType.confirm,
-          key: 'confirm',
-        );
       case KeypadKeyType.cancel:
         return const KeypadAction(type: KeypadActionType.cancel, key: 'cancel');
       case KeypadKeyType.custom:
@@ -140,11 +131,7 @@ class _CompactKeypadWidgetState extends State<CompactKeypadWidget> {
 
     widget.onValueChanged?.call(_currentState.input);
 
-    // Handle confirm action
-    if (key.type == KeypadKeyType.confirm) {
-      widget.onConfirm?.call(_currentState.input);
-    }
-
+    // Handle cancel action
     // Handle cancel action
     if (key.type == KeypadKeyType.cancel) {
       widget.onCancel?.call();
@@ -164,15 +151,6 @@ class _CompactKeypadWidgetState extends State<CompactKeypadWidget> {
   Widget _buildDisplayArea() {
     return Row(
       children: [
-        // Confirm button on the left
-        if (_actionKeys.any((k) => k.type == KeypadKeyType.confirm))
-          _buildActionButton(
-            _actionKeys.firstWhere((k) => k.type == KeypadKeyType.confirm),
-          ),
-
-        if (_actionKeys.any((k) => k.type == KeypadKeyType.confirm))
-          const SizedBox(width: 8),
-
         // Display widget in the center
         Expanded(
           child:

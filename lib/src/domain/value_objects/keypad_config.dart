@@ -7,7 +7,6 @@ class KeypadConfig {
     this.showSignKey = false,
     this.showClearKey = true,
     this.showBackspaceKey = true,
-    this.showConfirmKey = false,
     this.showCancelKey = false,
     this.maxDigits,
     this.maxDecimalPlaces = 2,
@@ -29,9 +28,6 @@ class KeypadConfig {
 
   /// Whether to show the backspace key
   final bool showBackspaceKey;
-
-  /// Whether to show the confirm/enter key
-  final bool showConfirmKey;
 
   /// Whether to show the cancel/dismiss key
   final bool showCancelKey;
@@ -64,7 +60,6 @@ class KeypadConfig {
     bool? showSignKey,
     bool? showClearKey,
     bool? showBackspaceKey,
-    bool? showConfirmKey,
     bool? showCancelKey,
     int? maxDigits,
     int? maxDecimalPlaces,
@@ -79,7 +74,6 @@ class KeypadConfig {
       showSignKey: showSignKey ?? this.showSignKey,
       showClearKey: showClearKey ?? this.showClearKey,
       showBackspaceKey: showBackspaceKey ?? this.showBackspaceKey,
-      showConfirmKey: showConfirmKey ?? this.showConfirmKey,
       showCancelKey: showCancelKey ?? this.showCancelKey,
       maxDigits: maxDigits ?? this.maxDigits,
       maxDecimalPlaces: maxDecimalPlaces ?? this.maxDecimalPlaces,
@@ -99,7 +93,6 @@ class KeypadConfig {
         other.showSignKey == showSignKey &&
         other.showClearKey == showClearKey &&
         other.showBackspaceKey == showBackspaceKey &&
-        other.showConfirmKey == showConfirmKey &&
         other.showCancelKey == showCancelKey &&
         other.maxDigits == maxDigits &&
         other.maxDecimalPlaces == maxDecimalPlaces &&
@@ -117,7 +110,6 @@ class KeypadConfig {
       showSignKey,
       showClearKey,
       showBackspaceKey,
-      showConfirmKey,
       showCancelKey,
       maxDigits,
       maxDecimalPlaces,
@@ -136,7 +128,6 @@ class KeypadConfig {
         'showSignKey: $showSignKey, '
         'showClearKey: $showClearKey, '
         'showBackspaceKey: $showBackspaceKey, '
-        'showConfirmKey: $showConfirmKey, '
         'showCancelKey: $showCancelKey, '
         'maxDigits: $maxDigits, '
         'maxDecimalPlaces: $maxDecimalPlaces, '

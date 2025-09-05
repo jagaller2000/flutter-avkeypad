@@ -3,7 +3,7 @@ import '../../domain/value_objects/keypad_config.dart';
 import '../../domain/value_objects/keypad_key.dart';
 
 /// Traditional keypad adapter that generates a 3x4 digit grid with separate action row
-/// This layout separates digits from action keys (backspace, clear, confirm, cancel)
+/// This layout separates digits from action keys (backspace, clear, cancel)
 class TraditionalKeypadAdapter implements KeypadPort {
   @override
   KeypadConfig getDefaultConfig() {
@@ -84,16 +84,6 @@ class TraditionalKeypadAdapter implements KeypadPort {
       );
     }
 
-    if (config.showConfirmKey) {
-      actionRow.add(
-        const KeypadKey(
-          value: 'confirm',
-          type: KeypadKeyType.confirm,
-          displayText: '✓',
-        ),
-      );
-    }
-
     if (config.showCancelKey) {
       actionRow.add(
         const KeypadKey(
@@ -125,8 +115,6 @@ class TraditionalKeypadAdapter implements KeypadPort {
         return 'Delete';
       case KeypadKeyType.clear:
         return 'Clear';
-      case KeypadKeyType.confirm:
-        return 'Confirm';
       case KeypadKeyType.cancel:
         return 'Cancel';
       case KeypadKeyType.sign:

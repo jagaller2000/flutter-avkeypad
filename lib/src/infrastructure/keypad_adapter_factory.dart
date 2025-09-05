@@ -7,7 +7,7 @@ import 'adapters/compact_keypad_adapter.dart';
 enum KeypadLayoutStrategy {
   /// Traditional 3x4 digit grid with action keys in a separate bottom row
   /// Best for: Standard numeric input, calculator-style interfaces
-  /// Layout: Digits in 4 rows, actions below (backspace, clear, confirm, cancel)
+  /// Layout: Digits in 4 rows, actions below (backspace, clear, cancel)
   traditional,
 
   /// Compact layout integrating action keys within/around the digit area

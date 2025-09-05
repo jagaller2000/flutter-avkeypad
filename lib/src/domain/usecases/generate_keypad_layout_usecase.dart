@@ -87,16 +87,6 @@ class GenerateKeypadLayoutUseCase {
       );
     }
 
-    if (config.showConfirmKey) {
-      actionRow.add(
-        const KeypadKey(
-          value: 'confirm',
-          type: KeypadKeyType.confirm,
-          displayText: '✓',
-        ),
-      );
-    }
-
     if (config.showCancelKey) {
       actionRow.add(
         const KeypadKey(

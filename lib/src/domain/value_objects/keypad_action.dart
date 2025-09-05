@@ -52,9 +52,6 @@ enum KeypadActionType {
   /// Toggle the sign (positive/negative)
   toggleSign,
 
-  /// Confirm the current input
-  confirm,
-
   /// Cancel and dismiss the keypad
   cancel,
 

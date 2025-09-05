@@ -39,7 +39,6 @@ class ProcessKeypadInputUseCase {
         newState = _handleToggleSign(currentState, config);
         break;
 
-      case KeypadActionType.confirm:
       case KeypadActionType.cancel:
       case KeypadActionType.custom:
         // These actions don't modify the state, they're handled by the UI layer

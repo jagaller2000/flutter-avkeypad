@@ -86,16 +86,6 @@ class CompactKeypadAdapter implements KeypadPort {
   List<KeypadKey> getDisplayActionKeys(KeypadConfig config) {
     final actionKeys = <KeypadKey>[];
 
-    if (config.showConfirmKey) {
-      actionKeys.add(
-        const KeypadKey(
-          value: 'confirm',
-          type: KeypadKeyType.confirm,
-          displayText: '✓',
-        ),
-      );
-    }
-
     if (config.showBackspaceKey) {
       actionKeys.add(
         const KeypadKey(
@@ -120,8 +110,6 @@ class CompactKeypadAdapter implements KeypadPort {
         return 'Delete';
       case KeypadKeyType.clear:
         return 'Clear';
-      case KeypadKeyType.confirm:
-        return 'Confirm';
       case KeypadKeyType.cancel:
         return 'Cancel';
       case KeypadKeyType.sign:

@@ -12,7 +12,6 @@ class TraditionalKeypadWidget extends StatefulWidget {
     required this.config,
     this.onKeyPressed,
     this.onValueChanged,
-    this.onConfirm,
     this.onCancel,
     this.displayWidget,
     this.keyBuilder,
@@ -26,9 +25,6 @@ class TraditionalKeypadWidget extends StatefulWidget {
 
   /// Callback when the value changes
   final void Function(String)? onValueChanged;
-
-  /// Callback when confirm is pressed
-  final void Function(String)? onConfirm;
 
   /// Callback when cancel is pressed
   final VoidCallback? onCancel;
@@ -102,11 +98,6 @@ class _TraditionalKeypadWidgetState extends State<TraditionalKeypadWidget> {
           type: KeypadActionType.toggleSign,
           key: 'sign',
         );
-      case KeypadKeyType.confirm:
-        return const KeypadAction(
-          type: KeypadActionType.confirm,
-          key: 'confirm',
-        );
       case KeypadKeyType.cancel:
         return const KeypadAction(type: KeypadActionType.cancel, key: 'cancel');
       case KeypadKeyType.custom:
@@ -134,11 +125,6 @@ class _TraditionalKeypadWidgetState extends State<TraditionalKeypadWidget> {
     });
 
     widget.onValueChanged?.call(_currentState.input);
-
-    // Handle confirm action
-    if (key.type == KeypadKeyType.confirm) {
-      widget.onConfirm?.call(_currentState.input);
-    }
 
     // Handle cancel action
     if (key.type == KeypadKeyType.cancel) {

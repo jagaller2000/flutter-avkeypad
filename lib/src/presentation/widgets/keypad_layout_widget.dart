@@ -99,8 +99,6 @@ class KeypadLayoutWidget extends StatelessWidget {
         return config.allowNegative && state.isNotEmpty;
       case KeypadKeyType.backspace:
         return state.isNotEmpty;
-      case KeypadKeyType.confirm:
-        return state.isValid && state.isNotEmpty;
       default:
         return true;
     }

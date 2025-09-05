@@ -76,8 +76,6 @@ class KeypadKeyWidget extends StatelessWidget {
       case KeypadKeyType.backspace:
       case KeypadKeyType.clear:
         return theme.colorScheme.errorContainer;
-      case KeypadKeyType.confirm:
-        return theme.colorScheme.primaryContainer;
       case KeypadKeyType.cancel:
         return theme.colorScheme.errorContainer;
       default:
@@ -93,8 +91,6 @@ class KeypadKeyWidget extends StatelessWidget {
       case KeypadKeyType.backspace:
       case KeypadKeyType.clear:
         return theme.colorScheme.onErrorContainer;
-      case KeypadKeyType.confirm:
-        return theme.colorScheme.onPrimaryContainer;
       case KeypadKeyType.cancel:
         return theme.colorScheme.onErrorContainer;
       default:

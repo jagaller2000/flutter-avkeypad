@@ -111,32 +111,35 @@ void main() {
         expect(error.message, equals('Invalid number format'));
         expect(error.code, equals('INVALID_NUMBER_FORMAT'));
       });
-    });
 
-    group('DecimalNotAllowedError', () {
-      test('should create error with correct message and code', () {
-        const error = DecimalNotAllowedError();
+      test('should be consistent across instances', () {
+        const error1 = InvalidNumberFormatError();
+        const error2 = InvalidNumberFormatError();
 
-        expect(error.message, equals('Decimal point is not allowed'));
-        expect(error.code, equals('DECIMAL_NOT_ALLOWED'));
+        expect(error1.message, equals(error2.message));
+        expect(error1.code, equals(error2.code));
       });
-    });
 
-    group('SignToggleNotAllowedError', () {
-      test('should create error with correct message and code', () {
-        const error = SignToggleNotAllowedError();
+      test('should be a DomainError', () {
+        const error = InvalidNumberFormatError();
 
-        expect(error.message, equals('Sign toggle is not allowed'));
-        expect(error.code, equals('SIGN_TOGGLE_NOT_ALLOWED'));
+        expect(error, isA<DomainError>());
       });
-    });
 
-    group('DecimalAlreadyExistsError', () {
-      test('should create error with correct message and code', () {
-        const error = DecimalAlreadyExistsError();
+      test('should have non-null properties', () {
+        const error = InvalidNumberFormatError();
 
-        expect(error.message, equals('Decimal point already exists'));
-        expect(error.code, equals('DECIMAL_ALREADY_EXISTS'));
+        expect(error.message, isNotNull);
+        expect(error.message, isNotEmpty);
+        expect(error.code, isNotNull);
+        expect(error.code, isNotEmpty);
+      });
+
+      test('toString should return message', () {
+        const error = InvalidNumberFormatError();
+
+        expect(error.toString(), equals(error.message));
+        expect(error.toString(), equals('Invalid number format'));
       });
     });
 
@@ -188,9 +191,6 @@ void main() {
           const ZeroNotAllowedError(),
           const NegativeNotAllowedError(),
           const InvalidNumberFormatError(),
-          const DecimalNotAllowedError(),
-          const SignToggleNotAllowedError(),
-          const DecimalAlreadyExistsError(),
           StepSizeViolationError(1.0, 2.0),
         ];
 
@@ -208,9 +208,6 @@ void main() {
           const ZeroNotAllowedError(),
           const NegativeNotAllowedError(),
           const InvalidNumberFormatError(),
-          const DecimalNotAllowedError(),
-          const SignToggleNotAllowedError(),
-          const DecimalAlreadyExistsError(),
           StepSizeViolationError(1.0, 2.0),
         ];
 
@@ -230,9 +227,6 @@ void main() {
           const ZeroNotAllowedError(),
           const NegativeNotAllowedError(),
           const InvalidNumberFormatError(),
-          const DecimalNotAllowedError(),
-          const SignToggleNotAllowedError(),
-          const DecimalAlreadyExistsError(),
           StepSizeViolationError(1.0, 2.0),
         ];
 

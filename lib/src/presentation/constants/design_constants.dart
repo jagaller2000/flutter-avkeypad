@@ -41,6 +41,22 @@ class KeypadDesignConstants {
   /// Base spacing between keys in the layout
   static const double layoutBaseSpacing = 8.0;
 
+  /// Base spacing between elements (alias for layoutBaseSpacing)
+  static const double spacing = layoutBaseSpacing;
+
+  // =============================================================================
+  // COMPACT LAYOUT CONSTANTS
+  // =============================================================================
+
+  /// Size for action buttons in compact layout
+  static const double actionButtonSize = 48.0;
+
+  /// Height for the display area in compact layout
+  static const double displayHeight = 56.0;
+
+  /// Border radius for display and buttons
+  static const double borderRadius = keyBorderRadius;
+
   // =============================================================================
   // CONTAINER STYLING
   // =============================================================================

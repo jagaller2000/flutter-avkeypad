@@ -24,16 +24,6 @@ class MockKeypadPort implements KeypadPort {
   }
 
   @override
-  Future<void> saveConfig(KeypadConfig config) async {
-    // Mock implementation
-  }
-
-  @override
-  Future<KeypadConfig> loadConfig() async {
-    return const KeypadConfig();
-  }
-
-  @override
   String getLocalizedKeyText(KeypadKeyType keyType) {
     switch (keyType) {
       case KeypadKeyType.clear:

@@ -2,8 +2,9 @@ import '../../domain/ports/keypad_port.dart';
 import '../../domain/value_objects/keypad_config.dart';
 import '../../domain/value_objects/keypad_key.dart';
 
-/// Default implementation of KeypadPort for basic keypad functionality
-class DefaultKeypadAdapter implements KeypadPort {
+/// Compact keypad adapter that integrates action buttons within the digit grid
+/// This layout strategy embeds action keys alongside digits for space efficiency
+class CompactKeypadAdapter implements KeypadPort {
   @override
   KeypadConfig getDefaultConfig() {
     return const KeypadConfig();
@@ -37,8 +38,19 @@ class DefaultKeypadAdapter implements KeypadPort {
     // Fourth row: varies based on configuration
     final bottomRow = <KeypadKey>[];
 
-    // Add sign key if enabled
-    if (config.showSignKey) {
+    // Add clear key to left if enabled
+    if (config.showClearKey) {
+      bottomRow.add(
+        const KeypadKey(
+          value: 'clear',
+          type: KeypadKeyType.clear,
+          displayText: 'C',
+        ),
+      );
+    }
+
+    // Add sign key if enabled (when clear is disabled, it can go left)
+    if (config.showSignKey && !config.showClearKey) {
       bottomRow.add(
         const KeypadKey(value: '±', type: KeypadKeyType.sign, displayText: '±'),
       );
@@ -46,6 +58,13 @@ class DefaultKeypadAdapter implements KeypadPort {
 
     // Always add zero
     bottomRow.add(const KeypadKey(value: '0', type: KeypadKeyType.digit));
+
+    // Add sign key to right of zero if clear key took the left spot
+    if (config.showSignKey && config.showClearKey) {
+      bottomRow.add(
+        const KeypadKey(value: '±', type: KeypadKeyType.sign, displayText: '±'),
+      );
+    }
 
     // Add decimal key if enabled
     if (config.showDecimalKey) {
@@ -60,9 +79,17 @@ class DefaultKeypadAdapter implements KeypadPort {
 
     layout.add(bottomRow);
 
-    // Add action row if any action keys are enabled
+    // Add action buttons as a separate row for the widget to extract
     final actionRow = <KeypadKey>[];
-
+    if (config.showConfirmKey) {
+      actionRow.add(
+        const KeypadKey(
+          value: 'confirm',
+          type: KeypadKeyType.confirm,
+          displayText: '✓',
+        ),
+      );
+    }
     if (config.showBackspaceKey) {
       actionRow.add(
         const KeypadKey(
@@ -73,18 +100,20 @@ class DefaultKeypadAdapter implements KeypadPort {
       );
     }
 
-    if (config.showClearKey) {
-      actionRow.add(
-        const KeypadKey(
-          value: 'clear',
-          type: KeypadKeyType.clear,
-          displayText: 'C',
-        ),
-      );
+    // Only add action row if it has buttons
+    if (actionRow.isNotEmpty) {
+      layout.add(actionRow);
     }
 
+    return layout;
+  }
+
+  /// Get action keys that should be displayed around the display area
+  List<KeypadKey> getDisplayActionKeys(KeypadConfig config) {
+    final actionKeys = <KeypadKey>[];
+
     if (config.showConfirmKey) {
-      actionRow.add(
+      actionKeys.add(
         const KeypadKey(
           value: 'confirm',
           type: KeypadKeyType.confirm,
@@ -93,39 +122,17 @@ class DefaultKeypadAdapter implements KeypadPort {
       );
     }
 
-    if (config.showCancelKey) {
-      actionRow.add(
+    if (config.showBackspaceKey) {
+      actionKeys.add(
         const KeypadKey(
-          value: 'cancel',
-          type: KeypadKeyType.cancel,
-          displayText: '✕',
+          value: 'backspace',
+          type: KeypadKeyType.backspace,
+          displayText: '⌫',
         ),
       );
     }
 
-    // Add custom keys
-    actionRow.addAll(config.customKeys);
-
-    if (actionRow.isNotEmpty) {
-      layout.add(actionRow);
-    }
-
-    return layout;
-  }
-
-  @override
-  Future<void> saveConfig(KeypadConfig config) async {
-    // In a real implementation, this would save to persistent storage
-    // For demo purposes, we'll just simulate saving
-    await Future.delayed(const Duration(milliseconds: 100));
-  }
-
-  @override
-  Future<KeypadConfig> loadConfig() async {
-    // In a real implementation, this would load from persistent storage
-    // For demo purposes, we'll just return the default config
-    await Future.delayed(const Duration(milliseconds: 100));
-    return getDefaultConfig();
+    return actionKeys;
   }
 
   @override

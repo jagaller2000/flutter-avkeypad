@@ -63,7 +63,7 @@ void main() {
             config: config,
           );
 
-          expect(result.input, equals('1${i}'));
+          expect(result.input, equals('1$i'));
           expect(result.isValid, isTrue);
         }
       });
@@ -735,7 +735,7 @@ void main() {
           config: config,
         );
 
-        expect(result.input, equals(longInput + '9'));
+        expect(result.input, equals('${longInput}9'));
       });
 
       test('should preserve state flags correctly across operations', () {

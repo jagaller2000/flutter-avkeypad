@@ -9,6 +9,7 @@ class KeypadKeyWidget extends StatelessWidget {
     required this.keypadKey,
     required this.onPressed,
     this.isEnabled = true,
+    this.isCompact = false,
   });
 
   /// The keypad key data
@@ -20,22 +21,26 @@ class KeypadKeyWidget extends StatelessWidget {
   /// Whether the key is enabled
   final bool isEnabled;
 
+  /// Whether this key is in compact mode (smaller size for action buttons)
+  final bool isCompact;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final visualDensity = theme.visualDensity;
     final effectiveEnabled = isEnabled && keypadKey.isEnabled;
 
-    // Calculate size and padding based on visual density
+    // Calculate size and padding based on visual density and compact mode
     final densityAdjustment = visualDensity.baseSizeAdjustment;
 
     // Use conservative adjustments to prevent overflow
-    final effectiveSize = KeypadDesignConstants.getEffectiveKeySize(
-      densityAdjustment.dx,
-    );
-    final effectivePadding = KeypadDesignConstants.getEffectiveKeyPadding(
-      densityAdjustment.dx,
-    );
+    final effectiveSize = isCompact
+        ? KeypadDesignConstants.actionButtonSize
+        : KeypadDesignConstants.getEffectiveKeySize(densityAdjustment.dx);
+
+    final effectivePadding = isCompact
+        ? KeypadDesignConstants.keyBasePadding * 0.75
+        : KeypadDesignConstants.getEffectiveKeyPadding(densityAdjustment.dx);
 
     return FilledButton(
       onPressed: effectiveEnabled ? onPressed : null,

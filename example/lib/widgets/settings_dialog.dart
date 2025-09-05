@@ -31,7 +31,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
             ),
             const SizedBox(height: 8),
             DropdownButtonFormField<ThemeMode>(
-              value: widget.settings.themeMode,
+              initialValue: widget.settings.themeMode,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 contentPadding: EdgeInsets.symmetric(
@@ -71,7 +71,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
             ),
             const SizedBox(height: 8),
             DropdownButtonFormField<VisualDensity>(
-              value: widget.settings.visualDensity,
+              initialValue: widget.settings.visualDensity,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 contentPadding: EdgeInsets.symmetric(

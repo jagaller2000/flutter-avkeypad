@@ -20,7 +20,7 @@ class _KeypadDemoTabsState extends State<KeypadDemoTabs>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 7, vsync: this);
+    _tabController = TabController(length: 8, vsync: this);
   }
 
   @override
@@ -53,19 +53,21 @@ class _KeypadDemoTabsState extends State<KeypadDemoTabs>
             Tab(icon: Icon(Icons.looks_5), text: 'Advanced'),
             Tab(icon: Icon(Icons.plus_one), text: 'Step 2'),
             Tab(icon: Icon(Icons.more_horiz), text: 'Step 0.1'),
+            Tab(icon: Icon(Icons.compare), text: 'Layouts'),
           ],
         ),
       ),
       body: TabBarView(
         controller: _tabController,
-        children: const [
-          BasicKeypadDemo(),
-          DecimalKeypadDemo(),
-          SignedKeypadDemo(),
-          LimitedKeypadDemo(),
-          AdvancedKeypadDemo(),
-          StepSize2KeypadDemo(),
-          StepSizeDecimalKeypadDemo(),
+        children: [
+          const BasicKeypadDemo(),
+          const DecimalKeypadDemo(),
+          const SignedKeypadDemo(),
+          const LimitedKeypadDemo(),
+          const AdvancedKeypadDemo(),
+          const StepSize2KeypadDemo(),
+          const StepSizeDecimalKeypadDemo(),
+          const SimpleLayoutDemo(),
         ],
       ),
     );

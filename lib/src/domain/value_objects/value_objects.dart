@@ -1,4 +1,4 @@
-/// Export all domain value objects
+/// Export all value objects in the domain layer
 library;
 
 export 'keypad_action.dart';

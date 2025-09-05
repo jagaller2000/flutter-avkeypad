@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../domain/usecases/generate_keypad_layout_usecase.dart';
-import '../../domain/value_objects/keypad_config.dart';
-import '../../domain/value_objects/keypad_key.dart';
-import '../../domain/value_objects/keypad_state.dart';
-import '../../infrastructure/adapters/default_keypad_adapter.dart';
+import '../../domain/domain.dart';
+import '../../infrastructure/adapters/traditional_keypad_adapter.dart';
 import '../constants/design_constants.dart';
 import 'keypad_display_widget.dart';
 import 'keypad_layout_widget.dart';
@@ -42,7 +39,7 @@ class KeypadContainerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final visualDensity = theme.visualDensity;
-    final adapter = DefaultKeypadAdapter();
+    final adapter = TraditionalKeypadAdapter();
     final layoutUseCase = GenerateKeypadLayoutUseCase(adapter);
     final layout = layoutUseCase.generateStandardLayout(config);
 

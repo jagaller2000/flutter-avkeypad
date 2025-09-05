@@ -277,14 +277,13 @@ void main() {
     testWidgets('should handle confirm callback', (tester) async {
       // Arrange
       double? confirmedValue;
-      const config = KeypadConfig(showConfirmKey: true);
+      const config = KeypadConfig();
 
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: NumericKeypad(
               config: config,
-              onConfirm: (value) => confirmedValue = value,
             ),
           ),
         ),
@@ -319,7 +318,7 @@ void main() {
       final confirmKeyFinder = find.byWidgetPredicate(
         (widget) =>
             widget is KeypadKeyWidget &&
-            widget.keypadKey.type == KeypadKeyType.confirm,
+            widget.keypadKey.type == KeypadKeyType.custom,
       );
 
       expect(confirmKeyFinder, findsOneWidget);
@@ -628,7 +627,7 @@ void main() {
       tester,
     ) async {
       // Arrange - no onConfirm callback provided
-      const config = KeypadConfig(showConfirmKey: true);
+      const config = KeypadConfig();
 
       await tester.pumpWidget(
         const MaterialApp(
@@ -649,7 +648,7 @@ void main() {
       final confirmKeyFinder = find.byWidgetPredicate(
         (widget) =>
             widget is KeypadKeyWidget &&
-            widget.keypadKey.type == KeypadKeyType.confirm,
+            widget.keypadKey.type == KeypadKeyType.custom,
       );
 
       expect(confirmKeyFinder, findsOneWidget);

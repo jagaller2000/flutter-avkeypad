@@ -34,7 +34,7 @@ void main() {
         showSignKey: true,
         showClearKey: true,
         showBackspaceKey: true,
-        showConfirmKey: true,
+        
         showCancelKey: true,
       );
 
@@ -78,7 +78,7 @@ void main() {
         isTrue,
       );
       expect(layout[4].any((key) => key.type == KeypadKeyType.clear), isTrue);
-      expect(layout[4].any((key) => key.type == KeypadKeyType.confirm), isTrue);
+      expect(layout[4].any((key) => key.type == KeypadKeyType.custom), isTrue);
       expect(layout[4].any((key) => key.type == KeypadKeyType.cancel), isTrue);
     });
 
@@ -113,7 +113,7 @@ void main() {
       final config = KeypadConfig(
         showBackspaceKey: false,
         showClearKey: false,
-        showConfirmKey: false,
+        
         showCancelKey: false,
       );
 
@@ -152,7 +152,7 @@ void main() {
       );
       expect(adapter.getLocalizedKeyText(KeypadKeyType.clear), equals('Clear'));
       expect(
-        adapter.getLocalizedKeyText(KeypadKeyType.confirm),
+        adapter.getLocalizedKeyText(KeypadKeyType.custom),
         equals('Confirm'),
       );
       expect(

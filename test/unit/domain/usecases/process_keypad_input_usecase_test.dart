@@ -509,7 +509,7 @@ void main() {
     group('Non-State-Modifying Actions', () {
       test('should not modify state for confirm action', () {
         const currentState = KeypadState(input: '123.45');
-        const action = KeypadAction(type: KeypadActionType.confirm);
+        const action = KeypadAction(type: KeypadActionType.custom);
         const config = KeypadConfig();
 
         final result = useCase(

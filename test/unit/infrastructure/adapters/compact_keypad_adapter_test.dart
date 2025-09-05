@@ -115,7 +115,7 @@ void main() {
 
     test('getDisplayActionKeys returns confirm and backspace when enabled', () {
       // Arrange
-      final config = KeypadConfig(showConfirmKey: true, showBackspaceKey: true);
+      final config = KeypadConfig( showBackspaceKey: true);
 
       // Act
       final actionKeys = adapter.getDisplayActionKeys(config);
@@ -123,7 +123,7 @@ void main() {
       // Assert
       expect(actionKeys.length, equals(2));
       expect(
-        actionKeys.any((key) => key.type == KeypadKeyType.confirm),
+        actionKeys.any((key) => key.type == KeypadKeyType.custom),
         isTrue,
       );
       expect(
@@ -137,7 +137,7 @@ void main() {
       () {
         // Arrange
         final config = KeypadConfig(
-          showConfirmKey: true,
+          
           showBackspaceKey: false,
         );
 
@@ -146,7 +146,7 @@ void main() {
 
         // Assert
         expect(actionKeys.length, equals(1));
-        expect(actionKeys[0].type, equals(KeypadKeyType.confirm));
+        expect(actionKeys[0].type, equals(KeypadKeyType.custom));
       },
     );
 
@@ -155,7 +155,7 @@ void main() {
       () {
         // Arrange
         final config = KeypadConfig(
-          showConfirmKey: false,
+          
           showBackspaceKey: true,
         );
 
@@ -171,7 +171,7 @@ void main() {
     test('getDisplayActionKeys returns empty when both disabled', () {
       // Arrange
       final config = KeypadConfig(
-        showConfirmKey: false,
+        
         showBackspaceKey: false,
       );
 
@@ -210,7 +210,7 @@ void main() {
       );
       expect(adapter.getLocalizedKeyText(KeypadKeyType.clear), equals('Clear'));
       expect(
-        adapter.getLocalizedKeyText(KeypadKeyType.confirm),
+        adapter.getLocalizedKeyText(KeypadKeyType.custom),
         equals('Confirm'),
       );
       expect(
@@ -228,7 +228,7 @@ void main() {
       // Arrange
       final config = KeypadConfig(
         showDecimalKey: true,
-        showConfirmKey: true,
+        
         showBackspaceKey: true,
       );
 
@@ -244,7 +244,7 @@ void main() {
       // Action buttons should NOT be in the layout grid
       final allKeys = layout.expand((row) => row).toList();
       expect(
-        allKeys.any((key) => key.type == KeypadKeyType.confirm),
+        allKeys.any((key) => key.type == KeypadKeyType.custom),
         isFalse,
       );
       expect(
@@ -257,7 +257,7 @@ void main() {
       // Arrange
       final config = KeypadConfig(
         showDecimalKey: true,
-        showConfirmKey: true,
+        
         showBackspaceKey: true,
       );
 
@@ -269,7 +269,7 @@ void main() {
 
       // Should have confirm button
       final confirmButton = actionKeys.firstWhere(
-        (key) => key.type == KeypadKeyType.confirm,
+        (key) => key.type == KeypadKeyType.custom,
       );
       expect(confirmButton.value, equals('confirm'));
       expect(confirmButton.displayText, equals('✓'));
@@ -288,7 +288,7 @@ void main() {
         // Arrange
         final config = KeypadConfig(
           showDecimalKey: true,
-          showConfirmKey: true,
+          
           showBackspaceKey: false,
         );
 
@@ -300,7 +300,7 @@ void main() {
 
         // Should have only confirm button
         final confirmButton = actionKeys.first;
-        expect(confirmButton.type, equals(KeypadKeyType.confirm));
+        expect(confirmButton.type, equals(KeypadKeyType.custom));
         expect(confirmButton.value, equals('confirm'));
         expect(confirmButton.displayText, equals('✓'));
       },

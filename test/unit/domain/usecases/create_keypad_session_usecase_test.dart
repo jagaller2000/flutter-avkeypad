@@ -135,7 +135,7 @@ void main() {
         final complexConfig = KeypadConfig(
           showDecimalKey: true,
           showSignKey: true,
-          showConfirmKey: true,
+          
           maxDigits: 10,
           maxDecimalPlaces: 4,
           allowNegative: true,
@@ -297,7 +297,7 @@ void main() {
           showSignKey: false,
           showClearKey: false,
           showBackspaceKey: false,
-          showConfirmKey: false,
+          
           showCancelKey: false,
           maxDigits: 1,
           maxDecimalPlaces: 0,

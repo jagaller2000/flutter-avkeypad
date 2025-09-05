@@ -30,7 +30,7 @@ class MockKeypadPort implements KeypadPort {
         return 'Clear';
       case KeypadKeyType.backspace:
         return 'Backspace';
-      case KeypadKeyType.confirm:
+      case KeypadKeyType.custom:
         return 'Confirm';
       case KeypadKeyType.cancel:
         return 'Cancel';
@@ -243,13 +243,13 @@ void main() {
       });
 
       test('should include confirm key when enabled', () {
-        const config = KeypadConfig(showConfirmKey: true);
+        const config = KeypadConfig();
         final result = useCase.generateStandardLayout(config);
 
         bool confirmFound = false;
         for (final row in result) {
           for (final key in row) {
-            if (key.type == KeypadKeyType.confirm) {
+            if (key.type == KeypadKeyType.custom) {
               confirmFound = true;
               expect(key.value, equals('confirm'));
               expect(key.displayText, equals('✓'));
@@ -284,7 +284,7 @@ void main() {
         const config = KeypadConfig(
           showBackspaceKey: false,
           showClearKey: false,
-          showConfirmKey: false,
+          
           showCancelKey: false,
         );
         final result = useCase.generateStandardLayout(config);
@@ -294,7 +294,7 @@ void main() {
           for (final key in row) {
             if (key.type == KeypadKeyType.backspace ||
                 key.type == KeypadKeyType.clear ||
-                key.type == KeypadKeyType.confirm ||
+                key.type == KeypadKeyType.custom ||
                 key.type == KeypadKeyType.cancel) {
               actionKeyFound = true;
               break;
@@ -309,7 +309,7 @@ void main() {
         const configWithoutActions = KeypadConfig(
           showBackspaceKey: false,
           showClearKey: false,
-          showConfirmKey: false,
+          
           showCancelKey: false,
           customKeys: [],
         );
@@ -512,7 +512,7 @@ void main() {
           showSignKey: true,
           showClearKey: true,
           showBackspaceKey: true,
-          showConfirmKey: true,
+          
           showCancelKey: true,
           customKeys: customKeys,
           decimalSeparator: ',',
@@ -532,7 +532,7 @@ void main() {
         expect(keyTypes.contains(KeypadKeyType.sign), isTrue);
         expect(keyTypes.contains(KeypadKeyType.clear), isTrue);
         expect(keyTypes.contains(KeypadKeyType.backspace), isTrue);
-        expect(keyTypes.contains(KeypadKeyType.confirm), isTrue);
+        expect(keyTypes.contains(KeypadKeyType.custom), isTrue);
         expect(keyTypes.contains(KeypadKeyType.cancel), isTrue);
         expect(keyTypes.contains(KeypadKeyType.custom), isTrue);
       });
@@ -543,7 +543,7 @@ void main() {
           showSignKey: false,
           showClearKey: false,
           showBackspaceKey: false,
-          showConfirmKey: false,
+          
           showCancelKey: false,
           customKeys: [],
         );

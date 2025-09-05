@@ -121,7 +121,7 @@ void main() {
       // Arrange
       const key = KeypadKey(
         value: 'confirm',
-        type: KeypadKeyType.confirm,
+        type: KeypadKeyType.custom,
         displayText: '✓',
       );
       bool pressed = false;
@@ -273,7 +273,7 @@ void main() {
       );
       const confirmKey = KeypadKey(
         value: 'confirm',
-        type: KeypadKeyType.confirm,
+        type: KeypadKeyType.custom,
         displayText: '✓',
       );
 

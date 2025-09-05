@@ -11,7 +11,6 @@ void main() {
         expect(config.showSignKey, isFalse);
         expect(config.showClearKey, isTrue);
         expect(config.showBackspaceKey, isTrue);
-        expect(config.showConfirmKey, isFalse);
         expect(config.showCancelKey, isFalse);
         expect(config.maxDigits, isNull);
         expect(config.maxDecimalPlaces, equals(2));
@@ -37,7 +36,7 @@ void main() {
           showSignKey: true,
           showClearKey: false,
           showBackspaceKey: false,
-          showConfirmKey: true,
+          
           showCancelKey: true,
           maxDigits: 5,
           maxDecimalPlaces: 3,
@@ -52,7 +51,6 @@ void main() {
         expect(config.showSignKey, isTrue);
         expect(config.showClearKey, isFalse);
         expect(config.showBackspaceKey, isFalse);
-        expect(config.showConfirmKey, isTrue);
         expect(config.showCancelKey, isTrue);
         expect(config.maxDigits, equals(5));
         expect(config.maxDecimalPlaces, equals(3));
@@ -107,7 +105,7 @@ void main() {
         const original = KeypadConfig();
         final newCustomKeys = [
           const KeypadKey(value: '7', type: KeypadKeyType.digit),
-          const KeypadKey(value: 'confirm', type: KeypadKeyType.confirm),
+          const KeypadKey(value: 'confirm', type: KeypadKeyType.custom),
         ];
         final copied = original.copyWith(customKeys: newCustomKeys);
 
@@ -295,10 +293,9 @@ void main() {
 
       test('should handle empty customKeys list', () {
         const config = KeypadConfig(customKeys: []);
-        final copied = config.copyWith(showConfirmKey: true);
+        final copied = config.copyWith();
 
         expect(copied.customKeys, isEmpty);
-        expect(copied.showConfirmKey, isTrue);
       });
 
       test('should handle large custom keys list', () {

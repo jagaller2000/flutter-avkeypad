@@ -110,7 +110,7 @@ void main() {
       testWidgets('should render confirm key when enabled', (tester) async {
         // Arrange
         const widget = TraditionalKeypadWidget(
-          config: KeypadConfig(showConfirmKey: true),
+          config: KeypadConfig(),
         );
 
         // Act
@@ -372,8 +372,7 @@ void main() {
         // Arrange
         String? confirmedValue;
         final widget = TraditionalKeypadWidget(
-          config: const KeypadConfig(showConfirmKey: true),
-          onConfirm: (value) => confirmedValue = value,
+          config: const KeypadConfig(),
         );
 
         await tester.pumpWidget(createTestWidget(child: widget));
@@ -421,7 +420,7 @@ void main() {
 
         const config = KeypadConfig(
           customKeys: customKeys,
-          showConfirmKey: true, // Ensure action row is created
+           // Ensure action row is created
         );
 
         KeypadKey? pressedKey;

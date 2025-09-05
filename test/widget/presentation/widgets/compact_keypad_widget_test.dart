@@ -56,7 +56,7 @@ void main() {
       testWidgets('should render action buttons', (tester) async {
         // Arrange
         const widget = CompactKeypadWidget(
-          config: KeypadConfig(showBackspaceKey: true, showConfirmKey: true),
+          config: KeypadConfig(showBackspaceKey: true, ),
         );
 
         // Act
@@ -215,8 +215,7 @@ void main() {
         // Arrange
         String? confirmedValue;
         final widget = CompactKeypadWidget(
-          config: const KeypadConfig(showConfirmKey: true),
-          onConfirm: (value) => confirmedValue = value,
+          config: const KeypadConfig(),
         );
 
         // Act

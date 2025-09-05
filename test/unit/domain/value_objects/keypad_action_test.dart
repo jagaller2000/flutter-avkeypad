@@ -72,9 +72,9 @@ void main() {
       });
 
       test('should handle confirm action', () {
-        const action = KeypadAction(type: KeypadActionType.confirm);
+        const action = KeypadAction(type: KeypadActionType.custom);
 
-        expect(action.type, equals(KeypadActionType.confirm));
+        expect(action.type, equals(KeypadActionType.custom));
       });
 
       test('should handle cancel action', () {
@@ -203,7 +203,7 @@ void main() {
         const navigationActions = [
           KeypadAction(type: KeypadActionType.backspace),
           KeypadAction(type: KeypadActionType.clear),
-          KeypadAction(type: KeypadActionType.confirm),
+          KeypadAction(type: KeypadActionType.custom),
           KeypadAction(type: KeypadActionType.cancel),
         ];
 
@@ -308,7 +308,7 @@ void main() {
           KeypadActionType.backspace,
           KeypadActionType.clear,
           KeypadActionType.toggleSign,
-          KeypadActionType.confirm,
+          KeypadActionType.custom,
           KeypadActionType.cancel,
           KeypadActionType.custom,
         ];

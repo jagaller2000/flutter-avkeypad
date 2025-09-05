@@ -263,7 +263,7 @@ void main() {
       final layoutWithConfirm = [
         [
           const KeypadKey(value: '1', type: KeypadKeyType.digit),
-          const KeypadKey(value: 'OK', type: KeypadKeyType.confirm),
+          const KeypadKey(value: 'OK', type: KeypadKeyType.custom),
         ],
       ];
       final pressedKeys = <KeypadKey>[];
@@ -286,7 +286,7 @@ void main() {
         (widget) =>
             widget is KeypadKeyWidget &&
             widget.keypadKey.value == 'OK' &&
-            widget.keypadKey.type == KeypadKeyType.confirm,
+            widget.keypadKey.type == KeypadKeyType.custom,
       );
       expect(confirmKeyEmptyFinder, findsOneWidget);
 
@@ -314,7 +314,7 @@ void main() {
         (widget) =>
             widget is KeypadKeyWidget &&
             widget.keypadKey.value == 'OK' &&
-            widget.keypadKey.type == KeypadKeyType.confirm,
+            widget.keypadKey.type == KeypadKeyType.custom,
       );
       expect(confirmKeyValidFinder, findsOneWidget);
 
@@ -342,7 +342,7 @@ void main() {
         (widget) =>
             widget is KeypadKeyWidget &&
             widget.keypadKey.value == 'OK' &&
-            widget.keypadKey.type == KeypadKeyType.confirm,
+            widget.keypadKey.type == KeypadKeyType.custom,
       );
       expect(confirmKeyInvalidFinder, findsOneWidget);
 

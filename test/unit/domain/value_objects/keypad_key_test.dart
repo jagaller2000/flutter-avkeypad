@@ -110,11 +110,11 @@ void main() {
       test('should handle confirm key', () {
         const key = KeypadKey(
           value: 'confirm',
-          type: KeypadKeyType.confirm,
+          type: KeypadKeyType.custom,
           displayText: '✓',
         );
 
-        expect(key.type, equals(KeypadKeyType.confirm));
+        expect(key.type, equals(KeypadKeyType.custom));
         expect(key.display, equals('✓'));
       });
 
@@ -472,7 +472,7 @@ void main() {
           KeypadKeyType.decimal,
           KeypadKeyType.backspace,
           KeypadKeyType.clear,
-          KeypadKeyType.confirm,
+          KeypadKeyType.custom,
           KeypadKeyType.cancel,
           KeypadKeyType.sign,
           KeypadKeyType.custom,

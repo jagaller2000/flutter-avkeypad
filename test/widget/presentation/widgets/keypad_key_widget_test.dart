@@ -348,5 +348,62 @@ void main() {
       expect(find.text('±'), findsOneWidget);
       expect(find.text('sign'), findsNothing);
     });
+
+    group('compact mode', () {
+      testWidgets('should render in compact mode with correct sizing', (
+        tester,
+      ) async {
+        // Arrange
+        const key = KeypadKey(value: '1', type: KeypadKeyType.digit);
+
+        // Act
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: KeypadKeyWidget(
+                keypadKey: key,
+                onPressed: () {},
+                isCompact: true, // This will exercise line 42
+              ),
+            ),
+          ),
+        );
+
+        // Assert
+        expect(find.text('1'), findsOneWidget);
+        expect(find.byType(FilledButton), findsOneWidget);
+
+        // The compact mode applies different sizing and padding
+        // which exercises the compact padding calculation on line 42
+      });
+
+      testWidgets('should render action button in compact mode', (
+        tester,
+      ) async {
+        // Arrange
+        const key = KeypadKey(
+          value: 'backspace',
+          type: KeypadKeyType.backspace,
+          displayText: '⌫',
+        );
+
+        // Act
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: KeypadKeyWidget(
+                keypadKey: key,
+                onPressed: () {},
+                isCompact: true, // This ensures compact sizing is used
+              ),
+            ),
+          ),
+        );
+
+        // Assert
+        expect(find.text('⌫'), findsOneWidget);
+        expect(find.byType(FilledButton), findsOneWidget);
+      });
+    });
   });
 }

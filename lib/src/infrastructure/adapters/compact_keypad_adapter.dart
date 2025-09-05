@@ -38,19 +38,8 @@ class CompactKeypadAdapter implements KeypadPort {
     // Fourth row: varies based on configuration
     final bottomRow = <KeypadKey>[];
 
-    // Add clear key to left if enabled
-    if (config.showClearKey) {
-      bottomRow.add(
-        const KeypadKey(
-          value: 'clear',
-          type: KeypadKeyType.clear,
-          displayText: 'C',
-        ),
-      );
-    }
-
-    // Add sign key if enabled (when clear is disabled, it can go left)
-    if (config.showSignKey && !config.showClearKey) {
+    // Add sign key if enabled (can go left since clear is now in display area)
+    if (config.showSignKey) {
       bottomRow.add(
         const KeypadKey(value: '±', type: KeypadKeyType.sign, displayText: '±'),
       );
@@ -58,13 +47,6 @@ class CompactKeypadAdapter implements KeypadPort {
 
     // Always add zero
     bottomRow.add(const KeypadKey(value: '0', type: KeypadKeyType.digit));
-
-    // Add sign key to right of zero if clear key took the left spot
-    if (config.showSignKey && config.showClearKey) {
-      bottomRow.add(
-        const KeypadKey(value: '±', type: KeypadKeyType.sign, displayText: '±'),
-      );
-    }
 
     // Add decimal key if enabled
     if (config.showDecimalKey) {

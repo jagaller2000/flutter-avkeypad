@@ -62,12 +62,11 @@ void main() {
       expect(layout[2][1].value, equals('8'));
       expect(layout[2][2].value, equals('9'));
 
-      // Fourth row: clear, 0, sign, decimal
-      expect(layout[3].length, equals(4));
-      expect(layout[3][0].type, equals(KeypadKeyType.clear));
+      // Fourth row: sign, 0, decimal (clear is now in display area)
+      expect(layout[3].length, equals(3));
+      expect(layout[3][0].type, equals(KeypadKeyType.sign));
       expect(layout[3][1].value, equals('0'));
-      expect(layout[3][2].type, equals(KeypadKeyType.sign));
-      expect(layout[3][3].type, equals(KeypadKeyType.decimal));
+      expect(layout[3][2].type, equals(KeypadKeyType.decimal));
     });
 
     test('getKeypadLayout without clear key puts sign on left', () {
@@ -88,7 +87,7 @@ void main() {
       expect(layout[3][2].type, equals(KeypadKeyType.decimal));
     });
 
-    test('getKeypadLayout with clear and sign puts sign on right of zero', () {
+    test('getKeypadLayout with clear and sign puts sign on left of zero', () {
       // Arrange
       final config = KeypadConfig(
         showSignKey: true,
@@ -99,18 +98,14 @@ void main() {
       // Act
       final layout = adapter.getKeypadLayout(config);
 
-      // Assert
-      expect(layout[3].length, equals(4));
-      expect(layout[3][0].type, equals(KeypadKeyType.clear)); // Clear on left
+      // Assert - clear is now in display area, so bottom row has sign, 0, decimal
+      expect(layout[3].length, equals(3));
+      expect(layout[3][0].type, equals(KeypadKeyType.sign)); // Sign on left
       expect(layout[3][1].value, equals('0')); // Zero in center
       expect(
         layout[3][2].type,
-        equals(KeypadKeyType.sign),
-      ); // Sign on right of zero
-      expect(
-        layout[3][3].type,
         equals(KeypadKeyType.decimal),
-      ); // Decimal on far right
+      ); // Decimal on right
     });
 
     test('getDisplayActionKeys returns confirm and backspace when enabled', () {

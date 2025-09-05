@@ -151,6 +151,18 @@ class _CompactKeypadWidgetState extends State<CompactKeypadWidget> {
   Widget _buildDisplayArea() {
     return Row(
       children: [
+        // Clear button on the left
+        if (widget.config.showClearKey)
+          _buildActionButton(
+            const KeypadKey(
+              value: 'clear',
+              type: KeypadKeyType.clear,
+              displayText: 'C',
+            ),
+          ),
+
+        if (widget.config.showClearKey) const SizedBox(width: 8),
+
         // Display widget in the center
         Expanded(
           child:

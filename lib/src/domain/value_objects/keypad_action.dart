@@ -1,10 +1,6 @@
 /// Represents an action performed on the keypad
 class KeypadAction {
-  const KeypadAction({
-    required this.type,
-    this.value,
-    this.key,
-  });
+  const KeypadAction({required this.type, this.value, this.key});
 
   /// The type of action performed
   final KeypadActionType type;

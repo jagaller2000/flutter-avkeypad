@@ -29,7 +29,7 @@ class _StepSize2KeypadDemoState
         showSignKey: true,
         showBackspaceKey: true,
         showClearKey: true,
-        
+
         showCancelKey: true,
       ),
     );

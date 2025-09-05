@@ -56,7 +56,7 @@ void main() {
       testWidgets('should render action buttons', (tester) async {
         // Arrange
         const widget = CompactKeypadWidget(
-          config: KeypadConfig(showBackspaceKey: true, ),
+          config: KeypadConfig(showBackspaceKey: true),
         );
 
         // Act
@@ -214,9 +214,7 @@ void main() {
       ) async {
         // Arrange
         String? confirmedValue;
-        final widget = CompactKeypadWidget(
-          config: const KeypadConfig(),
-        );
+        final widget = CompactKeypadWidget(config: const KeypadConfig());
 
         // Act
         await tester.pumpWidget(createTestWidget(child: widget));

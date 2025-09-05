@@ -281,11 +281,7 @@ void main() {
 
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: NumericKeypad(
-              config: config,
-            ),
-          ),
+          home: Scaffold(body: NumericKeypad(config: config)),
         ),
       );
 

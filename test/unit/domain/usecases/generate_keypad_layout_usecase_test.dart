@@ -284,7 +284,7 @@ void main() {
         const config = KeypadConfig(
           showBackspaceKey: false,
           showClearKey: false,
-          
+
           showCancelKey: false,
         );
         final result = useCase.generateStandardLayout(config);
@@ -309,7 +309,7 @@ void main() {
         const configWithoutActions = KeypadConfig(
           showBackspaceKey: false,
           showClearKey: false,
-          
+
           showCancelKey: false,
           customKeys: [],
         );
@@ -512,7 +512,7 @@ void main() {
           showSignKey: true,
           showClearKey: true,
           showBackspaceKey: true,
-          
+
           showCancelKey: true,
           customKeys: customKeys,
           decimalSeparator: ',',
@@ -543,7 +543,7 @@ void main() {
           showSignKey: false,
           showClearKey: false,
           showBackspaceKey: false,
-          
+
           showCancelKey: false,
           customKeys: [],
         );

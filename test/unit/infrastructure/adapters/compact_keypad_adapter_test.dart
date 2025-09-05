@@ -115,17 +115,14 @@ void main() {
 
     test('getDisplayActionKeys returns confirm and backspace when enabled', () {
       // Arrange
-      final config = KeypadConfig( showBackspaceKey: true);
+      final config = KeypadConfig(showBackspaceKey: true);
 
       // Act
       final actionKeys = adapter.getDisplayActionKeys(config);
 
       // Assert
       expect(actionKeys.length, equals(2));
-      expect(
-        actionKeys.any((key) => key.type == KeypadKeyType.custom),
-        isTrue,
-      );
+      expect(actionKeys.any((key) => key.type == KeypadKeyType.custom), isTrue);
       expect(
         actionKeys.any((key) => key.type == KeypadKeyType.backspace),
         isTrue,
@@ -136,10 +133,7 @@ void main() {
       'getDisplayActionKeys returns only confirm when backspace disabled',
       () {
         // Arrange
-        final config = KeypadConfig(
-          
-          showBackspaceKey: false,
-        );
+        final config = KeypadConfig(showBackspaceKey: false);
 
         // Act
         final actionKeys = adapter.getDisplayActionKeys(config);
@@ -154,10 +148,7 @@ void main() {
       'getDisplayActionKeys returns only backspace when confirm disabled',
       () {
         // Arrange
-        final config = KeypadConfig(
-          
-          showBackspaceKey: true,
-        );
+        final config = KeypadConfig(showBackspaceKey: true);
 
         // Act
         final actionKeys = adapter.getDisplayActionKeys(config);
@@ -170,10 +161,7 @@ void main() {
 
     test('getDisplayActionKeys returns empty when both disabled', () {
       // Arrange
-      final config = KeypadConfig(
-        
-        showBackspaceKey: false,
-      );
+      final config = KeypadConfig(showBackspaceKey: false);
 
       // Act
       final actionKeys = adapter.getDisplayActionKeys(config);
@@ -226,11 +214,7 @@ void main() {
 
     test('getKeypadLayout excludes action buttons from grid layout', () {
       // Arrange
-      final config = KeypadConfig(
-        showDecimalKey: true,
-        
-        showBackspaceKey: true,
-      );
+      final config = KeypadConfig(showDecimalKey: true, showBackspaceKey: true);
 
       // Act
       final layout = adapter.getKeypadLayout(config);
@@ -243,10 +227,7 @@ void main() {
 
       // Action buttons should NOT be in the layout grid
       final allKeys = layout.expand((row) => row).toList();
-      expect(
-        allKeys.any((key) => key.type == KeypadKeyType.custom),
-        isFalse,
-      );
+      expect(allKeys.any((key) => key.type == KeypadKeyType.custom), isFalse);
       expect(
         allKeys.any((key) => key.type == KeypadKeyType.backspace),
         isFalse,
@@ -255,11 +236,7 @@ void main() {
 
     test('getDisplayActionKeys returns action buttons when enabled', () {
       // Arrange
-      final config = KeypadConfig(
-        showDecimalKey: true,
-        
-        showBackspaceKey: true,
-      );
+      final config = KeypadConfig(showDecimalKey: true, showBackspaceKey: true);
 
       // Act
       final actionKeys = adapter.getDisplayActionKeys(config);
@@ -288,7 +265,7 @@ void main() {
         // Arrange
         final config = KeypadConfig(
           showDecimalKey: true,
-          
+
           showBackspaceKey: false,
         );
 

@@ -181,7 +181,7 @@ class _SimpleLayoutDemoState extends State<SimpleLayoutDemo> {
                   showSignKey: true,
                   showClearKey: true,
                   showBackspaceKey: true,
-                  
+
                   showCancelKey: true,
                 ),
                 onValueChanged: (value) {
@@ -261,7 +261,7 @@ class _SimpleLayoutDemoState extends State<SimpleLayoutDemo> {
                   showSignKey: true,
                   showClearKey: true,
                   showBackspaceKey: true,
-                  
+
                   showCancelKey: true,
                 ),
                 onValueChanged: (value) {

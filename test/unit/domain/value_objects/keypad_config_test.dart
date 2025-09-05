@@ -36,7 +36,7 @@ void main() {
           showSignKey: true,
           showClearKey: false,
           showBackspaceKey: false,
-          
+
           showCancelKey: true,
           maxDigits: 5,
           maxDecimalPlaces: 3,

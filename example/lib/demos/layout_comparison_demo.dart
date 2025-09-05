@@ -163,9 +163,7 @@ class _LayoutComparisonDemoState extends State<LayoutComparisonDemo> {
             padding: EdgeInsets.all(effectivePadding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Status: $_traditionalMessage'),
-              ],
+              children: [Text('Status: $_traditionalMessage')],
             ),
           ),
         ),
@@ -183,7 +181,7 @@ class _LayoutComparisonDemoState extends State<LayoutComparisonDemo> {
                   showSignKey: true,
                   showClearKey: true,
                   showBackspaceKey: true,
-                  
+
                   showCancelKey: true,
                 ),
                 onValueChanged: (value) {
@@ -245,9 +243,7 @@ class _LayoutComparisonDemoState extends State<LayoutComparisonDemo> {
             padding: EdgeInsets.all(effectivePadding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Status: $_compactMessage'),
-              ],
+              children: [Text('Status: $_compactMessage')],
             ),
           ),
         ),
@@ -265,7 +261,7 @@ class _LayoutComparisonDemoState extends State<LayoutComparisonDemo> {
                   showSignKey: true,
                   showClearKey: true,
                   showBackspaceKey: true,
-                  
+
                   showCancelKey: true,
                 ),
                 onValueChanged: (value) {

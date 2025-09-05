@@ -8,3 +8,4 @@ export 'limited_keypad_demo.dart';
 export 'advanced_keypad_demo.dart';
 export 'step_size_2_demo.dart';
 export 'step_size_decimal_demo.dart';
+export 'simple_layout_demo.dart';

@@ -107,17 +107,6 @@ void main() {
         expect(find.text('±'), findsOneWidget);
       });
 
-      testWidgets('should render confirm key when enabled', (tester) async {
-        // Arrange
-        const widget = TraditionalKeypadWidget(config: KeypadConfig());
-
-        // Act
-        await tester.pumpWidget(createTestWidget(child: widget));
-
-        // Assert
-        expect(find.text('✓'), findsOneWidget);
-      });
-
       testWidgets('should render backspace key when enabled', (tester) async {
         // Arrange
         const widget = TraditionalKeypadWidget(
@@ -362,25 +351,6 @@ void main() {
 
         // Assert
         expect(changedValue, equals('1'));
-      });
-
-      testWidgets('should call onConfirm when confirm key is pressed', (
-        tester,
-      ) async {
-        // Arrange
-        String? confirmedValue;
-        final widget = TraditionalKeypadWidget(config: const KeypadConfig());
-
-        await tester.pumpWidget(createTestWidget(child: widget));
-
-        // Act
-        await tester.tap(find.text('1'));
-        await tester.pump();
-        await tester.tap(find.text('✓'));
-        await tester.pump();
-
-        // Assert
-        expect(confirmedValue, equals('1'));
       });
 
       testWidgets('should call onCancel when cancel key is pressed', (

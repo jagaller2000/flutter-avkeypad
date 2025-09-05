@@ -274,57 +274,6 @@ void main() {
       }
     });
 
-    testWidgets('should handle confirm callback', (tester) async {
-      // Arrange
-      double? confirmedValue;
-      const config = KeypadConfig();
-
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: NumericKeypad(config: config)),
-        ),
-      );
-
-      // Act - input 123, then confirm
-      await tester.tap(
-        find.byWidgetPredicate(
-          (widget) =>
-              widget is KeypadKeyWidget && widget.keypadKey.value == '1',
-        ),
-      );
-      await tester.pump();
-
-      await tester.tap(
-        find.byWidgetPredicate(
-          (widget) =>
-              widget is KeypadKeyWidget && widget.keypadKey.value == '2',
-        ),
-      );
-      await tester.pump();
-
-      await tester.tap(
-        find.byWidgetPredicate(
-          (widget) =>
-              widget is KeypadKeyWidget && widget.keypadKey.value == '3',
-        ),
-      );
-      await tester.pump();
-
-      // Find and tap confirm key
-      final confirmKeyFinder = find.byWidgetPredicate(
-        (widget) =>
-            widget is KeypadKeyWidget &&
-            widget.keypadKey.type == KeypadKeyType.custom,
-      );
-
-      expect(confirmKeyFinder, findsOneWidget);
-      await tester.tap(confirmKeyFinder);
-      await tester.pump();
-
-      // Assert - this should trigger line 104
-      expect(confirmedValue, 123.0);
-    });
-
     testWidgets('should handle cancel callback', (tester) async {
       // Arrange
       bool cancelCalled = false;
@@ -619,41 +568,6 @@ void main() {
       expect(find.byType(NumericKeypad), findsOneWidget);
     });
 
-    testWidgets('should handle confirm action without callback', (
-      tester,
-    ) async {
-      // Arrange - no onConfirm callback provided
-      const config = KeypadConfig();
-
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(body: NumericKeypad(config: config)),
-        ),
-      );
-
-      // Add some input first to make confirm meaningful
-      await tester.tap(
-        find.byWidgetPredicate(
-          (widget) =>
-              widget is KeypadKeyWidget && widget.keypadKey.value == '1',
-        ),
-      );
-      await tester.pump();
-
-      // Act - find and tap confirm key
-      final confirmKeyFinder = find.byWidgetPredicate(
-        (widget) =>
-            widget is KeypadKeyWidget &&
-            widget.keypadKey.type == KeypadKeyType.custom,
-      );
-
-      expect(confirmKeyFinder, findsOneWidget);
-      await tester.tap(confirmKeyFinder);
-      await tester.pump();
-
-      // Assert - should not crash and widget should still exist
-      expect(find.byType(NumericKeypad), findsOneWidget);
-    });
     testWidgets('should trigger onValueChanged callback on input', (
       tester,
     ) async {

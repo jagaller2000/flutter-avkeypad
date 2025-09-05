@@ -67,10 +67,6 @@ void main() {
           find.text('⌫'),
           findsWidgets,
         ); // backspace symbols (display + grid)
-        expect(
-          find.text('✓'),
-          findsWidgets,
-        ); // confirm symbols (display + grid)
       });
     });
 
@@ -207,26 +203,6 @@ void main() {
         expect(pressedKey, isNotNull);
         expect(pressedKey!.value, equals('7'));
         expect(pressedKey!.type, equals(KeypadKeyType.digit));
-      });
-
-      testWidgets('should call onConfirm when confirm is tapped', (
-        tester,
-      ) async {
-        // Arrange
-        String? confirmedValue;
-        final widget = CompactKeypadWidget(config: const KeypadConfig());
-
-        // Act
-        await tester.pumpWidget(createTestWidget(child: widget));
-        await tester.tap(find.text('4'));
-        await tester.pumpAndSettle();
-        await tester.tap(find.text('2'));
-        await tester.pumpAndSettle();
-        await tester.tap(find.text('✓').first); // tap first confirm symbol
-        await tester.pumpAndSettle();
-
-        // Assert
-        expect(confirmedValue, equals('42'));
       });
 
       testWidgets('should call onCancel when cancel is available and tapped', (

@@ -218,7 +218,6 @@ void main() {
         expect(result, contains('showSignKey:'));
         expect(result, contains('showClearKey:'));
         expect(result, contains('showBackspaceKey:'));
-        expect(result, contains('showConfirmKey:'));
         expect(result, contains('showCancelKey:'));
         expect(result, contains('maxDigits:'));
         expect(result, contains('maxDecimalPlaces:'));

@@ -121,8 +121,7 @@ void main() {
       final actionKeys = adapter.getDisplayActionKeys(config);
 
       // Assert
-      expect(actionKeys.length, equals(2));
-      expect(actionKeys.any((key) => key.type == KeypadKeyType.custom), isTrue);
+      expect(actionKeys.length, equals(1));
       expect(
         actionKeys.any((key) => key.type == KeypadKeyType.backspace),
         isTrue,
@@ -139,8 +138,7 @@ void main() {
         final actionKeys = adapter.getDisplayActionKeys(config);
 
         // Assert
-        expect(actionKeys.length, equals(1));
-        expect(actionKeys[0].type, equals(KeypadKeyType.custom));
+        expect(actionKeys.length, equals(0));
       },
     );
 
@@ -198,10 +196,6 @@ void main() {
       );
       expect(adapter.getLocalizedKeyText(KeypadKeyType.clear), equals('Clear'));
       expect(
-        adapter.getLocalizedKeyText(KeypadKeyType.custom),
-        equals('Confirm'),
-      );
-      expect(
         adapter.getLocalizedKeyText(KeypadKeyType.cancel),
         equals('Cancel'),
       );
@@ -242,14 +236,7 @@ void main() {
       final actionKeys = adapter.getDisplayActionKeys(config);
 
       // Assert
-      expect(actionKeys.length, equals(2));
-
-      // Should have confirm button
-      final confirmButton = actionKeys.firstWhere(
-        (key) => key.type == KeypadKeyType.custom,
-      );
-      expect(confirmButton.value, equals('confirm'));
-      expect(confirmButton.displayText, equals('✓'));
+      expect(actionKeys.length, equals(1));
 
       // Should have backspace button
       final backspaceButton = actionKeys.firstWhere(
@@ -260,7 +247,7 @@ void main() {
     });
 
     test(
-      'getDisplayActionKeys includes only confirm button when backspace disabled',
+      'getDisplayActionKeys includes no buttons when backspace disabled',
       () {
         // Arrange
         final config = KeypadConfig(
@@ -273,13 +260,7 @@ void main() {
         final actionKeys = adapter.getDisplayActionKeys(config);
 
         // Assert
-        expect(actionKeys.length, equals(1));
-
-        // Should have only confirm button
-        final confirmButton = actionKeys.first;
-        expect(confirmButton.type, equals(KeypadKeyType.custom));
-        expect(confirmButton.value, equals('confirm'));
-        expect(confirmButton.displayText, equals('✓'));
+        expect(actionKeys.length, equals(0));
       },
     );
   });

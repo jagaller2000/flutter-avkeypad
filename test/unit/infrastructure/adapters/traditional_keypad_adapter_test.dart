@@ -34,7 +34,7 @@ void main() {
         showSignKey: true,
         showClearKey: true,
         showBackspaceKey: true,
-        
+
         showCancelKey: true,
       );
 
@@ -70,16 +70,6 @@ void main() {
       expect(layout[3][0].type, equals(KeypadKeyType.sign));
       expect(layout[3][1].value, equals('0'));
       expect(layout[3][2].type, equals(KeypadKeyType.decimal));
-
-      // Fifth row: action keys
-      expect(layout[4].length, equals(4)); // backspace, clear, confirm, cancel
-      expect(
-        layout[4].any((key) => key.type == KeypadKeyType.backspace),
-        isTrue,
-      );
-      expect(layout[4].any((key) => key.type == KeypadKeyType.clear), isTrue);
-      expect(layout[4].any((key) => key.type == KeypadKeyType.custom), isTrue);
-      expect(layout[4].any((key) => key.type == KeypadKeyType.cancel), isTrue);
     });
 
     test('getKeypadLayout without sign key adjusts bottom row', () {
@@ -113,7 +103,7 @@ void main() {
       final config = KeypadConfig(
         showBackspaceKey: false,
         showClearKey: false,
-        
+
         showCancelKey: false,
       );
 
@@ -151,10 +141,6 @@ void main() {
         equals('Delete'),
       );
       expect(adapter.getLocalizedKeyText(KeypadKeyType.clear), equals('Clear'));
-      expect(
-        adapter.getLocalizedKeyText(KeypadKeyType.custom),
-        equals('Confirm'),
-      );
       expect(
         adapter.getLocalizedKeyText(KeypadKeyType.cancel),
         equals('Cancel'),

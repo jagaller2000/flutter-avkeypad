@@ -242,23 +242,21 @@ void main() {
         expect(clearFound, isTrue);
       });
 
-      test('should include confirm key when enabled', () {
+      test('should not include confirm key as it was removed', () {
         const config = KeypadConfig();
         final result = useCase.generateStandardLayout(config);
 
         bool confirmFound = false;
         for (final row in result) {
           for (final key in row) {
-            if (key.type == KeypadKeyType.custom) {
+            if (key.type == KeypadKeyType.custom && key.value == 'confirm') {
               confirmFound = true;
-              expect(key.value, equals('confirm'));
-              expect(key.displayText, equals('✓'));
               break;
             }
           }
         }
 
-        expect(confirmFound, isTrue);
+        expect(confirmFound, isFalse);
       });
 
       test('should include cancel key when enabled', () {

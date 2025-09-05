@@ -256,24 +256,22 @@ void main() {
       expect(pressedKeys.first.type, KeypadKeyType.digit);
     });
 
-    testWidgets('should handle confirm key enablement correctly', (
-      tester,
-    ) async {
+    testWidgets('should handle custom key correctly', (tester) async {
       // Arrange
-      final layoutWithConfirm = [
+      final layoutWithCustom = [
         [
           const KeypadKey(value: '1', type: KeypadKeyType.digit),
-          const KeypadKey(value: 'OK', type: KeypadKeyType.custom),
+          const KeypadKey(value: 'X', type: KeypadKeyType.custom),
         ],
       ];
       final pressedKeys = <KeypadKey>[];
 
-      // Test with empty state (should be disabled)
+      // Test with empty state
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: KeypadLayoutWidget(
-              layout: layoutWithConfirm,
+              layout: layoutWithCustom,
               onKeyPressed: (key) => pressedKeys.add(key),
               state: emptyState,
               config: config,
@@ -282,74 +280,25 @@ void main() {
         ),
       );
 
-      final confirmKeyEmptyFinder = find.byWidgetPredicate(
+      final customKeyFinder = find.byWidgetPredicate(
         (widget) =>
             widget is KeypadKeyWidget &&
-            widget.keypadKey.value == 'OK' &&
+            widget.keypadKey.value == 'X' &&
             widget.keypadKey.type == KeypadKeyType.custom,
       );
-      expect(confirmKeyEmptyFinder, findsOneWidget);
+      expect(customKeyFinder, findsOneWidget);
 
-      final confirmKeyEmpty = tester.widget<KeypadKeyWidget>(
-        confirmKeyEmptyFinder,
-      );
-      expect(confirmKeyEmpty.isEnabled, isFalse);
+      final customKey = tester.widget<KeypadKeyWidget>(customKeyFinder);
+      expect(customKey.isEnabled, isTrue);
 
-      // Test with valid input (should be enabled)
-      const stateWithValidInput = KeypadState(input: '123', isValid: true);
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: KeypadLayoutWidget(
-              layout: layoutWithConfirm,
-              onKeyPressed: (key) => pressedKeys.add(key),
-              state: stateWithValidInput,
-              config: config,
-            ),
-          ),
-        ),
-      );
+      // Test tapping the custom key
+      await tester.tap(customKeyFinder);
+      await tester.pump();
 
-      final confirmKeyValidFinder = find.byWidgetPredicate(
-        (widget) =>
-            widget is KeypadKeyWidget &&
-            widget.keypadKey.value == 'OK' &&
-            widget.keypadKey.type == KeypadKeyType.custom,
-      );
-      expect(confirmKeyValidFinder, findsOneWidget);
-
-      final confirmKeyValid = tester.widget<KeypadKeyWidget>(
-        confirmKeyValidFinder,
-      );
-      expect(confirmKeyValid.isEnabled, isTrue);
-
-      // Test with invalid input (should be disabled)
-      const stateWithInvalidInput = KeypadState(input: '123', isValid: false);
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: KeypadLayoutWidget(
-              layout: layoutWithConfirm,
-              onKeyPressed: (key) => pressedKeys.add(key),
-              state: stateWithInvalidInput,
-              config: config,
-            ),
-          ),
-        ),
-      );
-
-      final confirmKeyInvalidFinder = find.byWidgetPredicate(
-        (widget) =>
-            widget is KeypadKeyWidget &&
-            widget.keypadKey.value == 'OK' &&
-            widget.keypadKey.type == KeypadKeyType.custom,
-      );
-      expect(confirmKeyInvalidFinder, findsOneWidget);
-
-      final confirmKeyInvalid = tester.widget<KeypadKeyWidget>(
-        confirmKeyInvalidFinder,
-      );
-      expect(confirmKeyInvalid.isEnabled, isFalse);
+      // Assert
+      expect(pressedKeys.length, 1);
+      expect(pressedKeys.first.value, 'X');
+      expect(pressedKeys.first.type, KeypadKeyType.custom);
     });
   });
 }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../domain/value_objects/keypad_config.dart';
-import '../../domain/value_objects/keypad_key.dart';
-import '../../domain/value_objects/keypad_state.dart';
+import '../../domain/domain.dart';
 import '../constants/design_constants.dart';
 import 'keypad_key_widget.dart';
 

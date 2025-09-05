@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../domain/entities/keypad_session.dart';
-import '../../domain/ports/keypad_port.dart';
-import '../../domain/value_objects/keypad_config.dart';
-import '../../domain/value_objects/keypad_action.dart';
-import '../../domain/value_objects/keypad_key.dart';
-import '../../domain/value_objects/keypad_state.dart';
-import '../../domain/usecases/process_keypad_input_usecase.dart';
+import '../../domain/domain.dart';
 import '../../infrastructure/adapters/traditional_keypad_adapter.dart';
 import 'keypad_key_widget.dart';
 import 'keypad_display_widget.dart';

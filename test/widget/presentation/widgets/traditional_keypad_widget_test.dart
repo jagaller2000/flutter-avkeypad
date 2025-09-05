@@ -411,25 +411,21 @@ void main() {
       testWidgets('should handle custom key types', (tester) async {
         // Arrange - create custom keys
         const customKeys = [
-          KeypadKey(
-            value: 'pi',
-            type: KeypadKeyType.custom,
-            displayText: 'π',
-          ),
+          KeypadKey(value: 'pi', type: KeypadKeyType.custom, displayText: 'π'),
           KeypadKey(
             value: 'euler',
             type: KeypadKeyType.custom,
             displayText: 'e',
           ),
         ];
-        
+
         const config = KeypadConfig(
           customKeys: customKeys,
           showConfirmKey: true, // Ensure action row is created
         );
-        
+
         KeypadKey? pressedKey;
-        
+
         final widget = TraditionalKeypadWidget(
           config: config,
           onKeyPressed: (key) {
@@ -443,11 +439,11 @@ void main() {
         // Assert - custom keys should be rendered
         expect(find.text('π'), findsOneWidget);
         expect(find.text('e'), findsOneWidget);
-        
+
         // Test pressing custom key
         await tester.tap(find.text('π'));
         await tester.pump();
-        
+
         // Verify callback was called with custom key
         expect(pressedKey, isNotNull);
         expect(pressedKey!.value, equals('pi'));
@@ -474,14 +470,14 @@ void main() {
             displayText: 'M+',
           ),
         ];
-        
+
         const config = KeypadConfig(
           customKeys: customKeys,
           showClearKey: true, // Ensure action row exists
         );
-        
+
         final pressedKeys = <KeypadKey>[];
-        
+
         final widget = TraditionalKeypadWidget(
           config: config,
           onKeyPressed: (key) {
@@ -496,7 +492,7 @@ void main() {
         expect(find.text('√'), findsOneWidget);
         expect(find.text('%'), findsOneWidget);
         expect(find.text('M+'), findsOneWidget);
-        
+
         // Test pressing each custom key
         await tester.tap(find.text('√'));
         await tester.pump();
@@ -504,13 +500,13 @@ void main() {
         await tester.pump();
         await tester.tap(find.text('M+'));
         await tester.pump();
-        
+
         // Verify all callbacks were called correctly
         expect(pressedKeys.length, equals(3));
         expect(pressedKeys[0].value, equals('sqrt'));
         expect(pressedKeys[1].value, equals('percent'));
         expect(pressedKeys[2].value, equals('memory'));
-        
+
         // Verify all are custom type
         for (final key in pressedKeys) {
           expect(key.type, equals(KeypadKeyType.custom));
@@ -524,15 +520,15 @@ void main() {
           type: KeypadKeyType.custom,
           displayText: '★',
         );
-        
+
         const config = KeypadConfig(
           customKeys: [customKey],
           showBackspaceKey: true, // Ensure action row exists
         );
-        
+
         KeypadKey? pressedKey;
         bool customBuilderUsed = false;
-        
+
         final widget = TraditionalKeypadWidget(
           config: config,
           onKeyPressed: (key) {
@@ -556,11 +552,11 @@ void main() {
         // Assert - custom builder should be used
         expect(customBuilderUsed, isTrue);
         expect(find.text('CUSTOM: ★'), findsOneWidget);
-        
+
         // Test pressing custom key through custom builder
         await tester.tap(find.text('CUSTOM: ★'));
         await tester.pump();
-        
+
         // Verify callback was called
         expect(pressedKey, isNotNull);
         expect(pressedKey!.value, equals('special'));

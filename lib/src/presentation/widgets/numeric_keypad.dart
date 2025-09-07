@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import '../../domain/domain.dart';
 import 'keypad_container_widget.dart';
+import 'hardware_keyboard_keypad.dart';
 
 /// A numeric keypad widget following Material 3 design
 class NumericKeypad extends StatefulWidget {
@@ -10,6 +11,8 @@ class NumericKeypad extends StatefulWidget {
     this.config = const KeypadConfig(),
     this.onValueChanged,
     this.onCancel,
+    this.enableHardwareKeyboard = true,
+    this.autofocus = true,
   });
 
   /// Configuration for the keypad
@@ -20,6 +23,12 @@ class NumericKeypad extends StatefulWidget {
 
   /// Callback when cancel is pressed
   final VoidCallback? onCancel;
+
+  /// Whether hardware keyboard input is enabled
+  final bool enableHardwareKeyboard;
+
+  /// Whether the keypad should automatically receive focus for keyboard input
+  final bool autofocus;
 
   @override
   State<NumericKeypad> createState() => _NumericKeypadState();
@@ -116,10 +125,22 @@ class _NumericKeypadState extends State<NumericKeypad> {
 
   @override
   Widget build(BuildContext context) {
-    return KeypadContainerWidget(
+    final keypadWidget = KeypadContainerWidget(
       state: _session.currentState,
       config: widget.config,
       onKeyPressed: _handleKeyPress,
     );
+
+    // Wrap with hardware keyboard support if enabled
+    if (widget.enableHardwareKeyboard) {
+      return HardwareKeyboardKeypad(
+        onKeypadAction: _processAction,
+        enabled: widget.enableHardwareKeyboard,
+        autofocus: widget.autofocus,
+        child: keypadWidget,
+      );
+    }
+
+    return keypadWidget;
   }
 }

@@ -7,6 +7,7 @@ A Flutter package providing customizable numeric keypad widgets designed for avi
 ## Features
 
 - **Multiple Layout Options**: Compact and traditional keypad layouts
+- **Hardware Keyboard Support**: Full support for physical keyboard input as fallback
 - **Highly Configurable**: Control which keys are shown and how input is validated
 - **Input Validation**: Built-in support for step sizes, decimal limits, and range constraints
 - **Aviation-Focused**: Designed for professional applications requiring precise numeric input
@@ -95,6 +96,50 @@ TraditionalKeypadWidget(
   onValueChanged: (value) {
     print('Value: $value');
   },
+)
+```
+
+## Hardware Keyboard Support
+
+All keypad widgets include built-in hardware keyboard support as a fallback for users. This feature is enabled by default and automatically handles physical keyboard input.
+
+### Supported Keys
+
+The hardware keyboard support maps the following keys to keypad actions:
+
+- **Digit Keys (0-9)**: Main keyboard and numpad digits for input
+- **Decimal Point**: Period (.), comma (,), and numpad decimal for decimal input
+- **Backspace**: Removes the last entered character
+- **Escape**: Clears all input (same as Clear button)
+- **Minus (-)**: Toggles positive/negative sign (same as ± button)
+
+### Configuration
+
+```dart
+NumericKeypad(
+  enableHardwareKeyboard: true,  // Enable/disable hardware keyboard (default: true)
+  autofocus: true,               // Auto-focus for keyboard input (default: true)
+  onValueChanged: (value) {
+    print('Value from keyboard or touch: $value');
+  },
+)
+```
+
+### Usage Tips
+
+- **Focus**: Click on the keypad to ensure it receives keyboard input
+- **Accessibility**: Hardware keyboard support improves accessibility for users who prefer keyboard navigation
+- **Fallback**: Provides a seamless fallback when touch input is unavailable or inconvenient
+- **Aviation Use**: Particularly useful in cockpit environments where keyboard input may be preferred
+
+### Disabling Hardware Keyboard
+
+If you need to disable hardware keyboard support:
+
+```dart
+NumericKeypad(
+  enableHardwareKeyboard: false,
+  // ... other configuration
 )
 ```
 
@@ -240,26 +285,59 @@ CompactKeypadWidget(
 
 ### NumericKeypad
 
-A flexible numeric keypad that automatically selects the appropriate layout adapter.
+A flexible numeric keypad that automatically selects the appropriate layout adapter. Includes built-in hardware keyboard support.
 
 ```dart
 NumericKeypad(
   config: KeypadConfig(),
+  enableHardwareKeyboard: true,  // Hardware keyboard support (default: true)
   onValueChanged: (value) => print(value),
 )
 ```
 
 ### CompactKeypadWidget
 
-Space-efficient layout with action buttons integrated around the display area.
+Space-efficient layout with action buttons integrated around the display area. Also supports hardware keyboard input.
+
+```dart
+CompactKeypadWidget(
+  config: KeypadConfig(),
+  enableHardwareKeyboard: true,  // Hardware keyboard support (default: true)
+  onValueChanged: (value) => print(value),
+)
+```
 
 ### TraditionalKeypadWidget
 
-Calculator-style layout with a dedicated action row.
+Traditional calculator-style layout with action buttons in a separate bottom row. Hardware keyboard support included.
+
+```dart
+TraditionalKeypadWidget(
+  config: KeypadConfig(),
+  enableHardwareKeyboard: true,  // Hardware keyboard support (default: true)
+  onValueChanged: (value) => print(value),
+)
+```
 
 ### KeypadLayoutWidget
 
 Low-level widget for custom layout implementations.
+
+### HardwareKeyboardKeypad
+
+A wrapper widget that adds hardware keyboard support to any widget. Useful for creating custom keypad implementations.
+
+```dart
+HardwareKeyboardKeypad(
+  onKeypadAction: (action) {
+    // Handle KeypadAction from keyboard input
+    print('Action: ${action.type}, Value: ${action.value}');
+  },
+  enabled: true,
+  autofocus: true,
+  child: YourCustomWidget(),
+)
+```
 
 ## Input Validation
 

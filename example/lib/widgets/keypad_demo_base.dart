@@ -32,6 +32,9 @@ abstract class KeypadDemoPageState<T extends KeypadDemoPage> extends State<T> {
     required String title,
     required String description,
     required KeypadConfig config,
+    bool enableHardwareKeyboard = true,
+    bool autofocus = true,
+    List<Widget> additionalControls = const [],
   }) {
     final theme = Theme.of(context);
     final visualDensity = theme.visualDensity;
@@ -103,6 +106,29 @@ abstract class KeypadDemoPageState<T extends KeypadDemoPage> extends State<T> {
 
           SizedBox(height: effectiveSpacing),
 
+          // Additional controls (if any)
+          if (additionalControls.isNotEmpty) ...[
+            Card(
+              child: Padding(
+                padding: EdgeInsets.all(effectivePadding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Controls',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: effectiveSmallSpacing),
+                    ...additionalControls,
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: effectiveSpacing),
+          ],
+
           // Keypad - Give it most of the space
           Expanded(
             flex: 3,
@@ -113,6 +139,8 @@ abstract class KeypadDemoPageState<T extends KeypadDemoPage> extends State<T> {
                   config: config,
                   onValueChanged: onValueChanged,
                   onCancel: onCancel,
+                  enableHardwareKeyboard: enableHardwareKeyboard,
+                  autofocus: autofocus,
                 ),
               ),
             ),

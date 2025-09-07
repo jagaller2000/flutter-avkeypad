@@ -3,6 +3,7 @@ library;
 
 // Core widgets
 export 'compact_keypad_widget.dart';
+export 'hardware_keyboard_keypad.dart';
 export 'keypad_container_widget.dart';
 export 'keypad_display_widget.dart';
 export 'keypad_key_widget.dart';

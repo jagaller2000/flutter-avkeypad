@@ -4,6 +4,7 @@ import '../../domain/domain.dart';
 import '../../infrastructure/adapters/traditional_keypad_adapter.dart';
 import 'keypad_key_widget.dart';
 import 'keypad_display_widget.dart';
+import 'hardware_keyboard_keypad.dart';
 
 /// A traditional keypad widget with action buttons in a separate bottom row
 class TraditionalKeypadWidget extends StatefulWidget {
@@ -15,6 +16,8 @@ class TraditionalKeypadWidget extends StatefulWidget {
     this.onCancel,
     this.displayWidget,
     this.keyBuilder,
+    this.enableHardwareKeyboard = true,
+    this.autofocus = true,
   });
 
   /// Configuration for the keypad
@@ -34,6 +37,12 @@ class TraditionalKeypadWidget extends StatefulWidget {
 
   /// Custom key builder (optional)
   final Widget Function(KeypadKey, VoidCallback)? keyBuilder;
+
+  /// Whether hardware keyboard input is enabled
+  final bool enableHardwareKeyboard;
+
+  /// Whether the keypad should automatically receive focus for keyboard input
+  final bool autofocus;
 
   @override
   State<TraditionalKeypadWidget> createState() =>
@@ -113,6 +122,17 @@ class _TraditionalKeypadWidgetState extends State<TraditionalKeypadWidget> {
     widget.onKeyPressed?.call(key);
 
     final action = _createActionFromKey(key);
+    _processKeypadAction(action);
+  }
+
+  /// Process a keypad action (from either touch or keyboard input)
+  void _processKeypadAction(KeypadAction action) {
+    // Handle cancel action first
+    if (action.type == KeypadActionType.cancel) {
+      widget.onCancel?.call();
+      return;
+    }
+
     final newState = _processInputUseCase(
       currentState: _currentState,
       action: action,
@@ -125,11 +145,6 @@ class _TraditionalKeypadWidgetState extends State<TraditionalKeypadWidget> {
     });
 
     widget.onValueChanged?.call(_currentState.input);
-
-    // Handle cancel action
-    if (key.type == KeypadKeyType.cancel) {
-      widget.onCancel?.call();
-    }
   }
 
   Widget _buildKeypadGrid() {
@@ -160,7 +175,7 @@ class _TraditionalKeypadWidgetState extends State<TraditionalKeypadWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    final keypadWidget = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         // Display widget
@@ -179,5 +194,17 @@ class _TraditionalKeypadWidgetState extends State<TraditionalKeypadWidget> {
         _buildKeypadGrid(),
       ],
     );
+
+    // Wrap with hardware keyboard support if enabled
+    if (widget.enableHardwareKeyboard) {
+      return HardwareKeyboardKeypad(
+        onKeypadAction: _processKeypadAction,
+        enabled: widget.enableHardwareKeyboard,
+        autofocus: widget.autofocus,
+        child: keypadWidget,
+      );
+    }
+
+    return keypadWidget;
   }
 }

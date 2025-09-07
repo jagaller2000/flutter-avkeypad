@@ -4,6 +4,7 @@ import '../../domain/domain.dart';
 import '../../infrastructure/adapters/compact_keypad_adapter.dart';
 import 'keypad_key_widget.dart';
 import 'keypad_display_widget.dart';
+import 'hardware_keyboard_keypad.dart';
 
 /// A compact keypad widget with action buttons integrated around the display
 class CompactKeypadWidget extends StatefulWidget {
@@ -15,6 +16,8 @@ class CompactKeypadWidget extends StatefulWidget {
     this.onCancel,
     this.displayWidget,
     this.keyBuilder,
+    this.enableHardwareKeyboard = true,
+    this.autofocus = true,
   });
 
   /// Configuration for the keypad
@@ -34,6 +37,12 @@ class CompactKeypadWidget extends StatefulWidget {
 
   /// Custom key builder (optional)
   final Widget Function(KeypadKey, VoidCallback)? keyBuilder;
+
+  /// Whether hardware keyboard input is enabled
+  final bool enableHardwareKeyboard;
+
+  /// Whether the keypad should automatically receive focus for keyboard input
+  final bool autofocus;
 
   @override
   State<CompactKeypadWidget> createState() => _CompactKeypadWidgetState();
@@ -118,6 +127,17 @@ class _CompactKeypadWidgetState extends State<CompactKeypadWidget> {
     widget.onKeyPressed?.call(key);
 
     final action = createActionFromKey(key);
+    _processKeypadAction(action);
+  }
+
+  /// Process a keypad action (from either touch or keyboard input)
+  void _processKeypadAction(KeypadAction action) {
+    // Handle cancel action first
+    if (action.type == KeypadActionType.cancel) {
+      widget.onCancel?.call();
+      return;
+    }
+
     final newState = _processInputUseCase(
       currentState: _currentState,
       action: action,
@@ -130,12 +150,6 @@ class _CompactKeypadWidgetState extends State<CompactKeypadWidget> {
     });
 
     widget.onValueChanged?.call(_currentState.input);
-
-    // Handle cancel action
-    // Handle cancel action
-    if (key.type == KeypadKeyType.cancel) {
-      widget.onCancel?.call();
-    }
   }
 
   Widget _buildActionButton(KeypadKey key) {
@@ -209,7 +223,7 @@ class _CompactKeypadWidgetState extends State<CompactKeypadWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    final keypadWidget = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         // Display area with integrated action buttons
@@ -222,5 +236,17 @@ class _CompactKeypadWidgetState extends State<CompactKeypadWidget> {
         _buildKeypadGrid(),
       ],
     );
+
+    // Wrap with hardware keyboard support if enabled
+    if (widget.enableHardwareKeyboard) {
+      return HardwareKeyboardKeypad(
+        onKeypadAction: _processKeypadAction,
+        enabled: widget.enableHardwareKeyboard,
+        autofocus: widget.autofocus,
+        child: keypadWidget,
+      );
+    }
+
+    return keypadWidget;
   }
 }

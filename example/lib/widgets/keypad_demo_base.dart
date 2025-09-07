@@ -32,6 +32,7 @@ abstract class KeypadDemoPageState<T extends KeypadDemoPage> extends State<T> {
     required String title,
     required String description,
     required KeypadConfig config,
+    List<Widget>? customControls,
   }) {
     final theme = Theme.of(context);
     final visualDensity = theme.visualDensity;
@@ -102,6 +103,12 @@ abstract class KeypadDemoPageState<T extends KeypadDemoPage> extends State<T> {
           ),
 
           SizedBox(height: effectiveSpacing),
+
+          // Custom controls (if provided)
+          if (customControls != null) ...[
+            for (final control in customControls) control,
+            SizedBox(height: effectiveSpacing),
+          ],
 
           // Keypad - Give it most of the space
           Expanded(

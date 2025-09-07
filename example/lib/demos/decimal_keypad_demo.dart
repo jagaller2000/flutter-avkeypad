@@ -19,6 +19,7 @@ class _DecimalKeypadDemoState extends KeypadDemoPageState<DecimalKeypadDemo> {
       description:
           'Numeric keypad with decimal point support. '
           'Allows entering decimal numbers with up to 2 decimal places.',
+      keypadDescription: 'Enter currency amount (e.g., 123.45)',
       config: const KeypadConfig(
         showDecimalKey: true,
         maxDecimalPlaces: 2,

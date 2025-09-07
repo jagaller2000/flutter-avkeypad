@@ -32,6 +32,7 @@ abstract class KeypadDemoPageState<T extends KeypadDemoPage> extends State<T> {
     required String title,
     required String description,
     required KeypadConfig config,
+    String? keypadDescription,
   }) {
     final theme = Theme.of(context);
     final visualDensity = theme.visualDensity;
@@ -113,6 +114,7 @@ abstract class KeypadDemoPageState<T extends KeypadDemoPage> extends State<T> {
                   config: config,
                   onValueChanged: onValueChanged,
                   onCancel: onCancel,
+                  description: keypadDescription,
                 ),
               ),
             ),

@@ -15,6 +15,7 @@ class KeypadContainerWidget extends StatelessWidget {
     this.padding,
     this.decoration,
     this.displayMargin,
+    this.description,
   });
 
   /// The current keypad state
@@ -34,6 +35,9 @@ class KeypadContainerWidget extends StatelessWidget {
 
   /// Margin between display and keys (null for theme-based)
   final EdgeInsets? displayMargin;
+
+  /// Optional description text to display alongside the keypad
+  final String? description;
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +82,31 @@ class KeypadContainerWidget extends StatelessWidget {
             margin: displayMargin ?? defaultDisplayMargin,
             child: KeypadDisplayWidget(state: state),
           ),
+
+          // Description text (if provided)
+          if (description != null) ...[
+            Container(
+              width: double.infinity,
+              margin: EdgeInsets.only(bottom: effectiveMargin),
+              padding: EdgeInsets.symmetric(
+                horizontal: effectivePadding * 0.5,
+                vertical: effectivePadding * 0.5,
+              ),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surfaceContainerHigh,
+                borderRadius: BorderRadius.circular(
+                  KeypadDesignConstants.containerBorderRadius * 0.75,
+                ),
+              ),
+              child: Text(
+                description!,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
 
           // Keypad layout
           KeypadLayoutWidget(

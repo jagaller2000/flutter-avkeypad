@@ -20,6 +20,7 @@ class _AdvancedKeypadDemoState extends KeypadDemoPageState<AdvancedKeypadDemo> {
           'All features enabled: signed numbers, decimal support, '
           'input constraints, and all action buttons. Maximum 6 digits with 3 decimal places. '
           'This demonstrates the full capabilities of the keypad widget.',
+      keypadDescription: 'Enter a number (max 6 digits, 3 decimal places)',
       config: const KeypadConfig(
         showSignKey: true,
         allowNegative: true,

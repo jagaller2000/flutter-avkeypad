@@ -10,6 +10,7 @@ class NumericKeypad extends StatefulWidget {
     this.config = const KeypadConfig(),
     this.onValueChanged,
     this.onCancel,
+    this.description,
   });
 
   /// Configuration for the keypad
@@ -20,6 +21,9 @@ class NumericKeypad extends StatefulWidget {
 
   /// Callback when cancel is pressed
   final VoidCallback? onCancel;
+
+  /// Optional description text to display alongside the keypad
+  final String? description;
 
   @override
   State<NumericKeypad> createState() => _NumericKeypadState();
@@ -120,6 +124,7 @@ class _NumericKeypadState extends State<NumericKeypad> {
       state: _session.currentState,
       config: widget.config,
       onKeyPressed: _handleKeyPress,
+      description: widget.description,
     );
   }
 }

@@ -21,6 +21,14 @@ class GetSessionInfoUseCase {
   bool hasValidInput(KeypadSession session) => session.currentState.isValid;
 
   /// Get current display text
-  String getDisplayText(KeypadSession session) =>
-      session.currentState.displayText;
+  String getDisplayText(KeypadSession session) {
+    final baseText = session.currentState.displayText;
+    final unit = session.config.unit;
+    
+    if (unit != null && unit.isNotEmpty) {
+      return '$baseText $unit';
+    }
+    
+    return baseText;
+  }
 }

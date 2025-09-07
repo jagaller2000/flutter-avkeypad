@@ -276,6 +276,79 @@ void main() {
         final result = useCase.getDisplayText(testSession);
         expect(result, equals('0123'));
       });
+
+      test('should display value with unit when unit is present', () {
+        final sessionWithUnit = KeypadSession(
+          id: 'test-session-unit',
+          config: const KeypadConfig(unit: 'km'),
+        );
+        sessionWithUnit.updateState(const KeypadState(input: '123.45'));
+        
+        final result = useCase.getDisplayText(sessionWithUnit);
+        expect(result, equals('123.45 km'));
+      });
+
+      test('should display default value with unit when input is empty', () {
+        final sessionWithUnit = KeypadSession(
+          id: 'test-session-unit',
+          config: const KeypadConfig(unit: 'kg'),
+        );
+        // Empty state - should display "0"
+        
+        final result = useCase.getDisplayText(sessionWithUnit);
+        expect(result, equals('0 kg'));
+      });
+
+      test('should not display unit when unit is null', () {
+        testSession.updateState(const KeypadState(input: '123.45'));
+        final result = useCase.getDisplayText(testSession);
+        expect(result, equals('123.45'));
+      });
+
+      test('should not display unit when unit is empty string', () {
+        final sessionWithEmptyUnit = KeypadSession(
+          id: 'test-session-empty-unit',
+          config: const KeypadConfig(unit: ''),
+        );
+        sessionWithEmptyUnit.updateState(const KeypadState(input: '123.45'));
+        
+        final result = useCase.getDisplayText(sessionWithEmptyUnit);
+        expect(result, equals('123.45'));
+      });
+
+      test('should display negative value with unit', () {
+        final sessionWithUnit = KeypadSession(
+          id: 'test-session-unit',
+          config: const KeypadConfig(unit: '°C'),
+        );
+        sessionWithUnit.updateState(
+          const KeypadState(input: '-15.5', isNegative: true),
+        );
+        
+        final result = useCase.getDisplayText(sessionWithUnit);
+        expect(result, equals('-15.5 °C'));
+      });
+
+      test('should display various unit types correctly', () {
+        const testCases = [
+          ('123.45', 'km', '123.45 km'),
+          ('100', '$', '100 \$'),
+          ('75', '%', '75 %'),
+          ('98.6', '°F', '98.6 °F'),
+          ('50.5', 'm/s', '50.5 m/s'),
+        ];
+
+        for (final (input, unit, expected) in testCases) {
+          final sessionWithUnit = KeypadSession(
+            id: 'test-session-$unit',
+            config: KeypadConfig(unit: unit),
+          );
+          sessionWithUnit.updateState(KeypadState(input: input));
+          
+          final result = useCase.getDisplayText(sessionWithUnit);
+          expect(result, equals(expected));
+        }
+      });
     });
 
     group('Multiple Session Operations', () {

@@ -19,6 +19,7 @@ void main() {
         expect(config.stepSize, isNull);
         expect(config.decimalSeparator, equals('.'));
         expect(config.customKeys, isEmpty);
+        expect(config.unit, isNull);
       });
 
       test('should create config with custom values', () {
@@ -45,6 +46,7 @@ void main() {
           stepSize: 0.5,
           decimalSeparator: ',',
           customKeys: customKeys,
+          unit: 'km',
         );
 
         expect(config.showDecimalKey, isFalse);
@@ -59,6 +61,7 @@ void main() {
         expect(config.stepSize, equals(0.5));
         expect(config.decimalSeparator, equals(','));
         expect(config.customKeys, equals(customKeys));
+        expect(config.unit, equals('km'));
       });
     });
 
@@ -113,6 +116,14 @@ void main() {
         expect(copied.customKeys.length, equals(2));
       });
 
+      test('should copy with unit change', () {
+        const original = KeypadConfig();
+        final copied = original.copyWith(unit: 'kg');
+
+        expect(copied.unit, equals('kg'));
+        expect(original.unit, isNull); // Original should remain unchanged
+      });
+
       test('should copy with null values to reset optional properties', () {
         const original = KeypadConfig(maxDigits: 5, stepSize: 2.0);
         // Note: copyWith doesn't support setting nullable values to null,
@@ -164,6 +175,20 @@ void main() {
         final config2 = KeypadConfig(
           customKeys: [const KeypadKey(value: '8', type: KeypadKeyType.digit)],
         );
+
+        expect(config1, isNot(equals(config2)));
+      });
+
+      test('should not be equal when unit differs', () {
+        const config1 = KeypadConfig(unit: 'km');
+        const config2 = KeypadConfig(unit: 'kg');
+
+        expect(config1, isNot(equals(config2)));
+      });
+
+      test('should not be equal when one has unit and other does not', () {
+        const config1 = KeypadConfig(unit: 'km');
+        const config2 = KeypadConfig();
 
         expect(config1, isNot(equals(config2)));
       });
@@ -226,6 +251,7 @@ void main() {
         expect(result, contains('stepSize:'));
         expect(result, contains('decimalSeparator:'));
         expect(result, contains('customKeys:'));
+        expect(result, contains('unit:'));
       });
     });
 
@@ -311,6 +337,45 @@ void main() {
       test('should handle unusual decimal separators', () {
         const config = KeypadConfig(decimalSeparator: '·');
         expect(config.decimalSeparator, equals('·'));
+      });
+    });
+
+    group('Unit Display', () {
+      test('should create config with null unit by default', () {
+        const config = KeypadConfig();
+        expect(config.unit, isNull);
+      });
+
+      test('should create config with custom unit', () {
+        const config = KeypadConfig(unit: 'kg');
+        expect(config.unit, equals('kg'));
+      });
+
+      test('should support various unit types', () {
+        const testCases = ['km', 'kg', 'm/s', '°C', '$', '%', 'ft'];
+        
+        for (final unit in testCases) {
+          final config = KeypadConfig(unit: unit);
+          expect(config.unit, equals(unit));
+        }
+      });
+
+      test('should handle empty string unit', () {
+        const config = KeypadConfig(unit: '');
+        expect(config.unit, equals(''));
+      });
+
+      test('should be equal when units match', () {
+        const config1 = KeypadConfig(unit: 'km');
+        const config2 = KeypadConfig(unit: 'km');
+        expect(config1, equals(config2));
+      });
+
+      test('should copy with unit preserved', () {
+        const original = KeypadConfig(unit: 'km');
+        final copied = original.copyWith(maxDigits: 5);
+        expect(copied.unit, equals('km'));
+        expect(copied.maxDigits, equals(5));
       });
     });
 

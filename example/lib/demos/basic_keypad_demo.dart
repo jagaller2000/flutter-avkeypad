@@ -19,6 +19,7 @@ class _BasicKeypadDemoState extends KeypadDemoPageState<BasicKeypadDemo> {
       description:
           'A simple numeric keypad with only the essential features. '
           'Supports basic number input with backspace and clear functionality.',
+      keypadDescription: 'Enter a whole number',
       config: const KeypadConfig(
         showDecimalKey: false,
         showSignKey: false,

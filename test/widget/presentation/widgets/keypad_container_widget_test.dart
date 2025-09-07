@@ -336,5 +336,111 @@ void main() {
       expect(find.byType(KeypadDisplayWidget), findsOneWidget);
       expect(find.byType(KeypadLayoutWidget), findsOneWidget);
     });
+
+    group('Description Feature Tests', () {
+      testWidgets('should display description text when provided', (tester) async {
+        // Arrange
+        const descriptionText = 'Please enter your security code';
+        final pressedKeys = <KeypadKey>[];
+
+        // Act
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: KeypadContainerWidget(
+                state: emptyState,
+                config: config,
+                onKeyPressed: (key) => pressedKeys.add(key),
+                description: descriptionText,
+              ),
+            ),
+          ),
+        );
+
+        // Assert
+        expect(find.text(descriptionText), findsOneWidget);
+        expect(find.byType(KeypadDisplayWidget), findsOneWidget);
+        expect(find.byType(KeypadLayoutWidget), findsOneWidget);
+      });
+
+      testWidgets('should not display description when null', (tester) async {
+        // Arrange
+        final pressedKeys = <KeypadKey>[];
+
+        // Act
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: KeypadContainerWidget(
+                state: emptyState,
+                config: config,
+                onKeyPressed: (key) => pressedKeys.add(key),
+                description: null,
+              ),
+            ),
+          ),
+        );
+
+        // Assert - should render normally without description
+        expect(find.byType(KeypadDisplayWidget), findsOneWidget);
+        expect(find.byType(KeypadLayoutWidget), findsOneWidget);
+      });
+
+      testWidgets('should display description with proper styling', (tester) async {
+        // Arrange
+        const descriptionText = 'Enter transaction amount';
+        final pressedKeys = <KeypadKey>[];
+
+        // Act
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: KeypadContainerWidget(
+                state: stateWithInput,
+                config: config,
+                onKeyPressed: (key) => pressedKeys.add(key),
+                description: descriptionText,
+              ),
+            ),
+          ),
+        );
+
+        // Assert - description text should be found
+        expect(find.text(descriptionText), findsOneWidget);
+        
+        // Find the Text widget containing description to check styling
+        final descriptionWidget = tester.widget<Text>(find.text(descriptionText));
+        expect(descriptionWidget.textAlign, TextAlign.center);
+        
+        // Verify container structure is maintained
+        expect(find.byType(Container), findsAtLeastNWidgets(2)); // Multiple containers in layout
+        expect(find.byType(Column), findsAtLeastNWidgets(1));
+      });
+
+      testWidgets('should handle long description text gracefully', (tester) async {
+        // Arrange
+        const longDescriptionText = 'This is a very long description text that should wrap properly and maintain good readability within the keypad interface without breaking the layout or causing overflow issues';
+        final pressedKeys = <KeypadKey>[];
+
+        // Act
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: KeypadContainerWidget(
+                state: emptyState,
+                config: config,
+                onKeyPressed: (key) => pressedKeys.add(key),
+                description: longDescriptionText,
+              ),
+            ),
+          ),
+        );
+
+        // Assert
+        expect(find.text(longDescriptionText), findsOneWidget);
+        expect(find.byType(KeypadDisplayWidget), findsOneWidget);
+        expect(find.byType(KeypadLayoutWidget), findsOneWidget);
+      });
+    });
   });
 }

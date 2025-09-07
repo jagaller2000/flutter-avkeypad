@@ -613,5 +613,97 @@ void main() {
       expect(valueChanges.length, greaterThan(0));
       expect(valueChanges.last, '123');
     });
+
+    group('Description Feature Tests', () {
+      testWidgets('should display description text when provided', (tester) async {
+        // Arrange
+        const descriptionText = 'Enter your PIN number';
+
+        // Act
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: NumericKeypad(description: descriptionText),
+            ),
+          ),
+        );
+
+        // Assert
+        expect(find.text(descriptionText), findsOneWidget);
+        expect(find.byType(NumericKeypad), findsOneWidget);
+        expect(find.byType(KeypadContainerWidget), findsOneWidget);
+      });
+
+      testWidgets('should not display description when null', (tester) async {
+        // Act
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: NumericKeypad(description: null),
+            ),
+          ),
+        );
+
+        // Assert - no description text should be found
+        expect(find.byType(NumericKeypad), findsOneWidget);
+        expect(find.byType(KeypadContainerWidget), findsOneWidget);
+        // We can't easily test for absence of description without knowing specific text
+      });
+
+      testWidgets('should display description with custom configuration', (tester) async {
+        // Arrange
+        const descriptionText = 'Enter amount in USD (max 8 digits)';
+        const config = KeypadConfig(
+          maxDigits: 8,
+          maxDecimalPlaces: 2,
+          showDecimalKey: true,
+        );
+
+        // Act
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: NumericKeypad(
+                description: descriptionText,
+                config: config,
+              ),
+            ),
+          ),
+        );
+
+        // Assert
+        expect(find.text(descriptionText), findsOneWidget);
+        expect(find.byType(NumericKeypad), findsOneWidget);
+        expect(find.byType(KeypadContainerWidget), findsOneWidget);
+      });
+
+      testWidgets('should maintain functionality with description', (tester) async {
+        // Arrange
+        const descriptionText = 'Test description';
+        String? lastValue;
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: NumericKeypad(
+                description: descriptionText,
+                onValueChanged: (value) => lastValue = value,
+              ),
+            ),
+          ),
+        );
+
+        // Act - interact with keypad
+        final digit5Finder = find.byWidgetPredicate(
+          (widget) => widget is KeypadKeyWidget && widget.keypadKey.value == '5',
+        );
+        await tester.tap(digit5Finder);
+        await tester.pump();
+
+        // Assert - both description and functionality work
+        expect(find.text(descriptionText), findsOneWidget);
+        expect(lastValue, '5');
+      });
+    });
   });
 }

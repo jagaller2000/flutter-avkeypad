@@ -8,6 +8,7 @@ A Flutter package providing customizable numeric keypad widgets designed for avi
 
 - **Multiple Layout Options**: Compact and traditional keypad layouts
 - **Highly Configurable**: Control which keys are shown and how input is validated
+- **Contextual Descriptions**: Optional description text to guide user input
 - **Input Validation**: Built-in support for step sizes, decimal limits, and range constraints
 - **Aviation-Focused**: Designed for professional applications requiring precise numeric input
 - **Clean Architecture**: Follows hexagonal architecture principles for maintainability
@@ -62,6 +63,25 @@ class _MyWidgetState extends State<MyWidget> {
     );
   }
 }
+```
+
+### Keypad with Description Text
+
+Add contextual information for users with the optional description parameter:
+
+```dart
+NumericKeypad(
+  description: 'Enter your PIN number',
+  config: KeypadConfig(
+    showDecimalKey: false,
+    maxDigits: 4,
+  ),
+  onValueChanged: (value) {
+    setState(() {
+      currentValue = value;
+    });
+  },
+)
 ```
 
 ### Compact Layout

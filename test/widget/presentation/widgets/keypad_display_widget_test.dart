@@ -295,5 +295,65 @@ void main() {
       expect(displayText.style?.fontFeatures, isNotNull);
       expect(displayText.style?.fontFeatures, isNotEmpty);
     });
+
+    testWidgets('should display text with unit correctly', (tester) async {
+      // Arrange - simulate what GetSessionInfoUseCase would return
+      const state = KeypadState(input: '123.45 km', isValid: true);
+
+      // Act
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(body: KeypadDisplayWidget(state: state)),
+        ),
+      );
+
+      // Assert
+      expect(find.text('123.45 km'), findsOneWidget);
+    });
+
+    testWidgets('should display placeholder with unit correctly', (
+      tester,
+    ) async {
+      // Arrange - simulate what GetSessionInfoUseCase would return for empty input with unit
+      const state = KeypadState(input: '0 kg', isValid: true);
+
+      // Act
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(body: KeypadDisplayWidget(state: state)),
+        ),
+      );
+
+      // Assert
+      expect(find.text('0 kg'), findsOneWidget);
+    });
+
+    testWidgets('should display various unit formats correctly', (
+      tester,
+    ) async {
+      // Test different unit formats
+      const testCases = [
+        '100 \$',
+        '75 %',
+        '98.6 °F',
+        '-15.5 °C',
+        '50.5 m/s',
+      ];
+
+      for (final displayText in testCases) {
+        final state = KeypadState(input: displayText, isValid: true);
+        
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(body: KeypadDisplayWidget(state: state)),
+          ),
+        );
+
+        expect(find.text(displayText), findsOneWidget);
+
+        // Clear the widget tree for next test
+        await tester.pumpWidget(Container());
+      }
+    });
   });
 }

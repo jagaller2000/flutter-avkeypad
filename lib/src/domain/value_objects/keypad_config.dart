@@ -15,6 +15,7 @@ class KeypadConfig {
     this.stepSize,
     this.decimalSeparator = '.',
     this.customKeys = const [],
+    this.unit,
   });
 
   /// Whether to show the decimal point key
@@ -54,6 +55,9 @@ class KeypadConfig {
   /// Additional custom keys to include
   final List<KeypadKey> customKeys;
 
+  /// Optional unit to display with the value (e.g., "km", "kg", "$")
+  final String? unit;
+
   /// Creates a copy of this config with updated properties
   KeypadConfig copyWith({
     bool? showDecimalKey,
@@ -68,6 +72,7 @@ class KeypadConfig {
     double? stepSize,
     String? decimalSeparator,
     List<KeypadKey>? customKeys,
+    String? unit,
   }) {
     return KeypadConfig(
       showDecimalKey: showDecimalKey ?? this.showDecimalKey,
@@ -82,6 +87,7 @@ class KeypadConfig {
       stepSize: stepSize ?? this.stepSize,
       decimalSeparator: decimalSeparator ?? this.decimalSeparator,
       customKeys: customKeys ?? this.customKeys,
+      unit: unit ?? this.unit,
     );
   }
 
@@ -100,6 +106,7 @@ class KeypadConfig {
         other.allowZero == allowZero &&
         other.stepSize == stepSize &&
         other.decimalSeparator == decimalSeparator &&
+        other.unit == unit &&
         _listEquals(other.customKeys, customKeys);
   }
 
@@ -117,6 +124,7 @@ class KeypadConfig {
       allowZero,
       stepSize,
       decimalSeparator,
+      unit,
       Object.hashAll(customKeys),
     );
   }
@@ -135,7 +143,8 @@ class KeypadConfig {
         'allowZero: $allowZero, '
         'stepSize: $stepSize, '
         'decimalSeparator: $decimalSeparator, '
-        'customKeys: $customKeys)';
+        'customKeys: $customKeys, '
+        'unit: $unit)';
   }
 
   bool _listEquals<T>(List<T>? a, List<T>? b) {
